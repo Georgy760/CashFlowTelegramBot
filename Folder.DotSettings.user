@@ -1,0 +1,7 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=6F0FADD7_002DCB4B_002DA785_002DE002_002D0D78382C2A02_002Fd_003ASkywards_002Fd_003ATelegram_002Ff_003ALanguages_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">ERROR</s:String>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Users\gosha\.nuget\packages\telegram.bot\18.0.0\lib\netcoreapp3.1\Telegram.Bot.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	</wpf:ResourceDictionary>
