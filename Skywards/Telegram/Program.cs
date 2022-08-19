@@ -1,7 +1,7 @@
-﻿using Telegram.Bot;
+﻿using CashFlowTelegramBot.Skywards.Telegram;
+using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
-using CashFlowTelegramBot.Skywards.Telegram;
 
 var bot = new TelegramBotClient(TelegramToken.BotToken);
 
@@ -11,22 +11,39 @@ Console.Title = me.Username ?? "CashFlow";
 using var cts = new CancellationTokenSource();
 
 // StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
-var receiverOptions = new ReceiverOptions() 
+var receiverOptions = new ReceiverOptions
 {
     AllowedUpdates = Array.Empty<UpdateType>(),
-    ThrowPendingUpdates = true,
+    ThrowPendingUpdates = true
 };
 
 
+bot.StartReceiving(UpdateHandlers.HandleUpdateAsync,
+    UpdateHandlers.PollingErrorHandler,
+    receiverOptions,
+    cts.Token);
+/*
+FileStream filestream = null;
+if (File.Exists("logs.txt"))
+{
+    filestream = new FileStream("logs.txt", FileMode.Open);
+}
+else
+{
+    filestream = new FileStream("logs.txt", FileMode.Create);
+}
 
-bot.StartReceiving(updateHandler: UpdateHandlers.HandleUpdateAsync,
-    pollingErrorHandler: UpdateHandlers.PollingErrorHandler,
-    receiverOptions: receiverOptions,
-    cancellationToken: cts.Token);
-
+if (filestream != null)
+{
+    var streamwriter = new StreamWriter(filestream);
+    streamwriter.AutoFlush = true;
+    Console.SetOut(streamwriter);
+    Console.SetError(streamwriter);
+}
+*/
 Console.WriteLine($"Start listening for @{me.Username}");
 Console.ReadLine();
 
+
 // Send cancellation request to stop bot
 cts.Cancel();
-

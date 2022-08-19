@@ -2,5 +2,9 @@ namespace CashFlowTelegramBot.Skywards.Telegram;
 
 public enum Error
 {
-    UserIsNotExist
+    UserIsNotExist,
+    UserDontMeetConnetionRequriments,
+    UserAlreadyAtAnotherTable,
+    RefLinkInvalid,
+    UserWithoutUsername
 }

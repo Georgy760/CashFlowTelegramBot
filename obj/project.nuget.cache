@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uKhgQEZoXkEpJYbA9zEAqVT1/cqI24PuSCfuC+xIlRaM83/PWSGIsG8BkEDb3tKVE+mzQvgQqkFXLkRrCU0J7w==",
+  "dgSpecHash": "UaNkMfpj3d9vM1p7zfmnqi2GUh+1x3LrOD9n65kw+Mc15zBxL/Gjqtg4L8QCCAu2h2fUYvqOT0LRB3nzuCzXyQ==",
   "success": true,
-  "projectFilePath": "E:\\user\\Documents\\TelegramChatBot\\CashFlowTelegramBot\\CashFlowTelegramBot.csproj",
+  "projectFilePath": "E:\\user\\Documents\\CashFlowTelegramBot\\TelegramBotNewLive.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gosha\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\gosha\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.0-preview.5.22302.2\\microsoft.entityframeworkcore.7.0.0-preview.5.22302.2.nupkg.sha512",

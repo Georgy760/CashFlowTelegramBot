@@ -10,6 +10,7 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "7.0.0-preview.5.22302.2",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.0-preview.5.22302.2",
+          "Microsoft.Extensions.Localization": "7.0.0-preview.5.22303.8",
           "Telegram.Bot": "18.0.0"
         },
         "runtime": {
@@ -131,6 +132,28 @@
           "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "assemblyVersion": "7.0.0.0",
             "fileVersion": "7.0.22.30112"
+          }
+        }
+      },
+      "Microsoft.Extensions.Localization/7.0.0-preview.5.22303.8": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "7.0.0-preview.5.22301.12",
+          "Microsoft.Extensions.Localization.Abstractions": "7.0.0-preview.5.22303.8",
+          "Microsoft.Extensions.Logging.Abstractions": "7.0.0-preview.5.22301.12",
+          "Microsoft.Extensions.Options": "7.0.0-preview.5.22301.12"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Localization.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.30308"
+          }
+        }
+      },
+      "Microsoft.Extensions.Localization.Abstractions/7.0.0-preview.5.22303.8": {
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Extensions.Localization.Abstractions.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.30308"
           }
         }
       },
@@ -309,6 +332,20 @@
       "sha512": "sha512-X2nIrjzKEBMOv/o6EmXk9Cqvg26JHq8N/9ElQkMJE0COIoE+0u5384mUnauBL/aDhrXm5fjojjtR6951Q2UTkg==",
       "path": "microsoft.extensions.dependencyinjection.abstractions/7.0.0-preview.5.22301.12",
       "hashPath": "microsoft.extensions.dependencyinjection.abstractions.7.0.0-preview.5.22301.12.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Localization/7.0.0-preview.5.22303.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-reD18u4DtB9eS5SCoQNgecdLVfwzcadN581g0Qy3HZAKTU3uo0szgU7foAqLsclhiTF3vcZ9ONX/d5/Qmu5vUg==",
+      "path": "microsoft.extensions.localization/7.0.0-preview.5.22303.8",
+      "hashPath": "microsoft.extensions.localization.7.0.0-preview.5.22303.8.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Localization.Abstractions/7.0.0-preview.5.22303.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-udxpZ8odcLB1Xi5BkUuJhkfcALVLSkDUmM9G/YfJYO2ghptqPA9FnIJum0Y6Q2XaT/FxIJZU5WIqp7zPu19ewA==",
+      "path": "microsoft.extensions.localization.abstractions/7.0.0-preview.5.22303.8",
+      "hashPath": "microsoft.extensions.localization.abstractions.7.0.0-preview.5.22303.8.nupkg.sha512"
     },
     "Microsoft.Extensions.Logging/7.0.0-preview.5.22301.12": {
       "type": "package",

@@ -1,12 +1,9 @@
-﻿using System.Diagnostics;
-using CashFlowTelegramBot.Skywards.Web;
+﻿using CashFlowTelegramBot.Skywards.Web;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
-using Telegram.Bot.Requests;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
-using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace CashFlowTelegramBot.Skywards.Telegram;
@@ -68,24 +65,38 @@ public static class UpdateHandlers
     private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message updateMessage)
     {
         Console.WriteLine("MessageReceived: " + updateMessage.Text);
-        if (updateMessage.Text == "/start")
+        /*if (updateMessage.Text == "/start")
         {
             var user = new UserProfile(updateMessage.From.Id, updateMessage.From.Username);
-            WebManager.SendData(user, WebManager.RequestType.Register);
+            var error = WebManager.SendData(user, WebManager.RequestType.Register);
             await botClient.DeleteMessageAsync(updateMessage.Chat.Id, updateMessage.MessageId);
             Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
         }
-
+        */
         if (updateMessage.Text.Contains("/start R"))
         {
             var splitMessage = updateMessage.Text.Split("R");
             var refId = int.Parse(splitMessage[1]);
-            var user = new UserProfile(updateMessage.From.Id, refId, updateMessage.From.Username);
-            WebManager.SendData(user, WebManager.RequestType.RegisterWithRef);
-            await botClient.DeleteMessageAsync(updateMessage.Chat.Id, updateMessage.MessageId);
-            Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
+            if (updateMessage.From.Username != null)
+            {
+                var user = new UserProfile(updateMessage.From.Id, refId, updateMessage.From.Username);
+                var error = await WebManager.SendData(user, WebManager.RequestType.RegisterWithRef);
+                await botClient.DeleteMessageAsync(updateMessage.Chat.Id, updateMessage.MessageId);
+                if (error.error.errorText == "RefLink invalid")
+                {
+                    Languages.Warning(botClient, updateMessage.Chat.Id, user, Error.RefLinkInvalid);
+                } else Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
+            } else Languages.Warning(botClient, updateMessage.Chat.Id, new UserProfile(), Error.UserWithoutUsername);
+
+
         }
 
+        if (updateMessage.Text == "/menu")
+        {
+            var user = new UserProfile(updateMessage.From!.Id, updateMessage.From.Username!);
+            var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
+            Languages.MainMenu(botClient, updateMessage.From!.Id, userData.playerData.lang);
+        }
         if (updateMessage.Text == "/GetUserData")
         {
             var user = new UserProfile(updateMessage.From!.Id, updateMessage.From.Username!);
@@ -112,7 +123,6 @@ public static class UpdateHandlers
         {
         }
 
-        if (updateMessage.Text == "/menu") Languages.English.MainMenu(botClient, updateMessage.Chat.Id);
         if (updateMessage.Text == "/status")
         {
             var user = new UserProfile();
@@ -127,681 +137,345 @@ public static class UpdateHandlers
         Console.WriteLine("\nCallbackQuery.from.Id : " + callbackQuery.From.Id);
         var user = new UserProfile(callbackQuery.From.Id, callbackQuery.From.Username!);
         var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
-        await botClient.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
+        
         Console.WriteLine("\n---------------------------------------------------"
-                          + "\nTriggered by: " + userData.playerData.username + " at " + DateTime.Now + "\nCallBackQuery: " +
+                          + "\nTriggered by: " + userData.playerData.username + " at " + DateTime.Now +
+                          "\nCallBackQuery: " +
                           callbackQuery.Data
                           + "\n---------------------------------------------------");
         UserData? dataToRemove;
+        //await botClient.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
         switch (callbackQuery.Data)
         {
             //--------MAIN_MENU--------
             case "MainMenu":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.MainMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "eng":
-                        Languages.English.MainMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "fr":
-                        Languages.French.MainMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "de":
-                        Languages.German.MainMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                }
+                Languages.MainMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang);
                 break;
             //--------CHOOSE_TABLE--------\\
             case "ChooseTable":
                 Console.WriteLine("ChooseTable");
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "eng":
-                        Languages.English.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "fr":
-                        Languages.French.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "de":
-                        Languages.German.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                }
-
+                Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 break;
             //--------Table_Selection--------\\
             //-//------CopperTable------\\-\\
             case "CopperTable":
                 Console.WriteLine("TableSelected: Copper");
-                switch (userData.playerData.lang)
+                if (userData.playerData.table_id == null)
                 {
-                    case "ru":
-                        if (userData.playerData.table_id == null)
-                        {
-                            Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.copper);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.copper)
-                                Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.Russian.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "eng":
-                        if (userData.playerData.table_id == null)
-                        {
-                            Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.copper);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.copper)
-                                Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.English.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "fr":
-                        if (userData.playerData.table_id == null)
-                        {
-                            Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.copper);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.copper)
-                                Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.French.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "de":
-                        if (userData.playerData.table_id == null)
-                        {
-                            Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.copper);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.copper)
-                                Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.German.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData,
+                        Table.TableType.copper);
+                }
+                else
+                {
+                    var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                    if (tableData.tableData.tableType == Table.TableType.copper)
+                        Languages.Tables.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
+                    else
+                        Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                            Error.UserAlreadyAtAnotherTable);
                 }
 
                 break;
             case "OpenCopperTable":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "eng":
-                        Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "fr":
-                            Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
-                            break;
-                    
-                    case "de":
-                        Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                }
+                Languages.Tables.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
                 break;
             //-//------BronzeTable------\\-\\
             case "BronzeTable":
                 Console.WriteLine("TableSelected: Bronze");
-                switch (userData.playerData.lang)
+                if (userData.playerData.table_id == null)
                 {
-                    case "ru":
-                        if (userData.playerData.table_id == null)
-                        {
-                            Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.bronze);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.bronze)
-                                Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.Russian.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "eng":
-                        if (userData.playerData.table_id == null)
-                        {
-                            Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.bronze);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.bronze)
-                                Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.English.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "fr":
-                        if (userData.playerData.table_id == null)
-                        {
-                            Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.bronze);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.bronze)
-                                Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.French.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "de":
-                        if (userData.playerData.table_id == null)
-                        {
-                            Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.bronze);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.bronze)
-                                Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.German.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData,
+                        Table.TableType.bronze);
                 }
+                else
+                {
+                    var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                    if (tableData.tableData.tableType == Table.TableType.bronze)
+                        Languages.Tables.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
+                    else
+                        Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                            Error.UserAlreadyAtAnotherTable);
+                }
+
                 break;
             case "OpenBronzeTable":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "eng":
-                        Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "fr":
-                        Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "de":
-                        Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                }
+                Languages.Tables.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
                 break;
             //-//------SilverTable------\\-\\
             case "SilverTable":
                 Console.WriteLine("TableSelected: Silver");
-                switch (userData.playerData.lang)
+                if (userData.playerData.invited >= 2 ||
+                    Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true)
+                        .CompareTo(Table.TableType.silver) >= 0)
                 {
-                    case "ru":
-                        if ((userData.playerData.invited >= 2 ||  
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.silver) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.silver);
-                        }
+                    if (userData.playerData.table_id == null)
+                    {
+                        Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData,
+                            Table.TableType.silver);
+                    }
+                    else
+                    {
+                        var tableData =
+                            await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.tableType == Table.TableType.silver)
+                            Languages.Tables.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
                         else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.silver)
-                                Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.Russian.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "eng":
-                        if ((userData.playerData.invited >= 2 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.silver) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.silver);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.silver)
-                                Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.English.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "fr":
-                        if ((userData.playerData.invited >= 2 ||  
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.silver) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.silver);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.silver)
-                                Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.French.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "de":
-                        if ((userData.playerData.invited >= 2 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.silver) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.silver);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.silver)
-                                Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.German.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
+                            Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                                Error.UserAlreadyAtAnotherTable);
+                    }
+                }
+                else
+                {
+                    Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserDontMeetConnetionRequriments);
                 }
 
                 break;
             case "OpenSilverTable":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "eng":
-                        Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "fr":
-                        Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "de":
-                        Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                }
+                Languages.Tables.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
                 break;
             //-//------GoldTable------\\-\\
             case "GoldTable":
                 Console.WriteLine("TableSelected: Gold");
-                switch (userData.playerData.lang)
+                if (userData.playerData.invited >= 4 ||
+                    Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true)
+                        .CompareTo(Table.TableType.gold) >= 0)
                 {
-                    case "ru":
-                        if ((userData.playerData.invited >= 4 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.gold) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.gold);
-                        }
+                    if (userData.playerData.table_id == null)
+                    {
+                        Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData,
+                            Table.TableType.gold);
+                    }
+                    else
+                    {
+                        var tableData =
+                            await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.tableType == Table.TableType.gold)
+                            Languages.Tables.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
                         else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.gold)
-                                Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.Russian.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "eng":
-                        if ((userData.playerData.invited >= 4 ||  
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.gold) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.gold);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.gold)
-                                Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.English.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "fr":
-                        if ((userData.playerData.invited >= 4 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.gold) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.gold);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.gold)
-                                Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.French.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "de":
-                        if ((userData.playerData.invited >= 4 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.gold) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.gold);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.gold)
-                                Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.German.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
+                            Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                                Error.UserAlreadyAtAnotherTable);
+                    }
                 }
+                else
+                {
+                    Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserDontMeetConnetionRequriments);
+                }
+
                 break;
             case "OpenGoldTable":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    case "eng":
-                        Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    case "fr":
-                        Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    case "de":
-                        Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                }
+                Languages.Tables.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
                 break;
             //-//------PlatinumTable------\\-\\
             case "PlatinumTable":
                 Console.WriteLine("TableSelected: Platinum");
-                switch (userData.playerData.lang)
+                if (userData.playerData.invited >= 6 ||
+                    Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true)
+                        .CompareTo(Table.TableType.platinum) >= 0)
                 {
-                    case "ru":
-                        if ((userData.playerData.invited >= 6 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.platinum) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.platinum);
-                        }
+                    if (userData.playerData.table_id == null)
+                    {
+                        Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData,
+                            Table.TableType.platinum);
+                    }
+                    else
+                    {
+                        var tableData =
+                            await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.tableType == Table.TableType.platinum)
+                            Languages.Tables.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
                         else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.platinum)
-                                Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.Russian.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "eng":
-                        if ((userData.playerData.invited >= 6 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.platinum) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.platinum);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.platinum)
-                                Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.English.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "fr":
-                        if ((userData.playerData.invited >= 6 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.platinum) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.platinum);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.platinum)
-                                Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.French.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "de":
-                        if ((userData.playerData.invited >= 6 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.platinum) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.platinum);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.platinum)
-                                Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.German.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
+                            Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                                Error.UserAlreadyAtAnotherTable);
+                    }
+                }
+                else
+                {
+                    Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserDontMeetConnetionRequriments);
                 }
 
                 break;
             case "OpenPlatinumTable":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "eng":
-                        Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "fr":
-                        Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    
-                    case "de":
-                        Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                }
+                Languages.Tables.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
                 break;
             //-//-//-----DiamondTable-----\\-\\-\\
             case "DiamondTable":
                 Console.WriteLine("TableSelected: Diamond");
-                switch (userData.playerData.lang)
+                if (userData.playerData.invited >= 12 ||
+                    Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true)
+                        .CompareTo(Table.TableType.diamond) >= 0)
                 {
-                    case "ru":
-                        if ((userData.playerData.invited >= 12 || 
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.diamond) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.diamond);
-                        }
+                    if (userData.playerData.table_id == null)
+                    {
+                        Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData,
+                            Table.TableType.diamond);
+                    }
+                    else
+                    {
+                        var tableData =
+                            await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.tableType == Table.TableType.diamond)
+                            Languages.Tables.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
                         else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.diamond)
-                                Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.Russian.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "eng":
-                        if ((userData.playerData.invited >= 12 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.diamond) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.diamond);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.diamond)
-                                Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.English.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "fr":
-                        if ((userData.playerData.invited >= 12 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.diamond) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.diamond);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.diamond)
-                                Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.French.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
-                    case "de":
-                        if ((userData.playerData.invited >= 12 ||
-                             Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true).CompareTo(Table.TableType.diamond) >= 0) && userData.playerData.table_id == null)
-                        {
-                            Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData, Table.TableType.diamond);
-                        }
-                        else
-                        {
-                            UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                            if(tableData.tableData.tableType == Table.TableType.diamond)
-                                Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
-                            else Languages.German.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        }
-                        break;
+                            Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                                Error.UserAlreadyAtAnotherTable);
+                    }
                 }
+                else
+                {
+                    Languages.ConnectingError(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserDontMeetConnetionRequriments);
+                }
+
                 break;
             case "OpenDiamondTable":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    case "eng":
-                        Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    case "fr":
-                        Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                    case "de":
-                        Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
-                        break;
-                }
+                Languages.Tables.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
                 break;
             //-//-//---LeaveTable---\\-\\-\\
             case "LeaveTable":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.LeaveTable);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.LeaveTable);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.LeaveTable);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.LeaveTable);
-                        break;
-                }
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.LeaveTable);
                 break;
             case "ConfirmLeaveTable":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        await WebManager.SendData(userData.playerData, WebManager.RequestType.LeaveTable);
-                        Languages.Russian.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "eng":
-                        await WebManager.SendData(userData.playerData, WebManager.RequestType.LeaveTable);
-                        Languages.English.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "fr":
-                        await WebManager.SendData(userData.playerData, WebManager.RequestType.LeaveTable);
-                        Languages.French.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "de":
-                        await WebManager.SendData(userData.playerData, WebManager.RequestType.LeaveTable);
-                        Languages.German.TableMenu(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                }
+                await ConfirmLeaveTable(botClient, callbackQuery, userData);
                 break;
             //-//-//---GetBankerData---\\-\\-\\
             case "GetBankerData":
             {
-                UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.bankerID != null)
                 {
-                    UserData data = await WebManager.SendData(new UserProfile((int)tableData.tableData.bankerID), WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang, data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                        WebManager.RequestType.GetUserData);
+                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang,
+                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
                 {
-                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData, Error.UserIsNotExist);
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserIsNotExist);
                 }
+
                 break;
             }
             //-//-//---GetManagerAData---\\-\\-\\
             case "GetManagerAData":
             {
-                UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.managerA_ID != null)
                 {
-                    UserData data = await WebManager.SendData(new UserProfile((int)tableData.tableData.managerA_ID), WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang, data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                        WebManager.RequestType.GetUserData);
+                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang,
+                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
                 {
-                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData, Error.UserIsNotExist);
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserIsNotExist);
                 }
+
                 break;
             }
             //-//-//---GetManagerBData---\\-\\-\\
             case "GetManagerBData":
             {
-                UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.managerB_ID != null)
                 {
-                    UserData data = await WebManager.SendData(new UserProfile((int)tableData.tableData.managerB_ID), WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang, data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                        WebManager.RequestType.GetUserData);
+                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang,
+                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
                 {
-                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData, Error.UserIsNotExist);
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserIsNotExist);
                 }
+
                 break;
             }
             //-//-//---GetGiverAData---\\-\\-\\
             case "GetGiverAData":
             {
-                UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                Console.WriteLine("GetGiverAData");
+                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.giverA_ID != null)
                 {
-                    UserData data = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverA_ID), WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang, data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                        WebManager.RequestType.GetUserData);
+                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang,
+                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
                 {
-                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData, Error.UserIsNotExist);
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserIsNotExist);
                 }
+
                 break;
             }
             //-//-//---GetGiverBData---\\-\\-\\
             case "GetGiverBData":
             {
-                UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                Console.WriteLine("GetGiverBData");
+                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.giverB_ID != null)
                 {
-                    UserData data = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverB_ID), WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang, data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                        WebManager.RequestType.GetUserData);
+                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang,
+                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
                 {
-                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData, Error.UserIsNotExist);
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserIsNotExist);
                 }
+
                 break;
             }
             //-//-//---GetGiverCData---\\-\\-\\
             case "GetGiverCData":
             {
-                UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                Console.WriteLine("GetGiverCData");
+                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.giverC_ID != null)
                 {
-                    UserData data = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverC_ID), WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang, data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                        WebManager.RequestType.GetUserData);
+                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang,
+                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
                 {
-                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData, Error.UserIsNotExist);
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserIsNotExist);
                 }
+
                 break;
             }
             //-//-//---GetGiverDData---\\-\\-\\
             case "GetGiverDData":
             {
-                UserData tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                Console.WriteLine("GetGiverDData");
+                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.giverD_ID != null)
                 {
-                    UserData data = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverD_ID), WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang, data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                    Console.WriteLine("ID-----------------------------------------------------------------------" +
+                                      (int) tableData.tableData.giverD_ID);
+                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                        WebManager.RequestType.GetUserData);
+                    Languages.GetUserData(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang,
+                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
                 {
-                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData, Error.UserIsNotExist);
+                    Languages.Warning(botClient, callbackQuery.Message.Chat.Id, userData.playerData,
+                        Error.UserIsNotExist);
                 }
 
                 break;
@@ -809,2128 +483,262 @@ public static class UpdateHandlers
             //-//-//---ShowListTeam---\\-\\-\\
             case "ShowListTeam":
             {
-                Languages.ShowListTeam(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang, userData.playerData);
+                Languages.ShowListTeam(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang,
+                    userData.playerData);
                 break;
             }
             //-//-//---RemoveFromTable---\\-\\-\\
             //-//-//-//RemoveFromTableManagerA\\-\\-\\-\\
             case "RemoveFromTableManagerA":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                }
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.RemoveFromTable);
                 break;
             case "ConfirmRemoveFromTableManagerA":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToRemove.tableData.tableID != null && dataToRemove.tableData.managerA_ID != null)
+                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.managerA_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToRemove.tableData.managerA_ID, dataToRemove.tableData.tableID),
+                    await WebManager.SendData(
+                        new UserProfile((int) dataToRemove.tableData.managerA_ID, dataToRemove.tableData.tableID),
                         WebManager.RequestType.RemoveFromTable);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+
+                    SelectByTableType(botClient, callbackQuery, userData);
                 }
+
                 break;
             //-//-//-//RemoveFromTableManagerB\\-\\-\\-\\
             case "RemoveFromTableManagerB":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                }
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.RemoveFromTable);
                 break;
             case "ConfirmRemoveFromTableManagerB":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToRemove.tableData.tableID != null && dataToRemove.tableData.managerB_ID != null)
+                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.managerB_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToRemove.tableData.managerB_ID, dataToRemove.tableData.tableID),
+                    await WebManager.SendData(
+                        new UserProfile((int) dataToRemove.tableData.managerB_ID, dataToRemove.tableData.tableID),
                         WebManager.RequestType.RemoveFromTable);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    SelectByTableType(botClient, callbackQuery, userData);
                 }
+
                 break;
             //-//-//-//RemoveFromTableGiverA\\-\\-\\-\\
             case "RemoveFromTableGiverA":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                }
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.RemoveFromTable);
                 break;
             case "ConfirmRemoveFromTableGiverA":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverA_ID != null)
+                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverA_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToRemove.tableData.giverA_ID, dataToRemove.tableData.tableID),
+                    await WebManager.SendData(
+                        new UserProfile((int) dataToRemove.tableData.giverA_ID, dataToRemove.tableData.tableID),
                         WebManager.RequestType.RemoveFromTable);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    SelectByTableType(botClient, callbackQuery, userData);
                 }
+
                 break;
             //-//-//-//RemoveFromTableGiverB\\-\\-\\-\\
             case "RemoveFromTableGiverB":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                }
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.RemoveFromTable);
                 break;
             case "ConfirmRemoveFromTableGiverB":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverB_ID != null)
+                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverB_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToRemove.tableData.giverB_ID, dataToRemove.tableData.tableID),
+                    await WebManager.SendData(
+                        new UserProfile((int) dataToRemove.tableData.giverB_ID, dataToRemove.tableData.tableID),
                         WebManager.RequestType.RemoveFromTable);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    SelectByTableType(botClient, callbackQuery, userData);
                 }
+
                 break;
             //-//-//-//RemoveFromTableGiverC\\-\\-\\-\\
             case "RemoveFromTableGiverC":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                }
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.RemoveFromTable);
                 break;
             case "ConfirmRemoveFromTableGiverC":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverC_ID != null)
+                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverC_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToRemove.tableData.giverC_ID, dataToRemove.tableData.tableID),
+                    await WebManager.SendData(
+                        new UserProfile((int) dataToRemove.tableData.giverC_ID, dataToRemove.tableData.tableID),
                         WebManager.RequestType.RemoveFromTable);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    SelectByTableType(botClient, callbackQuery, userData);
                 }
+
                 break;
             //-//-//-//RemoveFromTableGiverD\\-\\-\\-\\
             case "RemoveFromTableGiverD":
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.RemoveFromTable);
-                        break;
-                }
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.RemoveFromTable);
                 break;
             case "ConfirmRemoveFromTableGiverD":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverD_ID != null)
+                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverD_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToRemove.tableData.giverD_ID, dataToRemove.tableData.tableID),
+                    await WebManager.SendData(
+                        new UserProfile((int) dataToRemove.tableData.giverD_ID, dataToRemove.tableData.tableID),
                         WebManager.RequestType.RemoveFromTable);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    SelectByTableType(botClient, callbackQuery, userData);
                 }
+
                 break;
             //-//-//---VerfGiver---\\-\\-\\
             //-//-//-//VerfGiverA\\-\\-\\-\\
             case "VerfGiverA":
             {
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                }
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.Confirm);
                 break;
             }
             case "ConfirmVerfGiverA":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
+                if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
+                    var response = await WebManager.SendData(
+                        new UserProfile((int) dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
                         WebManager.RequestType.Confirm);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                        SelectByTableType(botClient, callbackQuery, userData);
+                    else
+                        Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 }
+
                 break;
             }
             //-//-//-//VerfGiverB\\-\\-\\-\\
-            case "VerfGiverB":{
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                }
+            case "VerfGiverB":
+            {
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.Confirm);
                 break;
             }
             case "ConfirmVerfGiverB":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverB_ID != null)
+                if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverB_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToConfirm.tableData.giverB_ID, dataToConfirm.tableData.tableID),
+                    var response = await WebManager.SendData(
+                        new UserProfile((int) dataToConfirm.tableData.giverB_ID, dataToConfirm.tableData.tableID),
                         WebManager.RequestType.Confirm);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                        SelectByTableType(botClient, callbackQuery, userData);
+                    else
+                        Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 }
+
                 break;
             }
-            case "VerfGiverC":{
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                }
+            case "VerfGiverC":
+            {
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.Confirm);
                 break;
             }
             case "ConfirmVerfGiverC":
-                {
+            {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverC_ID != null)
+                if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverC_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToConfirm.tableData.giverC_ID, dataToConfirm.tableData.tableID),
+                    var response = await WebManager.SendData(
+                        new UserProfile((int) dataToConfirm.tableData.giverC_ID, dataToConfirm.tableData.tableID),
                         WebManager.RequestType.Confirm);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                        SelectByTableType(botClient, callbackQuery, userData);
+                    else
+                        Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 }
+
                 break;
             }
             //-//-//-//VerfGiverD\\-\\-\\-\\
-            case "VerfGiverD":{
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "eng":
-                        Languages.English.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "fr":
-                        Languages.French.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                    case "de":
-                        Languages.German.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, WebManager.RequestType.Confirm);
-                        break;
-                }
+            case "VerfGiverD":
+            {
+                Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData,
+                    WebManager.RequestType.Confirm);
                 break;
             }
             case "ConfirmVerfGiverD":
-                {
+            {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if(dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverD_ID != null)
+                if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverD_ID != null)
                 {
-                    await WebManager.SendData(new UserProfile((int)dataToConfirm.tableData.giverD_ID, dataToConfirm.tableData.tableID),
+                    var response = await WebManager.SendData(
+                        new UserProfile((int) dataToConfirm.tableData.giverD_ID, dataToConfirm.tableData.tableID),
                         WebManager.RequestType.Confirm);
-                    switch (userData.playerData.lang)
-                    {
-                        case "ru":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.Russian.TablesRU.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.Russian.TablesRU.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.Russian.TablesRU.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.Russian.TablesRU.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.Russian.TablesRU.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.Russian.TablesRU.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "eng":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.English.TablesENG.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.English.TablesENG.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.English.TablesENG.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.English.TablesENG.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.English.TablesENG.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.English.TablesENG.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "fr":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.French.TablesFR.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.French.TablesFR.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.French.TablesFR.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.French.TablesFR.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.French.TablesFR.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.French.TablesFR.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        case "de":
-                        {
-                            switch (userData.playerData.level_tableType)
-                            {
-                                case "copper":
-                                {
-                                    Languages.German.TablesDE.Copper(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "bronze":
-                                {
-                                    Languages.German.TablesDE.Bronze(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "silver":
-                                {
-                                    Languages.German.TablesDE.Silver(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "gold":
-                                {
-                                    Languages.German.TablesDE.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
-                                    break;
-                                }
-                                case "platinum":
-                                {
-                                    Languages.German.TablesDE.Platinum(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                                case "diamond":
-                                {
-                                    Languages.German.TablesDE.Diamond(botClient, callbackQuery.Message.Chat.Id,
-                                        userData);
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
+                    if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                        SelectByTableType(botClient, callbackQuery, userData);
+                    else
+                        Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 }
+
                 break;
             }
             //--------STATUS--------\\
             case "Status":
                 Console.WriteLine("Status");
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Status(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
-                        break;
-                    case "eng":
-                        Languages.English.Status(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
-                        break;
-                    case "fr":
-                        Languages.French.Status(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
-                        break;
-                    case "de":
-                        Languages.German.Status(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
-                        break;
-                }
-
+                Languages.Status(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 break;
             //--------Info--------\\
             case "Info":
                 Console.WriteLine("Info");
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.Info(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "eng":
-                        Languages.English.Info(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "fr":
-                        Languages.French.Info(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "de":
-                        Languages.German.Info(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                }
-
+                Languages.Info(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 break;
             //--------REF_LINK--------\\
             case "RefLink":
                 Console.WriteLine("RefLink");
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.RefLink(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
-                        break;
-                    case "eng":
-                        Languages.English.RefLink(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
-                        break;
-                    case "fr":
-                        Languages.French.RefLink(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
-                        break;
-                    case "de":
-                        Languages.German.RefLink(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
-                        break;
-                }
-
+                Languages.RefLink(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 break;
             //--------TECH_SUPPORT--------\\
             case "TechSupport":
                 Console.WriteLine("TechSupport");
-                switch (userData.playerData.lang)
-                {
-                    case "ru":
-                        Languages.Russian.TechSupport(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "eng":
-                        Languages.English.TechSupport(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "fr":
-                        Languages.French.TechSupport(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                    case "de":
-                        Languages.German.TechSupport(botClient, callbackQuery.Message.Chat.Id);
-                        break;
-                }
-
+                Languages.TechSupport(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 break;
             //--------CHANGE_LANG--------\\
             case "ChangeLang":
-                //await botClient.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
                 Languages.LanguageMenu(botClient, callbackQuery.Message.Chat.Id);
                 Console.WriteLine("ChangeLang");
                 break;
             //--------LANG_SELECTION--------\\
             case "ChangeToRU":
                 user.AddLang("ru");
-                await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-                Languages.Russian.MainMenu(botClient, callbackQuery.Message.Chat.Id);
+                await ChangeLang(botClient, callbackQuery, user);
                 Console.WriteLine("ru");
                 break;
             case "ChangeToENG":
                 user.AddLang("eng");
-                await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-                Languages.English.MainMenu(botClient, callbackQuery.Message.Chat.Id);
+                await ChangeLang(botClient, callbackQuery, user);
                 Console.WriteLine("eng");
                 break;
             case "ChangeToFR":
                 user.AddLang("fr");
-                await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-                Languages.French.MainMenu(botClient, callbackQuery.Message.Chat.Id);
+                await ChangeLang(botClient, callbackQuery, user);
                 Console.WriteLine("fr");
                 break;
             case "ChangeToDE":
                 user.AddLang("de");
-                await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-                Languages.German.MainMenu(botClient, callbackQuery.Message.Chat.Id);
+                await ChangeLang(botClient, callbackQuery, user);
                 Console.WriteLine("de");
                 break;
             //--------REG_LANG--------
             case "Reg_RU":
                 user.AddLang("ru");
-                await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-                Languages.Russian.Agreement(botClient, callbackQuery.Message.Chat.Id);
-                Console.WriteLine("ru");
+                await Agreement(botClient, callbackQuery, user);
                 break;
             case "Reg_ENG":
                 user.AddLang("eng");
-                await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-                Languages.English.Agreement(botClient, callbackQuery.Message.Chat.Id);
-                Console.WriteLine("eng");
+                await Agreement(botClient, callbackQuery, user);
                 break;
             case "Reg_FR":
                 user.AddLang("fr");
-                await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-                Languages.French.Agreement(botClient, callbackQuery.Message.Chat.Id);
-                Console.WriteLine("fr");
+                await Agreement(botClient, callbackQuery, user);
                 break;
             case "Reg_DE":
                 user.AddLang("de");
-                await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-                Languages.German.Agreement(botClient, callbackQuery.Message.Chat.Id);
-                Console.WriteLine("de");
+                await Agreement(botClient, callbackQuery, user);
                 break;
 
 
@@ -2948,6 +756,63 @@ public static class UpdateHandlers
             chatId: callbackQuery.Message!.Chat.Id,
             text: $"Received {callbackQuery.Data}");
             */
+    }
+
+    private static void SelectByTableType(ITelegramBotClient botClient, CallbackQuery callbackQuery, UserData userData)
+    {
+        switch (userData.playerData.level_tableType)
+        {
+            case "copper":
+            {
+                Languages.Tables.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
+                break;
+            }
+            case "bronze":
+            {
+                Languages.Tables.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
+                break;
+            }
+            case "silver":
+            {
+                Languages.Tables.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
+                break;
+            }
+            case "gold":
+            {
+                Languages.Tables.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
+                break;
+            }
+            case "platinum":
+            {
+                Languages.Tables.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
+                break;
+            }
+            case "diamond":
+            {
+                Languages.Tables.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
+                break;
+            }
+        }
+    }
+
+    private static async Task ConfirmLeaveTable(ITelegramBotClient botClient, CallbackQuery callbackQuery,
+        UserData userData)
+    {
+        await WebManager.SendData(userData.playerData, WebManager.RequestType.LeaveTable);
+        Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id,
+            userData.playerData);
+    }
+
+    private static async Task Agreement(ITelegramBotClient botClient, CallbackQuery callbackQuery, UserProfile user)
+    {
+        await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
+        Languages.Agreement(botClient, callbackQuery.Message.Chat.Id, user);
+    }
+
+    private static async Task ChangeLang(ITelegramBotClient botClient, CallbackQuery callbackQuery, UserProfile user)
+    {
+        await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
+        Languages.MainMenu(botClient, callbackQuery.Message.Chat.Id, user.lang);
     }
 
     private static async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
