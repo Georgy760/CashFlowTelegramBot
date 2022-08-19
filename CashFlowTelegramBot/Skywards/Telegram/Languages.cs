@@ -1475,7 +1475,7 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("⚜ Выбрать стол", "ChooseTable"),
+                            InlineKeyboardButton.WithCallbackData("⚜ Выбрать стол", "ChooseTableCaptcha"),
                             InlineKeyboardButton.WithCallbackData("🔖 Мой статус", "Status")
                         },
                         new[]
@@ -2968,5 +2968,102 @@ public partial class Languages
                 break;
             }
         }
+    }
+
+    public static async Task Captcha(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData)
+    {
+        string path = null;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images/MainMenu/tableSelection.png");
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images\MainMenu\tableSelection.png");
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        Message? sentMessage;
+        Message sentPhoto;
+        var num1 = Random.Shared.NextInt64(53, 99);
+        var num2 = Random.Shared.NextInt64(1, 53);
+        var wrongAnswer0 = Random.Shared.NextInt64(num2, num1);
+        var wrongAnswer1 = Random.Shared.NextInt64(num2, num1);
+        var wrongAnswer2 = Random.Shared.NextInt64(num2, num1);
+        var answer = num1 + num2;
+        switch (Random.Shared.NextInt64(0, 4))
+        {
+            case 0:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(), callbackData.Data! + "|CaptchaTrue"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                        }
+                    });
+                break;
+            case 1:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(), callbackData.Data! + "|CaptchaTrue"),
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                        }
+                    });
+                break;
+            case 2:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), "CaptchaFalse"),
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(), callbackData.Data! + "|CaptchaTrue"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                        }
+                    });
+                break;
+            case 3:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(), callbackData.Data! + "|CaptchaTrue"),
+                        }
+                    });
+                break;
+        }
+        
+
+        sentPhoto = await botClient.SendPhotoAsync(
+            chatId,
+            File.OpenRead(path)!,
+            $"<b>Captcha</b>" +
+            $"\n\n{num1} + {num2} = ?:",
+            ParseMode.Html,
+            replyMarkup: inlineKeyboard);
     }
 }

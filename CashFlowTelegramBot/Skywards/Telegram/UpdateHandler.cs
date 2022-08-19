@@ -144,6 +144,22 @@ public static class UpdateHandlers
                           callbackQuery.Data
                           + "\n---------------------------------------------------");
         UserData? dataToRemove;
+        if (callbackQuery.Data.Contains("Captcha"))
+        {
+            var data = callbackQuery.Data.Split("|");
+            if (data[data.Length-1].Contains("CaptchaTrue"))
+            {
+                
+                callbackQuery.Data = data[0].Replace("Captcha", "");;
+                Console.WriteLine(callbackQuery.Data);
+            }
+            else
+            {
+                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
+                return;
+            }
+        }
+        Console.WriteLine("There's no Captcha");
         //await botClient.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
         switch (callbackQuery.Data)
         {
@@ -152,7 +168,11 @@ public static class UpdateHandlers
                 Languages.MainMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang);
                 break;
             //--------CHOOSE_TABLE--------\\
+            case "ChooseTableCaptcha":
+                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
+                break;
             case "ChooseTable":
+                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
                 Console.WriteLine("ChooseTable");
                 Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 break;

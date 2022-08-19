@@ -244,7 +244,9 @@ public partial class Languages
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverDDE =
             InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverD");
 
-        //GIVER TABLE TEXT//
+        /// <summary>
+        /// Creates an table menu with giver view
+        /// </summary>
         public static async void Giver(ITelegramBotClient botClient, long chatId, Table.TableType tableType,
             UserData userData)
         {
@@ -650,7 +652,9 @@ public partial class Languages
                 }
         }
 
-        //MANAGER TABLE TEXT//
+        /// <summary>
+        /// Creates an table menu with manager view
+        /// </summary>
         public static async void Manager(ITelegramBotClient botClient, long chatId, Table.TableType tableType,
             UserData userData)
         {
@@ -895,7 +899,9 @@ public partial class Languages
             }
         }
 
-        //BANKER TABLE TEXT//
+        /// <summary>
+        /// Creates an table menu with banker view
+        /// </summary>
         public static async void Banker(ITelegramBotClient botClient, long chatId, Table.TableType tableType,
             UserData userData)
         {
