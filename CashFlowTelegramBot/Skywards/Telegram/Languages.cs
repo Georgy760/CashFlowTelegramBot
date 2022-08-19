@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CashFlowTelegramBot.Skywards.Web;
@@ -82,13 +83,13 @@ public partial class Languages
             {
                 new[]
                 {
-                    InlineKeyboardButton.WithCallbackData("🇬🇧 English", "Reg_ENG"),
-                    InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "Reg_FR")
+                    InlineKeyboardButton.WithCallbackData("🇬🇧 English", "Reg_ENGCaptcha"),
+                    InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "Reg_FRCaptcha")
                 },
                 new[]
                 {
-                    InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "Reg_RU"),
-                    InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "Reg_DE")
+                    InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "Reg_RUCaptcha"),
+                    InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "Reg_DECaptcha")
                 }
             });
 
@@ -211,7 +212,6 @@ public partial class Languages
                                     });
                                 flag = true;
                             }
-                            
                         }
 
                         if (tableToBack.tableData.giverC_ID == SearchedUser.id && !flag)
@@ -1268,7 +1268,7 @@ public partial class Languages
                     $"ENG: Using a bot without a nickname is unfortunately not possible, please enter your Username in the Telegram account settings and re-follow the referral link\n\n" +
                     $"FR: L'utilisation d'un bot sans pseudonyme n'est malheureusement pas possible, veuillez entrer votre nom d'utilisateur dans les paramètres du compte Telegram et suivre à nouveau le lien de parrainage\n\n" +
                     $"DE: Die Verwendung eines Bots ohne Nickname ist leider nicht möglich, bitte geben Sie Ihren Benutzernamen in den Telegram-Kontoeinstellungen ein und folgen Sie erneut dem Referral-Link\n\n"
-                    );
+                );
                 break;
         }
     }
@@ -1286,7 +1286,7 @@ public partial class Languages
         switch (error)
         {
             case Error.UserAlreadyAtAnotherTable:
-                
+
                 var tableData = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
                 Console.WriteLine(tableData.tableData.tableType);
                 switch (user.lang)
@@ -1475,7 +1475,7 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("⚜ Выбрать стол", "ChooseTableCaptcha"),
+                            InlineKeyboardButton.WithCallbackData("⚜ Выбрать стол", "ChooseTable"),
                             InlineKeyboardButton.WithCallbackData("🔖 Мой статус", "Status")
                         },
                         new[]
@@ -2297,11 +2297,11 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥈 Серебряный стол", "SilverTable")
-                        }, 
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("🥇 Золотой стол", "GoldTable")
-                    }, /*
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🥇 Золотой стол", "GoldTable")
+                        }, /*
                     new[]
                     {
                         InlineKeyboardButton.WithCallbackData("🎖 Платиновый стол", "PlatinumTable")
@@ -2338,11 +2338,11 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥈 Silver table", "SilverTable")
-                        }, 
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("🥇 Gold table", "GoldTable")
-                    },/*
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🥇 Gold table", "GoldTable")
+                        }, /*
                     new[]
                     {
                         InlineKeyboardButton.WithCallbackData("🎖 Platinum table", "PlatinumTable")
@@ -2383,7 +2383,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥇 Tableau doré", "GoldTable")
-                        },/*
+                        }, /*
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🎖 Table de platine", "PlatinumTable")
@@ -2424,7 +2424,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥇 goldener Tisch", "GoldTable")
-                        },/*
+                        }, /*
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🎖 platin Tisch", "PlatinumTable")
@@ -2958,10 +2958,14 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("JA", "Confirm" + callbackData.Data)
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
+                        /*sentMessage = await botClient.SendTextMessageAsync(
                             chatId,
                             "Möchten Sie die Zahlung von diesem Nutzer wirklich bestätigen?",
                             replyMarkup: inlineKeyboard);
+                            */
+                        var caption = $"Möchten Sie die Zahlung von diesem Nutzer wirklich bestätigen?";
+                        await botClient.EditMessageCaptionAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId,
+                            caption, ParseMode.Html, null, inlineKeyboard);
                         break;
                 }
 
@@ -2975,19 +2979,31 @@ public partial class Languages
         string path = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/tableSelection.png");
+                @"Images/MainMenu/mainMenu.png");
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\tableSelection.png");
+                @"Images\MainMenu\mainMenu.png");
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         Message sentPhoto;
-        var num1 = Random.Shared.NextInt64(53, 99);
-        var num2 = Random.Shared.NextInt64(1, 53);
-        var wrongAnswer0 = Random.Shared.NextInt64(num2, num1);
-        var wrongAnswer1 = Random.Shared.NextInt64(num2, num1);
-        var wrongAnswer2 = Random.Shared.NextInt64(num2, num1);
+        var num1 = Random.Shared.NextInt64(1, 50);
+        var num2 = Random.Shared.NextInt64(1, 50);
+        long wrongAnswer0 = 0;
+        long wrongAnswer1 = 0;
+        long wrongAnswer2 = 0;
+        if(num1 < num2)
+        {
+            wrongAnswer0 = Random.Shared.NextInt64(num1, num2);
+            wrongAnswer1 = Random.Shared.NextInt64(num1, num2);
+            wrongAnswer2 = Random.Shared.NextInt64(num1, num2);
+        }
+        else
+        {
+            wrongAnswer0 = Random.Shared.NextInt64(num2, num1);
+            wrongAnswer1 = Random.Shared.NextInt64(num2, num1);
+            wrongAnswer2 = Random.Shared.NextInt64(num2, num1);
+        }
         var answer = num1 + num2;
         switch (Random.Shared.NextInt64(0, 4))
         {
@@ -2997,13 +3013,17 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(answer.ToString(), callbackData.Data! + "|CaptchaTrue"),
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(),
+                                callbackData.Data! + "|CaptchaTrue"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), callbackData.Data! + "|CaptchaFalse"),
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
                         }
                     });
                 break;
@@ -3013,13 +3033,17 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(), callbackData.Data! + "|CaptchaFalse"),
-                            InlineKeyboardButton.WithCallbackData(answer.ToString(), callbackData.Data! + "|CaptchaTrue"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(),
+                                callbackData.Data! + "|CaptchaTrue"),
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), callbackData.Data! + "|CaptchaFalse"),
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
                         }
                     });
                 break;
@@ -3029,13 +3053,16 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
                             InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), "CaptchaFalse"),
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(answer.ToString(), callbackData.Data! + "|CaptchaTrue"),
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(),
+                                callbackData.Data! + "|CaptchaTrue"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
                         }
                     });
                 break;
@@ -3045,25 +3072,27 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(), callbackData.Data! + "|CaptchaFalse"),
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(), callbackData.Data! + "|CaptchaFalse"),
-                            InlineKeyboardButton.WithCallbackData(answer.ToString(), callbackData.Data! + "|CaptchaTrue"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(),
+                                callbackData.Data! + "|CaptchaTrue"),
                         }
                     });
                 break;
         }
-        
-
-        sentPhoto = await botClient.SendPhotoAsync(
-            chatId,
-            File.OpenRead(path)!,
-            $"<b>Captcha</b>" +
-            $"\n\n{num1} + {num2} = ?:",
-            ParseMode.Html,
-            replyMarkup: inlineKeyboard);
+        var caption = $"<b>Captcha</b>" + 
+                      $"\n\n{num1} + {num2} = ?:";
+        using (Stream
+               stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId, media: new InputMediaPhoto(new InputMedia(stream, "media")));
+            await botClient.EditMessageCaptionAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId,
+                caption, ParseMode.Html, null, inlineKeyboard);
     }
 }

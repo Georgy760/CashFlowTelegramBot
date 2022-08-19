@@ -82,10 +82,10 @@ public static class UpdateHandlers
                 var user = new UserProfile(updateMessage.From.Id, refId, updateMessage.From.Username);
                 var error = await WebManager.SendData(user, WebManager.RequestType.RegisterWithRef);
                 await botClient.DeleteMessageAsync(updateMessage.Chat.Id, updateMessage.MessageId);
-                if (error.error.errorText == "RefLink invalid")
+                if (error.error.errorText != "RefLink invalid")
                 {
-                    Languages.Warning(botClient, updateMessage.Chat.Id, user, Error.RefLinkInvalid);
-                } else Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
+                    Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
+                } else Languages.Warning(botClient, updateMessage.Chat.Id, user, Error.RefLinkInvalid);
             } else Languages.Warning(botClient, updateMessage.Chat.Id, new UserProfile(), Error.UserWithoutUsername);
 
 
@@ -137,7 +137,6 @@ public static class UpdateHandlers
         Console.WriteLine("\nCallbackQuery.from.Id : " + callbackQuery.From.Id);
         var user = new UserProfile(callbackQuery.From.Id, callbackQuery.From.Username!);
         var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
-        
         Console.WriteLine("\n---------------------------------------------------"
                           + "\nTriggered by: " + userData.playerData.username + " at " + DateTime.Now +
                           "\nCallBackQuery: " +
@@ -155,6 +154,7 @@ public static class UpdateHandlers
             }
             else
             {
+                callbackQuery.Data = data[0].Replace("Captcha", "");
                 await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
                 return;
             }
@@ -168,11 +168,12 @@ public static class UpdateHandlers
                 Languages.MainMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData.lang);
                 break;
             //--------CHOOSE_TABLE--------\\
-            case "ChooseTableCaptcha":
-                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
-                break;
+            
+            /*case "ChooseTableCaptcha":
+                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery); //TODO
+                break;*/
             case "ChooseTable":
-                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
+                //await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
                 Console.WriteLine("ChooseTable");
                 Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, userData.playerData);
                 break;
@@ -744,17 +745,29 @@ public static class UpdateHandlers
                 Console.WriteLine("de");
                 break;
             //--------REG_LANG--------
+            case "Reg_RUCaptcha":
+                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
+                break;
             case "Reg_RU":
                 user.AddLang("ru");
                 await Agreement(botClient, callbackQuery, user);
+                break;
+            case "Reg_ENGCaptcha":
+                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
                 break;
             case "Reg_ENG":
                 user.AddLang("eng");
                 await Agreement(botClient, callbackQuery, user);
                 break;
+            case "Reg_FRCaptcha":
+                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
+                break;
             case "Reg_FR":
                 user.AddLang("fr");
                 await Agreement(botClient, callbackQuery, user);
+                break;
+            case "Reg_DECaptcha":
+                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
                 break;
             case "Reg_DE":
                 user.AddLang("de");
