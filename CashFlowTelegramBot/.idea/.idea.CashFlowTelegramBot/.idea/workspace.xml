@@ -7,10 +7,13 @@
     <list default="true" id="2f6e78d2-aa43-4927-abc0-70443e90bdb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Languages.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Languages.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ref/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ref/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/refint/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/refint/CashFlowTelegramBot.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +23,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/41aa4ac6f038c5ed44772c4dd53e88cb25d0806bce74eaaa6b621ccd20d57621/InputMediaConverter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/470968f7061d52a388af1d51baaa152ff64781c0d50ab46f91f1f849999f/TelegramBotClientExtensions.ApiMethods.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5e9820b6cf119c9499c8c51a363c2cebcd9c8a0d711f3fbb1597cdc26a188bf/User.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/742c4fce417b6284d5872a5537cc8f5e23f27785da81e2847bc48a3dc641ae6/InputMediaPhoto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7d7c792bdad961b744b9a95ce83cf51d344ce107198102362ce9856d954a2bd/Message.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/be7ada47171c484898ed28014573c1e7b6f165d4db2aeb3127a70ae721776b/InlineKeyboardButton.cs" root0="SKIP_HIGHLIGHTING" />

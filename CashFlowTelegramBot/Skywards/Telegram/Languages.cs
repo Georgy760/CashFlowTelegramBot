@@ -1152,30 +1152,31 @@ public partial class Languages
         }
     }
 
-    public static async void Warning(ITelegramBotClient botClient, long chatId, UserProfile user, Error error)
+    public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        UserProfile user, Error error)
     {
         string path = null;
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/status.png");
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\status.png");
-        var tableToBack = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
-        var callbackAddress = GetCallbackAddress(tableToBack.tableData.tableType);
-
-
         Message? sentMessage;
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        string? caption;
         switch (error)
         {
             case Error.UserIsNotExist:
             {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/status.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\status.png");
+                var tableToBack = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
+                var callbackAddress = GetCallbackAddress(tableToBack.tableData.tableType);
                 switch (user.lang)
                 {
                     case "ru":
                     {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
+                        inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
@@ -1194,7 +1195,7 @@ public partial class Languages
 
                     case "eng":
                     {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
+                        inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
@@ -1213,7 +1214,7 @@ public partial class Languages
 
                     case "fr":
                     {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
+                        inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
@@ -1232,7 +1233,7 @@ public partial class Languages
 
                     case "de":
                     {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
+                        inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
@@ -1253,22 +1254,176 @@ public partial class Languages
                 break;
             }
             case Error.RefLinkInvalid:
-                sentMessage = await botClient.SendTextMessageAsync(
-                    chatId,
-                    $"RU: Реферальная ссылка неверна\n\n" +
-                    $"ENG: Referral link is invalid\n\n" +
-                    $"FR: Le lien de parrainage n'est pas valide\n\n" +
-                    $"DE: Empfehlungslink ist ungültig\n\n"
-                );
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                caption = null;
+                switch (user.lang)
+                {
+                    case "ru":
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithUrl("📣 Общий чат", "https://t.me/cashflow_official_chat"),
+                                }
+                            });
+                        caption = $"<b>👋 Добро пожаловать в игру " +
+                                  $"\n«CASH FLOW»!</b>" +
+                                  $"\n\nЧтобы продолжить пользоваться ботом, зайдите по реферальной ссылке!";
+                            
+                        break;
+                    case "eng":
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithUrl("📣 General chat", "https://t.me/cashflow_official_chat"),
+                                }
+                            });
+                        caption = $"<b>👋 Welcome to the game" +
+                                  $"\n\"CASH FLOW\"!</b>" + 
+                                  $"\n\nTo continue using the bot, go via referral link!";
+                        break;
+                    case "fr":
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithUrl("📣 Chat général", "https://t.me/cashflow_official_chat"),
+                                }
+                            });
+                        caption = $"<b>👋 Bienvenue dans le jeu" +
+                                  $"\n\"FLUX DE TRÉSORERIE\"!</b>" +
+                                  $"\n\nPour continuer à utiliser le bot, passez par le lien de parrainage!";
+                        break;
+                    case "de":
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithUrl("📣 Allgemeiner Chat", "https://t.me/cashflow_official_chat"),
+                                }
+                            });
+                        caption = $"<b>👋 Willkommen zum Spiel" +
+                                  $"\n\"CASH FLOW\"!</b>" +
+                                  $"\n\nUm den Bot weiter zu verwenden, gehen Sie über den Empfehlungslink!";
+                        break;
+                }
+                sentMessage = await botClient.SendPhotoAsync(
+                        chatId, 
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
                 break;
             case Error.UserWithoutUsername:
-                sentMessage = await botClient.SendTextMessageAsync(
-                    chatId,
-                    $"RU: Использование бота без никнейма к сожалению не возможно, пожалуйста введите свой Username в настройках аккаунта Telegram и заново перейдите по реферальной ссылке\n\n" +
-                    $"ENG: Using a bot without a nickname is unfortunately not possible, please enter your Username in the Telegram account settings and re-follow the referral link\n\n" +
-                    $"FR: L'utilisation d'un bot sans pseudonyme n'est malheureusement pas possible, veuillez entrer votre nom d'utilisateur dans les paramètres du compte Telegram et suivre à nouveau le lien de parrainage\n\n" +
-                    $"DE: Die Verwendung eines Bots ohne Nickname ist leider nicht möglich, bitte geben Sie Ihren Benutzernamen in den Telegram-Kontoeinstellungen ein und folgen Sie erneut dem Referral-Link\n\n"
-                );
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                caption = null;
+                switch (user.lang)
+                {
+                    case "ru":
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("✅ Продолжить", user.refId + "|TryToReg")
+                                }
+                            });
+                        caption = $"<b>👋 Добро пожаловать в игру " +
+                                  $"\n«CASH FLOW»!</b>" +
+                                  $"\n\nЧтобы продолжить пользоваться ботом, установите \"Имя Пользователя\" в настройках Telegram:" +
+                                  $"\n\n<b>Настройки - Изменить - Имя пользователя</b>";
+                            
+                        break;
+                    case "eng":
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("✅ Continue", user.refId + "|TryToReg")
+                                }
+                            });
+                        caption = $"<b>👋 Welcome to the game" +
+                                  $"\n\"CASH FLOW\"!</b>" + 
+                                  $"\n\nTo continue using the bot, set the \"Username\" in Telegram settings:" + 
+                                  $"\n\n<b>Settings - Edit - Username</b>";
+                        break;
+                    case "fr":
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("✅ Continuer", user.refId + "|TryToReg")
+                                }
+                            });
+                        caption = $"<b>👋 Bienvenue dans le jeu" +
+                                  $"\n\"FLUX DE TRÉSORERIE\"!</b>" +
+                                  $"\n\nPour continuer à utiliser le bot, définissez le \"Nom d'utilisateur\" dans les paramètres de Telegram :" +
+                                  $"\n\n<b>Paramètres - Modifier - Nom d'utilisateur</b>";
+                        break;
+                    case "de":
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("✅ Fortsetzen", user.refId + "|TryToReg")
+                                }
+                            });
+                        caption = $"<b>👋 Willkommen zum Spiel" +
+                                  $"\n\"CASH FLOW\"!</b>" +
+                                  $"\n\nUm den Bot weiterhin zu verwenden, legen Sie den \"Benutzernamen\" in den Telegram-Einstellungen fest:" +
+                                  $"\n\n<b>Einstellungen - Bearbeiten - Benutzername</b>";
+                        break;
+                }
+
+                if (callbackData.Data == "null")
+                {
+                    sentMessage = await botClient.SendPhotoAsync(
+                        chatId, 
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                }
+                else
+                {
+                    using (Stream
+                           stream = System.IO.File.OpenRead(path)) 
+                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                            callbackData.Message.MessageId, 
+                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                        );
+                    await botClient.EditMessageCaptionAsync(
+                        callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        caption, 
+                        ParseMode.Html, 
+                        null, 
+                        inlineKeyboard
+                    );
+                }
+
                 break;
         }
     }
