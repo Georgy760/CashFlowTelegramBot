@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CashFlowTelegramBot.Skywards.Web;
@@ -82,13 +83,13 @@ public partial class Languages
             {
                 new[]
                 {
-                    InlineKeyboardButton.WithCallbackData("🇬🇧 English", "Reg_ENG"),
-                    InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "Reg_FR")
+                    InlineKeyboardButton.WithCallbackData("🇬🇧 English", "Reg_ENGCaptcha"),
+                    InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "Reg_FRCaptcha")
                 },
                 new[]
                 {
-                    InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "Reg_RU"),
-                    InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "Reg_DE")
+                    InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "Reg_RUCaptcha"),
+                    InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "Reg_DECaptcha")
                 }
             });
 
@@ -211,7 +212,6 @@ public partial class Languages
                                     });
                                 flag = true;
                             }
-                            
                         }
 
                         if (tableToBack.tableData.giverC_ID == SearchedUser.id && !flag)
@@ -1268,7 +1268,7 @@ public partial class Languages
                     $"ENG: Using a bot without a nickname is unfortunately not possible, please enter your Username in the Telegram account settings and re-follow the referral link\n\n" +
                     $"FR: L'utilisation d'un bot sans pseudonyme n'est malheureusement pas possible, veuillez entrer votre nom d'utilisateur dans les paramètres du compte Telegram et suivre à nouveau le lien de parrainage\n\n" +
                     $"DE: Die Verwendung eines Bots ohne Nickname ist leider nicht möglich, bitte geben Sie Ihren Benutzernamen in den Telegram-Kontoeinstellungen ein und folgen Sie erneut dem Referral-Link\n\n"
-                    );
+                );
                 break;
         }
     }
@@ -1286,7 +1286,7 @@ public partial class Languages
         switch (error)
         {
             case Error.UserAlreadyAtAnotherTable:
-                
+
                 var tableData = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
                 Console.WriteLine(tableData.tableData.tableType);
                 switch (user.lang)
@@ -2297,11 +2297,11 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥈 Серебряный стол", "SilverTable")
-                        }, 
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("🥇 Золотой стол", "GoldTable")
-                    }, /*
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🥇 Золотой стол", "GoldTable")
+                        }, /*
                     new[]
                     {
                         InlineKeyboardButton.WithCallbackData("🎖 Платиновый стол", "PlatinumTable")
@@ -2338,11 +2338,11 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥈 Silver table", "SilverTable")
-                        }, 
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("🥇 Gold table", "GoldTable")
-                    },/*
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🥇 Gold table", "GoldTable")
+                        }, /*
                     new[]
                     {
                         InlineKeyboardButton.WithCallbackData("🎖 Platinum table", "PlatinumTable")
@@ -2383,7 +2383,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥇 Tableau doré", "GoldTable")
-                        },/*
+                        }, /*
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🎖 Table de platine", "PlatinumTable")
@@ -2424,7 +2424,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥇 goldener Tisch", "GoldTable")
-                        },/*
+                        }, /*
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🎖 platin Tisch", "PlatinumTable")
@@ -2759,8 +2759,17 @@ public partial class Languages
         {
             case WebManager.RequestType.LeaveTable:
             {
-                InlineKeyboardMarkup? inlineKeyboard;
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup? inlineKeyboard = null;
                 Message sentMessage;
+                string? caption = null;
                 switch (userData.lang)
                 {
                     case "ru":
@@ -2769,14 +2778,12 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Нет", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Да", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Да", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌Нет", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Вы точно хотите покинуть данный стол?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>🏃‍♂️ Выход со стола</b>" +
+                                  $"\n\nПосле выхода со стола, дальнейший вход на данный стол будет заблокирован на 24 часа.";
                         break;
                     case "eng":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2784,14 +2791,12 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("No", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Yes", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Are you sure you want to leave this table?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>🏃‍♂️ Exit the table</b>" +
+                                  $"\n\nAfter leaving the table, further entry to this table will be blocked for 24 hours.";
                         break;
                     case "fr":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2799,14 +2804,12 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("No", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Yes", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Êtes-vous sûr de vouloir quitter cette table?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>🏃‍♂️ Quitter la table</b>" +
+                                  $"\n\nAprès avoir quitté la table, toute autre entrée à cette table sera bloquée pendant 24 heures.";
                         break;
                     case "de":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2814,23 +2817,44 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("NEIN", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("JA", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅JA", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌NEIN", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Möchten Sie diesen Tisch wirklich verlassen?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>🏃‍♂️ Tisch verlassen</b>" +
+                                  $"\n\nNach dem Verlassen des Tisches wird der weitere Zutritt zu diesem Tisch für 24 Stunden gesperrt.";
                         break;
                 }
-
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
+                
                 break;
             }
             case WebManager.RequestType.RemoveFromTable:
             {
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup inlineKeyboard = null;
                 Message sentMessage;
-                InlineKeyboardMarkup inlineKeyboard;
+                string? caption = null;
                 switch (userData.lang)
                 {
                     case "ru":
@@ -2839,14 +2863,11 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Нет", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Да", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Да", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌Нет", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Вы точно хотите удалить данного пользователя со стола?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>Удалить игрока cо стола?</b>";
                         break;
                     case "eng":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2854,14 +2875,11 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("No", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Yes", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Are you sure you want to remove this user from the table?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>Remove a player from the table?</b>";
                         break;
                     case "fr":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2869,14 +2887,11 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("no", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Oui", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Oui", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌no", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Voulez-vous vraiment supprimer cet utilisateur du tableau?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>Supprimer un joueur de la table?</b>";
                         break;
                     case "de":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2884,23 +2899,43 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("NEIN", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("JA", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅JA", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌NEIN", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Möchten Sie diesen Benutzer wirklich aus der Tabelle entfernen?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>Einen Spieler vom Tisch entfernen?</b>";
                         break;
                 }
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
 
                 break;
             }
             case WebManager.RequestType.Confirm:
             {
-                InlineKeyboardMarkup inlineKeyboard;
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup inlineKeyboard = null;
                 Message? sentMessage;
+                string? caption = null;
                 switch (userData.lang)
                 {
                     case "ru":
@@ -2909,14 +2944,11 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Нет", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Да", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Да", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌Нет", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Вы точно хотите подтвердить платеж от данного пользователя?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>Активировать игрока?</b>";
                         break;
                     case "eng":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2924,14 +2956,11 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("No", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Yes", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Are you sure you want to confirm the payment from this user?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>Activate player?</b>";
                         break;
                     case "fr":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2939,14 +2968,11 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("no", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("Oui", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅Oui", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌no", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Voulez-vous vraiment confirmer le paiement de cet utilisateur?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>Activer le joueur?</b>";
                         break;
                     case "de":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -2954,19 +2980,160 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("NEIN", "ChooseTable"),
-                                    InlineKeyboardButton.WithCallbackData("JA", "Confirm" + callbackData.Data)
+                                    InlineKeyboardButton.WithCallbackData("✅JA", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌NEIN", "ChooseTable"),
                                 }
                             });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Möchten Sie die Zahlung von diesem Nutzer wirklich bestätigen?",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"<b>Spieler aktivieren?</b>";
                         break;
                 }
-
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
                 break;
             }
         }
+    }
+
+    public static async Task Captcha(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData)
+    {
+        string path = null;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images/MainMenu/mainMenu.png");
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images\MainMenu\mainMenu.png");
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        Message? sentMessage;
+        Message sentPhoto;
+        var num1 = Random.Shared.NextInt64(1, 50);
+        var num2 = Random.Shared.NextInt64(1, 50);
+        long wrongAnswer0 = 0;
+        long wrongAnswer1 = 0;
+        long wrongAnswer2 = 0;
+        if(num1 < num2)
+        {
+            wrongAnswer0 = Random.Shared.NextInt64(num1, num2);
+            wrongAnswer1 = Random.Shared.NextInt64(num1, num2);
+            wrongAnswer2 = Random.Shared.NextInt64(num1, num2);
+        }
+        else
+        {
+            wrongAnswer0 = Random.Shared.NextInt64(num2, num1);
+            wrongAnswer1 = Random.Shared.NextInt64(num2, num1);
+            wrongAnswer2 = Random.Shared.NextInt64(num2, num1);
+        }
+        var answer = num1 + num2;
+        switch (Random.Shared.NextInt64(0, 4))
+        {
+            case 0:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(),
+                                callbackData.Data! + "|CaptchaTrue"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                        }
+                    });
+                break;
+            case 1:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(),
+                                callbackData.Data! + "|CaptchaTrue"),
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                        }
+                    });
+                break;
+            case 2:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(), "CaptchaFalse"),
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(),
+                                callbackData.Data! + "|CaptchaTrue"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                        }
+                    });
+                break;
+            case 3:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer0.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer1.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData(wrongAnswer2.ToString(),
+                                callbackData.Data! + "|CaptchaFalse"),
+                            InlineKeyboardButton.WithCallbackData(answer.ToString(),
+                                callbackData.Data! + "|CaptchaTrue"),
+                        }
+                    });
+                break;
+        }
+        var caption = $"<b>Captcha</b>" + 
+                      $"\n\n{num1} + {num2} = ?:";
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+            );
     }
 }
