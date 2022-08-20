@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2f6e78d2-aa43-4927-abc0-70443e90bdb7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/bin/Debug/net6.0/Images/Tables/bronze.MP4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/net6.0/Images/Tables/copper.MP4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/net6.0/Images/Tables/diamond.MP4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/net6.0/Images/Tables/gold.MP4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/net6.0/Images/Tables/platinum.MP4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/net6.0/Images/Tables/silver.MP4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Languages.Tables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Languages.Tables.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Languages.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Languages.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />

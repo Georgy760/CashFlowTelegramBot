@@ -2816,7 +2816,16 @@ public partial class Languages
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
         UserData userData, Table.TableType tableType)
     {
-        InlineKeyboardMarkup inlineKeyboard;
+        string path = null;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images/MainMenu/mainMenu.png");
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images\MainMenu\mainMenu.png");
+        InlineKeyboardMarkup inlineKeyboard = null;
+        string? caption = null;
         switch (userData.playerData.lang)
         {
             case "ru":
@@ -2825,8 +2834,8 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("Нет", "ChooseTable"),
-                            InlineKeyboardButton.WithCallbackData("Да", "Open" + callbackData.Data)
+                            InlineKeyboardButton.WithCallbackData("✅ Да", "Open" + callbackData.Data),
+                            InlineKeyboardButton.WithCallbackData("❌ Нет", "ChooseTable")
                         }
                     });
                 if (userData.playerData.tableRole == "giver")
@@ -2835,60 +2844,51 @@ public partial class Languages
                     {
                         case Table.TableType.copper:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "На этом столе Вам нужно сделать подарок 100$\nВы точно хотите зайти на данный стол?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "На этом столе Вам нужно сделать подарок *$100*" +
+                                "\nВы точно хотите зайти на данный стол?";
                             break;
                         }
                         case Table.TableType.bronze:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "На этом столе Вам нужно сделать подарок 400$\nВы точно хотите зайти на данный стол?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "На этом столе Вам нужно сделать подарок *$400*" +
+                                "\nВы точно хотите зайти на данный стол?";
                             break;
                         }
                         case Table.TableType.silver:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "На этом столе Вам нужно сделать подарок 1000$\nВы точно хотите зайти на данный стол?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "На этом столе Вам нужно сделать подарок *$1000*" +
+                                "\nВы точно хотите зайти на данный стол?";
                             break;
                         }
                         case Table.TableType.gold:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "На этом столе Вам нужно сделать подарок 2500$\nВы точно хотите зайти на данный стол?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "На этом столе Вам нужно сделать подарок *$2500*" +
+                                "\nВы точно хотите зайти на данный стол?";
                             break;
                         }
                         case Table.TableType.platinum:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "На этом столе Вам нужно сделать подарок 5000$\nВы точно хотите зайти на данный стол?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "На этом столе Вам нужно сделать подарок *$5000*" +
+                                "\nВы точно хотите зайти на данный стол?";
                             break;
                         }
                         case Table.TableType.diamond:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "На этом столе Вам нужно сделать подарок 10000$\nВы точно хотите зайти на данный стол?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "На этом столе Вам нужно сделать подарок *$10000*" +
+                                "\nВы точно хотите зайти на данный стол?";
                             break;
                         }
                     }
                 }
                 else
                 {
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Вы точно хотите зайти на данный стол?",
-                        replyMarkup: inlineKeyboard);
+                    caption = "Вы точно хотите зайти на данный стол?";
                 }
 
                 break;
@@ -2898,8 +2898,8 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("No", "ChooseTable"),
-                            InlineKeyboardButton.WithCallbackData("Yes", "Open" + callbackData.Data)
+                            InlineKeyboardButton.WithCallbackData("✅ Yes", "Open" + callbackData.Data),
+                            InlineKeyboardButton.WithCallbackData("❌ No", "ChooseTable"),
                         }
                     });
                 if (userData.playerData.tableRole == "giver")
@@ -2908,50 +2908,44 @@ public partial class Languages
                     {
                         case Table.TableType.copper:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "On this table you need to make a gift of $100\nAre you sure you want to go to this table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "On this table you need to make a gift of *$100*" +
+                                "\nAre you sure you want to go to this table?";
                             break;
                         }
                         case Table.TableType.bronze:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "On this table you need to make a gift of $400\nAre you sure you want to go to this table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "On this table you need to make a gift of *$400*" +
+                                "\nAre you sure you want to go to this table?";
                             break;
                         }
                         case Table.TableType.silver:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "On this table you need to make a gift of $1000\nAre you sure you want to go to this table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "On this table you need to make a gift of *$1000*" +
+                                "\nAre you sure you want to go to this table?";
                             break;
                         }
                         case Table.TableType.gold:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "On this table you need to make a gift of $2500\nAre you sure you want to go to this table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "On this table you need to make a gift of *$2500*" +
+                                "\nAre you sure you want to go to this table?";
                             break;
                         }
                         case Table.TableType.platinum:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "On this table you need to make a gift of $5000\nAre you sure you want to go to this table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "On this table you need to make a gift of *$5000*" +
+                                "\nAre you sure you want to go to this table?";
                             break;
                         }
                         case Table.TableType.diamond:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "On this table you need to make a gift of $10000\nAre you sure you want to go to this table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "On this table you need to make a gift of *$10000*" +
+                                "\nAre you sure you want to go to this table?";
                             break;
                         }
                     }
@@ -2962,6 +2956,8 @@ public partial class Languages
                         chatId,
                         "Are you sure you want to join this table?",
                         replyMarkup: inlineKeyboard);
+                    
+                    caption = "Are you sure you want to join this table?";
                 }
 
                 break;
@@ -2971,8 +2967,8 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("no", "ChooseTable"),
-                            InlineKeyboardButton.WithCallbackData("Oui", "Open" + callbackData.Data)
+                            InlineKeyboardButton.WithCallbackData("✅ Oui", "Open" + callbackData.Data),
+                            InlineKeyboardButton.WithCallbackData("❌ no", "ChooseTable"),
                         }
                     });
 
@@ -2982,50 +2978,44 @@ public partial class Languages
                     {
                         case Table.TableType.copper:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "Sur cette table, vous devez faire un don de 100$\nÊtes-vous sûr de vouloir aller à cette table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "Sur cette table, vous devez faire un don de *$100*" +
+                                "\nÊtes-vous sûr de vouloir aller à cette table?";
                             break;
                         }
                         case Table.TableType.bronze:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "Sur cette table, vous devez faire un don de 400$\nÊtes-vous sûr de vouloir aller à cette table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "Sur cette table, vous devez faire un don de *$400*" +
+                                "\nÊtes-vous sûr de vouloir aller à cette table?";
                             break;
                         }
                         case Table.TableType.silver:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "Sur cette table, vous devez faire un don de 1000$\nÊtes-vous sûr de vouloir aller à cette table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "Sur cette table, vous devez faire un don de *$1000*" +
+                                "\nÊtes-vous sûr de vouloir aller à cette table?";
                             break;
                         }
                         case Table.TableType.gold:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "Sur cette table, vous devez faire un don de 2500$\nÊtes-vous sûr de vouloir aller à cette table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "Sur cette table, vous devez faire un don de *$2500*" +
+                                "\nÊtes-vous sûr de vouloir aller à cette table?";
                             break;
                         }
                         case Table.TableType.platinum:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "Sur cette table, vous devez faire un don de 5000$\nÊtes-vous sûr de vouloir aller à cette table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "Sur cette table, vous devez faire un don de *$5000*" +
+                                "\nÊtes-vous sûr de vouloir aller à cette table?";
                             break;
                         }
                         case Table.TableType.diamond:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "Sur cette table, vous devez faire un don de 10000$\nÊtes-vous sûr de vouloir aller à cette table?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "Sur cette table, vous devez faire un don de *$10000*" +
+                                "\nÊtes-vous sûr de vouloir aller à cette table?";
                             break;
                         }
                     }
@@ -3045,8 +3035,8 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("NEIN", "ChooseTable"),
-                            InlineKeyboardButton.WithCallbackData("JA", "Open" + callbackData.Data)
+                            InlineKeyboardButton.WithCallbackData("✅ JA", "Open" + callbackData.Data),
+                            InlineKeyboardButton.WithCallbackData("❌ NEIN", "ChooseTable"),
                         }
                     });
                 if (userData.playerData.tableRole == "giver")
@@ -3055,50 +3045,107 @@ public partial class Languages
                     {
                         case Table.TableType.copper:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "An diesem Tisch müssen Sie 100$ spenden\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "An diesem Tisch müssen Sie *$100* spenden" +
+                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
                             break;
                         }
                         case Table.TableType.bronze:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "An diesem Tisch müssen Sie 400$ spenden\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "An diesem Tisch müssen Sie *$400* spenden" +
+                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
                             break;
                         }
                         case Table.TableType.silver:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "An diesem Tisch müssen Sie 1000$ spenden\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "An diesem Tisch müssen Sie *$1000* spenden" +
+                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
                             break;
                         }
                         case Table.TableType.gold:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "An diesem Tisch müssen Sie 2500$ spenden\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "An diesem Tisch müssen Sie *$2500* spenden" +
+                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
                             break;
                         }
                         case Table.TableType.platinum:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "An diesem Tisch müssen Sie 5000$ spenden\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "An diesem Tisch müssen Sie *$5000* spenden" +
+                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
                             break;
                         }
                         case Table.TableType.diamond:
                         {
-                            var sentMessage = await botClient.SendTextMessageAsync(
-                                chatId,
-                                "An diesem Tisch müssen Sie 10000$ spenden\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?",
-                                replyMarkup: inlineKeyboard);
+                            caption =
+                                "An diesem Tisch müssen Sie *$10000* spenden" +
+                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    caption = "Sind Sie sicher, dass Sie an diesem Tisch teilnehmen möchten?";
+                }
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("✅ Yes", "Open" + callbackData.Data),
+                            InlineKeyboardButton.WithCallbackData("❌ No", "ChooseTable"),
+                        }
+                    });
+                if (userData.playerData.tableRole == "giver")
+                {
+                    switch (tableType)
+                    {
+                        case Table.TableType.copper:
+                        {
+                            caption =
+                                "On this table you need to make a gift of *$100*" +
+                                "\nAre you sure you want to go to this table?";
+                            break;
+                        }
+                        case Table.TableType.bronze:
+                        {
+                            caption =
+                                "On this table you need to make a gift of *$400*" +
+                                "\nAre you sure you want to go to this table?";
+                            break;
+                        }
+                        case Table.TableType.silver:
+                        {
+                            caption =
+                                "On this table you need to make a gift of *$1000*" +
+                                "\nAre you sure you want to go to this table?";
+                            break;
+                        }
+                        case Table.TableType.gold:
+                        {
+                            caption =
+                                "On this table you need to make a gift of *$2500*" +
+                                "\nAre you sure you want to go to this table?";
+                            break;
+                        }
+                        case Table.TableType.platinum:
+                        {
+                            caption =
+                                "On this table you need to make a gift of *$5000*" +
+                                "\nAre you sure you want to go to this table?";
+                            break;
+                        }
+                        case Table.TableType.diamond:
+                        {
+                            caption =
+                                "On this table you need to make a gift of *$10000*" +
+                                "\nAre you sure you want to go to this table?";
                             break;
                         }
                     }
@@ -3107,12 +3154,29 @@ public partial class Languages
                 {
                     var sentMessage = await botClient.SendTextMessageAsync(
                         chatId,
-                        "Sind Sie sicher, dass Sie an diesem Tisch teilnehmen möchten?",
+                        "Are you sure you want to join this table?",
                         replyMarkup: inlineKeyboard);
+                    
+                    caption = "Are you sure you want to join this table?";
                 }
 
                 break;
+                
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
 
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,

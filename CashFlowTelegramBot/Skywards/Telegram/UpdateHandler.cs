@@ -201,7 +201,7 @@ public static class UpdateHandlers
                 {
                     var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                     if (tableData.tableData.tableType == Table.TableType.copper)
-                        Languages.Tables.Copper(botClient, chatId, userData);
+                        Languages.Tables.Copper(botClient, chatId, callbackQuery, userData);
                     else
                         Languages.ConnectingError(botClient, chatId, userData.playerData,
                             Error.UserAlreadyAtAnotherTable);
@@ -209,7 +209,7 @@ public static class UpdateHandlers
 
                 break;
             case "OpenCopperTable":
-                Languages.Tables.Copper(botClient, chatId, userData);
+                Languages.Tables.Copper(botClient, chatId, callbackQuery, userData);
                 break;
             //-//------BronzeTable------\\-\\
             case "BronzeTable":
@@ -223,7 +223,7 @@ public static class UpdateHandlers
                 {
                     var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                     if (tableData.tableData.tableType == Table.TableType.bronze)
-                        Languages.Tables.Bronze(botClient, chatId, userData);
+                        Languages.Tables.Bronze(botClient, chatId, callbackQuery, userData);
                     else
                         Languages.ConnectingError(botClient, chatId, userData.playerData,
                             Error.UserAlreadyAtAnotherTable);
@@ -231,7 +231,7 @@ public static class UpdateHandlers
 
                 break;
             case "OpenBronzeTable":
-                Languages.Tables.Bronze(botClient, chatId, userData);
+                Languages.Tables.Bronze(botClient, chatId, callbackQuery, userData);
                 break;
             //-//------SilverTable------\\-\\
             case "SilverTable":
@@ -250,7 +250,7 @@ public static class UpdateHandlers
                         var tableData =
                             await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.silver)
-                            Languages.Tables.Silver(botClient, chatId, userData);
+                            Languages.Tables.Silver(botClient, chatId, callbackQuery, userData);
                         else
                             Languages.ConnectingError(botClient, chatId, userData.playerData,
                                 Error.UserAlreadyAtAnotherTable);
@@ -264,7 +264,7 @@ public static class UpdateHandlers
 
                 break;
             case "OpenSilverTable":
-                Languages.Tables.Silver(botClient, chatId, userData);
+                Languages.Tables.Silver(botClient, chatId, callbackQuery, userData);
                 break;
             //-//------GoldTable------\\-\\
             case "GoldTable":
@@ -283,7 +283,7 @@ public static class UpdateHandlers
                         var tableData =
                             await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.gold)
-                            Languages.Tables.Gold(botClient, chatId, userData);
+                            Languages.Tables.Gold(botClient, chatId, callbackQuery, userData);
                         else
                             Languages.ConnectingError(botClient, chatId, userData.playerData,
                                 Error.UserAlreadyAtAnotherTable);
@@ -297,7 +297,7 @@ public static class UpdateHandlers
 
                 break;
             case "OpenGoldTable":
-                Languages.Tables.Gold(botClient, chatId, userData);
+                Languages.Tables.Gold(botClient, chatId, callbackQuery, userData);
                 break;
             //-//------PlatinumTable------\\-\\
             case "PlatinumTable":
@@ -316,7 +316,7 @@ public static class UpdateHandlers
                         var tableData =
                             await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.platinum)
-                            Languages.Tables.Platinum(botClient, chatId, userData);
+                            Languages.Tables.Platinum(botClient, chatId, callbackQuery, userData);
                         else
                             Languages.ConnectingError(botClient, chatId, userData.playerData,
                                 Error.UserAlreadyAtAnotherTable);
@@ -330,7 +330,7 @@ public static class UpdateHandlers
 
                 break;
             case "OpenPlatinumTable":
-                Languages.Tables.Platinum(botClient, chatId, userData);
+                Languages.Tables.Platinum(botClient, chatId, callbackQuery, userData);
                 break;
             //-//-//-----DiamondTable-----\\-\\-\\
             case "DiamondTable":
@@ -349,7 +349,7 @@ public static class UpdateHandlers
                         var tableData =
                             await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.diamond)
-                            Languages.Tables.Diamond(botClient, chatId, userData);
+                            Languages.Tables.Diamond(botClient, chatId, callbackQuery, userData);
                         else
                             Languages.ConnectingError(botClient, chatId, userData.playerData,
                                 Error.UserAlreadyAtAnotherTable);
@@ -363,7 +363,7 @@ public static class UpdateHandlers
 
                 break;
             case "OpenDiamondTable":
-                Languages.Tables.Diamond(botClient, chatId, userData);
+                Languages.Tables.Diamond(botClient, chatId, callbackQuery, userData);
                 break;
             //-//-//---LeaveTable---\\-\\-\\
             case "LeaveTable":
@@ -808,32 +808,32 @@ public static class UpdateHandlers
         {
             case "copper":
             {
-                Languages.Tables.Copper(botClient, callbackQuery.Message.Chat.Id, userData);
+                Languages.Tables.Copper(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
             case "bronze":
             {
-                Languages.Tables.Bronze(botClient, callbackQuery.Message.Chat.Id, userData);
+                Languages.Tables.Bronze(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
             case "silver":
             {
-                Languages.Tables.Silver(botClient, callbackQuery.Message.Chat.Id, userData);
+                Languages.Tables.Silver(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
             case "gold":
             {
-                Languages.Tables.Gold(botClient, callbackQuery.Message.Chat.Id, userData);
+                Languages.Tables.Gold(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
             case "platinum":
             {
-                Languages.Tables.Platinum(botClient, callbackQuery.Message.Chat.Id, userData);
+                Languages.Tables.Platinum(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
             case "diamond":
             {
-                Languages.Tables.Diamond(botClient, callbackQuery.Message.Chat.Id, userData);
+                Languages.Tables.Diamond(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
         }

@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using CashFlowTelegramBot.Skywards.Web;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using File = System.IO.File;
 
@@ -247,59 +248,220 @@ public partial class Languages
         /// <summary>
         /// Creates an table menu with giver view
         /// </summary>
-        public static async void Giver(ITelegramBotClient botClient, long chatId, Table.TableType tableType,
+        public static async void Giver(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+            Table.TableType tableType,
             UserData userData)
         {
             var giftSum = 0;
             var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+            var bankerData = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                WebManager.RequestType.GetUserData);
             string path = null;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     @"Images/Tables/");
-                path += tableType + ".png";
+                path += tableType + ".MP4";
             }
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     @"Images\Tables\");
-                path += tableType + ".png";
+                path += tableType + ".MP4";
             }
 
-            InlineKeyboardMarkup? inlineKeyboard;
+            InlineKeyboardMarkup? inlineKeyboard = null;
             Message sentPhoto;
+            string? caption = null;
             var giverCount = 0;
-            var giversVerfed = true;
+            var giversVerfed = false;
             var verf = "";
+            var num = 0;
             var ThisUserIsVerfed = false;
+            var giverInfo = new UserData();
+            InlineKeyboardButton inlineKeyboardButtonGiverAInfo;
+            InlineKeyboardButton inlineKeyboardButtonGiverBInfo;
+            InlineKeyboardButton inlineKeyboardButtonGiverCInfo;
+            InlineKeyboardButton inlineKeyboardButtonGiverDInfo;
             if (tableData.tableData.giverA_ID != null)
             {
-                if (tableData.tableData.giverA_ID == userData.playerData.id && tableData.tableData.verf_A) ThisUserIsVerfed = true;
-                if (!tableData.tableData.verf_A) giversVerfed = false;
+                if (tableData.tableData.giverA_ID == userData.playerData.id && tableData.tableData.verf_A)
+                {
+                    num = 1;
+                    ThisUserIsVerfed = true;
+                }
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                    WebManager.RequestType.GetUserData);
+                if (tableData.tableData.verf_A)
+                {
+                    inlineKeyboardButtonGiverAInfo = 
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅", "GetGiverAData");
+                }
+                else
+                {
+                    inlineKeyboardButtonGiverAInfo = 
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌", "GetGiverAData");
+                }
                 giverCount++;
+            }
+            else
+            {
+                switch (userData.playerData.lang)
+                {
+                    case "ru":
+                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Даритель-1", "GetGiverAData");
+                        break;
+                    case "eng":
+                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-1", "GetGiverAData");
+                        break;
+                    case "fr":
+                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Donneur-1", "GetGiverAData");
+                        break;
+                    case "de":
+                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Geber-1", "GetGiverAData");
+                        break;
+                    default:
+                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-1", "GetGiverAData");
+                        break;
+                }
             }
 
             if (tableData.tableData.giverB_ID != null)
             {
-                if (tableData.tableData.giverB_ID == userData.playerData.id && tableData.tableData.verf_B) ThisUserIsVerfed = true;
-                if (!tableData.tableData.verf_B) giversVerfed = false;
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                    WebManager.RequestType.GetUserData);
+                if (tableData.tableData.giverB_ID == userData.playerData.id && tableData.tableData.verf_B)
+                {
+                    num = 2;
+                    ThisUserIsVerfed = true;
+                }
+                if (tableData.tableData.verf_B)
+                {
+                    inlineKeyboardButtonGiverBInfo = 
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅", "GetGiverBData");
+                }
+                else
+                {
+                    inlineKeyboardButtonGiverBInfo = 
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌", "GetGiverBData");
+                }
                 giverCount++;
             }
-
+            else 
+            {
+                switch (userData.playerData.lang)
+                {
+                    case "ru":
+                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Даритель-2", "GetGiverBData");
+                        break;
+                    case "eng":
+                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-2", "GetGiverBData");
+                        break;
+                    case "fr":
+                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Donneur-2", "GetGiverBData");
+                        break;
+                    case "de":
+                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Geber-2", "GetGiverBData");
+                        break;
+                    default:
+                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-2", "GetGiverBData");
+                        break;
+                }
+            }
+            
             if (tableData.tableData.giverC_ID != null)
             {
-                if (tableData.tableData.giverC_ID == userData.playerData.id && tableData.tableData.verf_C) ThisUserIsVerfed = true;
-                if (!tableData.tableData.verf_C) giversVerfed = false;
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                    WebManager.RequestType.GetUserData);
+                if (tableData.tableData.giverC_ID == userData.playerData.id && tableData.tableData.verf_C)
+                {
+                    num = 3;
+                    ThisUserIsVerfed = true;
+                }
+                if (tableData.tableData.verf_C)
+                {
+                    inlineKeyboardButtonGiverCInfo = 
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅", "GetGiverCData");
+                }
+                else
+                {
+                    inlineKeyboardButtonGiverCInfo = 
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌", "GetGiverCData");
+                }
                 giverCount++;
+            }
+            else 
+            {
+                switch (userData.playerData.lang)
+                {
+                    case "ru":
+                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Даритель-3", "GetGiverCData");
+                        break;
+                    case "eng":
+                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-3", "GetGiverCData");
+                        break;
+                    case "fr":
+                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Donneur-3", "GetGiverCData");
+                        break;
+                    case "de":
+                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Geber-3", "GetGiverCData");
+                        break;
+                    default:
+                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-3", "GetGiverCData");
+                        break;
+                }
             }
 
+            
             if (tableData.tableData.giverD_ID != null)
             {
-                if (tableData.tableData.giverD_ID == userData.playerData.id && tableData.tableData.verf_D) ThisUserIsVerfed = true;
-                if (!tableData.tableData.verf_D) giversVerfed = false;
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                    WebManager.RequestType.GetUserData);
+                if (tableData.tableData.giverD_ID == userData.playerData.id && tableData.tableData.verf_D)
+                {
+                    num = 4;
+                    ThisUserIsVerfed = true;
+                }
+                if (tableData.tableData.verf_D)
+                {
+                    inlineKeyboardButtonGiverDInfo = 
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅", "GetGiverDData");
+                }
+                else
+                {
+                    inlineKeyboardButtonGiverDInfo = 
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌", "GetGiverDData");
+                }
                 giverCount++;
             }
+            else 
+            {
+                switch (userData.playerData.lang)
+                {
+                    case "ru":
+                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Даритель-4", "GetGiverDData");
+                        break;
+                    case "eng":
+                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-4", "GetGiverDData");
+                        break;
+                    case "fr":
+                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Donneur-4", "GetGiverDData");
+                        break;
+                    case "de":
+                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Geber-4", "GetGiverDData");
+                        break;
+                    default:
+                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-4", "GetGiverDData");
+                        break;
+                }
+            }
+
+            if (tableData.tableData.verf_A && tableData.tableData.verf_B && 
+                tableData.tableData.verf_C && tableData.tableData.verf_D)
+                giversVerfed = true;
+            else 
+                giversVerfed = false;
 
             switch (tableType)
             {
@@ -341,21 +503,26 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonGetGiverADataRU,
-                                    InlineKeyboardButtonGetGiverBDataRU
+                                    inlineKeyboardButtonGiverAInfo,
+                                    inlineKeyboardButtonGiverBInfo
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonGetGiverDDataRU,
-                                    InlineKeyboardButtonGetGiverCDataRU
+                                    inlineKeyboardButtonGiverCInfo,
+                                    inlineKeyboardButtonGiverDInfo
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonShowListTeamRU //Показать команду списком
+                                    InlineKeyboardButtonShowListTeamRU
+                                },
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🖼 Показать стол картинкой", "TableImage")
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableRU //back
+                                    InlineKeyboardButtonChooseTableRU,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                 }
                             });
 
@@ -363,18 +530,13 @@ public partial class Languages
                         if (giversVerfed)
                             verf = "✅ Все дарители подтверждены!";
                         else verf = "❌ Не все дарители подтверждены!";
-
-                        sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "Добро пожаловать на" +
-                            $"\n{userData.playerData.GetTableType()} стол" +
-                            $"\nID стола: {tableData.tableData.tableID}" +
-                            $"\n\n{verf}" +
-                            $"\nВсего дарителей на столе: {giverCount} из 4" +
-                            $"\nВаша роль: {userData.playerData.GetTableRole(userData.playerData.lang)}" +
-                            "\n\nВыберите игрока для просмотра информации:",
-                            replyMarkup: inlineKeyboard);
+                        caption = "*Добро пожаловать на*" +
+                                  $"\n*{userData.playerData.GetTableType()} стол!*" +
+                                  $"*ID стола: * {tableData.tableData.tableID}" +
+                                  $"\n\n*{verf}*" +
+                                  $"\n\n*Всего дарителей на столе:* {giverCount} из 4" +
+                                  $"\n*Ваша роль:* {userData.playerData.GetTableRole(userData.playerData.lang)}-{num}" +
+                                  "\n\nВыберите игрока для получения информации:";
 
                         break;
                     case "eng":
@@ -392,37 +554,38 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonGetGiverADataENG,
-                                    InlineKeyboardButtonGetGiverBDataENG
+                                    inlineKeyboardButtonGiverAInfo,
+                                    inlineKeyboardButtonGiverBInfo
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonGetGiverDDataENG,
-                                    InlineKeyboardButtonGetGiverCDataENG
+                                    inlineKeyboardButtonGiverCInfo,
+                                    inlineKeyboardButtonGiverDInfo
                                 },
                                 new[]
                                 {
                                     InlineKeyboardButtonShowListTeamENG
                                 },
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🖼 Show table image", "TableImage")
+                                },
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableENG
+                                    InlineKeyboardButtonChooseTableRU,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                 }
                             });
                         if (giversVerfed)
                             verf = "✅ All Givers are confirmed!";
                         else verf = "❌ Not all Givers are verified!";
-                        sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"Welcome to {userData.playerData.GetTableType()}" +
-                            $"\nTable ID: {tableData.tableData.tableID}" +
-                            $"\n\n{verf}" +
-                            $"\nTotal givers on the table: {giverCount} of 4" +
-                            $"\nYour Role: {userData.playerData.GetTableRole(userData.playerData.lang)}" +
-                            "\n\nSelect a player to view info:",
-                            replyMarkup: inlineKeyboard);
-
+                        caption = "*Welcome to*" +
+                                  $"\n*{userData.playerData.GetTableType()} table!*" +
+                                  $"*Table ID: * {tableData.tableData.tableID}" +
+                                  $"\n\n*{verf}*" +
+                                  $"\n\n*Total givers on the table:* {giverCount} of 4" +
+                                  $"\n*Your Role:* {userData.playerData.GetTableRole(userData.playerData.lang)}-{num}" +
+                                  "\n\nSelect a player to view info:";
                         break;
                     case "fr":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -439,40 +602,40 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonGetGiverADataFR,
-                                    InlineKeyboardButtonGetGiverBDataFR
+                                    inlineKeyboardButtonGiverAInfo,
+                                    inlineKeyboardButtonGiverBInfo
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonGetGiverDDataFR,
-                                    InlineKeyboardButtonGetGiverCDataFR
+                                    inlineKeyboardButtonGiverCInfo,
+                                    inlineKeyboardButtonGiverDInfo
                                 },
                                 new[]
                                 {
                                     InlineKeyboardButtonShowListTeamFR
                                 },
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🖼 Afficher l'image du tableau", "TableImage")
+                                },
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableFR
+                                    InlineKeyboardButtonChooseTableFR,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                 }
                             });
                         if (giversVerfed)
                             verf = "✅ Tous les Donneurs sont confirmés!";
                         else verf = "❌ Tous les Donneurs ne sont pas vérifiés!";
-                        sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"Bienvenue sur {userData.playerData.GetTableType()}" +
-                            $"\nID de table: {tableData.tableData.tableID}" +
-                            $"\n\n{verf}" +
-                            $"\nTotal des donateurs sur la table: {giverCount} sur 4" +
-                            $"\nVotre rôle: {userData.playerData.GetTableRole(userData.playerData.lang)}" +
-                            "\n\nSélectionnez un joueur pour afficher les informations:",
-                            replyMarkup: inlineKeyboard);
-
+                        caption = "*Bienvenue à table*" +
+                                  $"\n*{userData.playerData.GetTableType()}!*" +
+                                  $"*ID de table: * {tableData.tableData.tableID}" +
+                                  $"\n\n*{verf}*" +
+                                  $"\n\n*Total des donateurs sur la table:* {giverCount} sur 4" +
+                                  $"\n*Votre rôle:* {userData.playerData.GetTableRole(userData.playerData.lang)}-{num}" +
+                                  "\n\nSélectionnez un joueur pour afficher les informations:";
                         break;
                     case "de":
-
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
@@ -487,74 +650,76 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonGetGiverADataDE,
-                                    InlineKeyboardButtonGetGiverBDataDE
+                                    inlineKeyboardButtonGiverAInfo,
+                                    inlineKeyboardButtonGiverBInfo
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonGetGiverDDataDE,
-                                    InlineKeyboardButtonGetGiverCDataDE
+                                    inlineKeyboardButtonGiverCInfo,
+                                    inlineKeyboardButtonGiverDInfo
                                 },
                                 new[]
                                 {
                                     InlineKeyboardButtonShowListTeamDE
                                 },
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🖼 Tabellenbild anzeigen", "TableImage")
+                                },
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableDE
+                                    InlineKeyboardButtonChooseTableDE,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                 }
                             });
                         if (giversVerfed)
                             verf = "✅ Alle Geber sind bestätigt!";
                         else verf = "❌ Nicht alle Geber sind verifiziert!";
-                        sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"Willkommen bei {userData.playerData.GetTableType()}" +
-                            $"\nTabellen-ID: {tableData.tableData.tableID}" +
-                            $"\n\n{verf}" +
-                            $"\nGesamtzahl der Geber auf dem Tisch: {giverCount} von 4" +
-                            $"\nIhre Rolle: {userData.playerData.GetTableRole(userData.playerData.lang)}" +
-                            "\nWählen Sie einen Spieler aus, um Informationen anzuzeigen:",
-                            replyMarkup: inlineKeyboard);
+                        caption = "*Willkommen am*" +
+                                  $"\n*{userData.playerData.GetTableType()} tisch!*" +
+                                  $"*Tabellen-ID: * {tableData.tableData.tableID}" +
+                                  $"\n\n*{verf}*" +
+                                  $"\n\n*Gesamtzahl der Geber auf dem Tisch:* {giverCount} von 4" +
+                                  $"\n*Ihre Rolle:* {userData.playerData.GetTableRole(userData.playerData.lang)}-{num}" +
+                                  "\n\nWählen Sie einen Spieler aus, um Informationen anzuzeigen:";
                         break;
                 }
             else
                 switch (userData.playerData.lang)
                 {
                     case "ru":
-
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButtonContactBankerRU
+                                    InlineKeyboardButton.WithUrl("📨 Связаться с Банкиром", "https://t.me/" + bankerData.playerData.username), 
                                 },
-                                new[]
+                                new []
                                 {
-                                    InlineKeyboardButtonChooseTableRU
+                                    InlineKeyboardButton.WithCallbackData("🔔 Оповестить Банкира", "NotifyBanker")
                                 },
                                 new[]
                                 {
                                     InlineKeyboardButtonLeaveTableRU
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButtonChooseTableRU,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                 }
                             });
-
-                        sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"Добро пожаловать на {userData.playerData.GetTableType()}" +
-                            $"\nID стола: {tableData.tableData.tableID}" +
-                            $"\n\nВаша роль{userData.playerData.tableRole}" +
-                            $"\nВы дарите  финансовый подарок в размере {giftSum}$ на игровом столе! " +
-                            "\nУзнайте реквизиты и сделайте финансовый подарок игроку. 🎁 " +
-                            "\n\n" +
-                            "\nСвязаться с \"Банкиром\" можно через чат Telegram, нажав кнопку \"Связаться с Банкиром 📨\". " +
-                            "\nТеперь просто напишите Банкиру:" +
-                            $"\nПривет, хочу подаритье тебе подарок {giftSum}" +
-                            "После выполнения условия, \"Банкир\" подтверждает Вас на столе, тем самым происходит активация аккаунтас на столе на роль  \"Дарителя\".",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"*Добро пожаловать на {userData.playerData.GetTableType()}*" +
+                                  $"\n\n*ID стола:* {tableData.tableData.tableID}" +
+                                  "\n\n*Фиксированный курс:*" +
+                                  "\n📈  1$ = 0.98€ = 62₽" +
+                                  $"\n\nВы дарите  финансовый подарок в размере {giftSum}$ на игровом столе! " +
+                                  "\nУзнайте реквизиты и сделайте финансовый подарок игроку. 🎁 " +
+                                  "\n\nСвязаться с Банкиром можно через чат Telegram, нажав кнопку «*Связаться с Банкиром*». 📨" +
+                                  "\n\n👇 Теперь просто нажмите на текст ниже  и отправьте его Банкиру: " +
+                                  $"\n«`Привет! 👋 Хочу подарить тебе подарок ${giftSum} 💸`»" +
+                                  $"\n\n*Ваш Банкир:* @{bankerData.playerData.username}" +
+                                  "\n\n_После того, как Вы выполнили условия, Банкир подтверждает Вас на столе, тем самым активирует Вас, как Дарителя._";
                         break;
                     case "eng":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -562,31 +727,33 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButtonContactBankerENG
+                                    InlineKeyboardButton.WithUrl("📨 Contact Banker", "https://t.me/" + bankerData.playerData.username), 
                                 },
-                                new[]
+                                new []
                                 {
-                                    InlineKeyboardButtonChooseTableENG
+                                    InlineKeyboardButton.WithCallbackData("🔔 Notify Banker", "NotifyBanker")
                                 },
                                 new[]
                                 {
                                     InlineKeyboardButtonLeaveTableENG
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButtonChooseTableENG,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                 }
                             });
-
-
-                        sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"Welcome to {userData.playerData.GetTableType()}" +
-                            $"\nTable ID: {tableData.tableData.tableID}" +
-                            $"\nYou give a cash financial gift in the amount of {giftSum}$ on the gaming table!" +
-                            "\nYou can contact the \"Banker\" through the Telegram chat by clicking the \"Contact the Banker\" button." +
-                            "\nFind out the details and make a financial gift to the player.🎁️ " +
-                            "\nAfter you have fulfilled the conditions, the \"Banker\" Confirms you on the table, thereby activating you as a \"Giver\".",
-                            replyMarkup: inlineKeyboard);
-
-
+                        caption = $"*Welcome to {userData.playerData.GetTableType()}*" +
+                                  $"\n\n*Table ID:* {tableData.tableData.tableID}" +
+                                  "\n\n*Fixed exchange rate:*" +
+                                  "\n📈  1$ = 0.98€ = 62₽" +
+                                  $"\n\nYou give a cash financial gift in the amount of {giftSum}$ on the gaming table!" +
+                                  "\nFind out the details of the banker and make a financial gift to the player. 🎁" +
+                                  "\n\nYou can contact the Banker via the Telegram chat by clicking the «*Contact the Banker*» button. 📨" +
+                                  "\n\n👇 Now just click on the text below and send it to the Banker:" +
+                                  $"\n«`Hi! 👋 I want to give you ${giftSum} as a gift 💸`»" +
+                                  $"\n\n*Your banker:* @{bankerData.playerData.username}" +
+                                  "\n\n_After you have fulfilled the conditions, the Banker confirms you on the table, thereby activating you as a Giver._";
                         break;
                     case "fr":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -594,29 +761,33 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButtonContactBankerFR
+                                    InlineKeyboardButton.WithUrl("📨 Contacter le banquier", "https://t.me/" + bankerData.playerData.username), 
                                 },
-                                new[]
+                                new []
                                 {
-                                    InlineKeyboardButtonChooseTableFR
+                                    InlineKeyboardButton.WithCallbackData("🔔 Avertir le banquier", "NotifyBanker")
                                 },
                                 new[]
                                 {
                                     InlineKeyboardButtonLeaveTableFR
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButtonChooseTableFR,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                 }
                             });
-
-
-                        sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"Bienvenue à {userData.playerData.GetTableType()}" +
-                            $"\nIdentifiant du tableau: {tableData.tableData.tableID}" +
-                            $"\nVous faites un don financier en espèces d'un montant de {giftSum}$ sur la table de jeu! " +
-                            "\nVous pouvez contacter le \"banquier\" via le chat Telegram en cliquant sur le bouton \"Contacter le banquier\". " +
-                            "\nDécouvrez les détails et faites un don financier au joueur.🎁️ " +
-                            "\nUne fois que vous avez rempli les conditions, le \"banquier\" vous confirme sur la table, vous activant ainsi en tant que \"donneur\".",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"*Bienvenue à {userData.playerData.GetTableType()}*" +
+                                  $"\n\n*Identifiant du tableau:* {tableData.tableData.tableID}" +
+                                  "\n\n*Taux de change fixe:*" +
+                                  "\n📈  1$ = 0.98€ = 62₽" +
+                                  $"\n\nVous offrez un cadeau financier en espèces d'un montant de {giftSum}$ sur la table de jeu!" +
+                                  "\nDécouvrez les coordonnées du banquier et faites un don financier au joueur. 🎁" +
+                                  "\n\nVous pouvez contacter le banquier via le chat Telegram en cliquant sur le bouton «*Contacter le banquier*». 📨" +
+                                  "\n\n👇 Maintenant, cliquez simplement sur le texte ci-dessous et envoyez-le au banquier :" +
+                                  $"\n«`Salut! 👋 Je veux vous offrir ${giftSum} en cadeau 💸`»" +
+                                  $"\n\n*Votre banquier:* @{bankerData.playerData.username}" +
+                                  "\n\n_Une fois que vous avez rempli les conditions, le banquier vous confirme sur la table, vous activant ainsi en tant que donneur._";
                         break;
                     case "de":
                         inlineKeyboard = new InlineKeyboardMarkup(
@@ -624,15 +795,20 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButtonContactBankerDE
+                                    InlineKeyboardButton.WithUrl("📨 Banker kontaktieren", "https://t.me/" + bankerData.playerData.username), 
                                 },
-                                new[]
+                                new []
                                 {
-                                    InlineKeyboardButtonChooseTableDE
+                                    InlineKeyboardButton.WithCallbackData("🔔 Banker benachrichtigen", "NotifyBanker")
                                 },
                                 new[]
                                 {
                                     InlineKeyboardButtonLeaveTableDE
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButtonChooseTableDE,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                 }
                             });
 
@@ -646,10 +822,67 @@ public partial class Languages
                             "\nFinden Sie die Details heraus und machen Sie dem Spieler ein finanzielles Geschenk.🎁️" +
                             "\nNachdem Sie die Bedingungen erfüllt haben, bestätigt Sie der \"Banker\" auf dem Tisch und aktiviert Sie dadurch als \"Geber\".",
                             replyMarkup: inlineKeyboard);
-
-
+                        caption = $"*Willkommen bei {userData.playerData.GetTableType()}*" +
+                                  $"\n\n*Tabellen-ID:* {tableData.tableData.tableID}" +
+                                  "\n\n*Fester Wechselkurs:*" +
+                                  "\n📈  1$ = 0.98€ = 62₽" +
+                                  $"\n\nDu verschenkst ein Geldgeschenk in Höhe von {giftSum}$ auf dem Spieltisch!" +
+                                  "\nFinden Sie die Details des Bankiers heraus und machen Sie dem Spieler ein finanzielles Geschenk. 🎁" +
+                                  "\n\nSie können den Banker über den Telegramm-Chat kontaktieren, indem Sie auf die Schaltfläche «*Banker kontaktieren*» klicken. 📨" +
+                                  "\n\n👇 Klicken Sie jetzt einfach auf den folgenden Text und senden Sie ihn an den Banker:" +
+                                  $"\n«`Hi! 👋 Ich möchte dir ${giftSum} schenken 💸`»" +
+                                  $"\n\n*Ihr Bankberater:* @{bankerData.playerData.username}" +
+                                  "\n\n_Nachdem Sie die Bedingungen erfüllt haben, bestätigt Sie der Banker auf dem Tisch und aktiviert Sie dadurch als Geber._";
+                        break;
+                    default:
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithUrl("📨 Contact Banker", "https://t.me/" + bankerData.playerData.username), 
+                                },
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔔 Notify Banker", "NotifyBanker")
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButtonLeaveTableENG
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButtonChooseTableENG,
+                                    InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                }
+                            });
+                        caption = $"*Welcome to {userData.playerData.GetTableType()}*" +
+                                  $"\n\n*Table ID:* {tableData.tableData.tableID}" +
+                                  "\n\n*Fixed exchange rate:*" +
+                                  "\n📈  1$ = 0.98€ = 62₽" +
+                                  $"\n\nYou give a cash financial gift in the amount of {giftSum}$ on the gaming table!" +
+                                  "\nFind out the details of the banker and make a financial gift to the player. 🎁" +
+                                  "\n\nYou can contact the Banker via the Telegram chat by clicking the «*Contact the Banker*» button. 📨" +
+                                  "\n\n👇 Now just click on the text below and send it to the Banker:" +
+                                  $"\n«`Hi! 👋 I want to give you ${giftSum} as a gift 💸`»" +
+                                  $"\n\n*Your banker:* @{bankerData.playerData.username}" +
+                                  "\n\n_After you have fulfilled the conditions, the Banker confirms you on the table, thereby activating you as a Giver._";
                         break;
                 }
+            using (Stream
+                   stream = System.IO.File.OpenRead(path)) 
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    media: new InputMediaVideo(new InputMedia(stream, "media"))
+                );
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                caption, 
+                ParseMode.Markdown, 
+                null, 
+                inlineKeyboard
+            );
         }
 
         /// <summary>
@@ -1142,13 +1375,14 @@ public partial class Languages
             }
         }
 
-        private static void RoleSelection(ITelegramBotClient botClient, long chatId, UserData userData,
+        private static void RoleSelection(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+            UserData userData,
             Table.TableType tableType)
         {
             switch (userData.playerData.tableRole)
             {
                 case "giver":
-                    Giver(botClient, chatId, tableType, userData);
+                    Giver(botClient, chatId, callbackData, tableType, userData);
                     break;
                 case "manager":
                     Manager(botClient, chatId, tableType, userData);
@@ -1159,14 +1393,15 @@ public partial class Languages
             }
         }
 
-        public static async void Copper(ITelegramBotClient botClient, long chatId, UserData userData)
+        public static async void Copper(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+            UserData userData)
         {
             userData.playerData.level_tableType = "copper";
             var tableType = Table.TableType.copper;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
             {
-                RoleSelection(botClient, chatId, userData, tableType);
+                RoleSelection(botClient, chatId, callbackData, userData, tableType);
             }
             else
             {
@@ -1238,14 +1473,15 @@ public partial class Languages
             }
         }
 
-        public static async void Bronze(ITelegramBotClient botClient, long chatId, UserData userData)
+        public static async void Bronze(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+            UserData userData)
         {
             userData.playerData.level_tableType = "bronze";
             var tableType = Table.TableType.bronze;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
             {
-                RoleSelection(botClient, chatId, userData, tableType);
+                RoleSelection(botClient, chatId, callbackData, userData, tableType);
             }
             else
             {
@@ -1317,14 +1553,15 @@ public partial class Languages
             }
         }
 
-        public static async void Silver(ITelegramBotClient botClient, long chatId, UserData userData)
+        public static async void Silver(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+            UserData userData)
         {
             userData.playerData.level_tableType = "silver";
             var tableType = Table.TableType.silver;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
             {
-                RoleSelection(botClient, chatId, userData, tableType);
+                RoleSelection(botClient, chatId, callbackData, userData, tableType);
             }
             else
             {
@@ -1396,14 +1633,15 @@ public partial class Languages
             }
         }
 
-        public static async void Gold(ITelegramBotClient botClient, long chatId, UserData userData)
+        public static async void Gold(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+            UserData userData)
         {
             userData.playerData.level_tableType = "gold";
             var tableType = Table.TableType.gold;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
             {
-                RoleSelection(botClient, chatId, userData, tableType);
+                RoleSelection(botClient, chatId, callbackData, userData, tableType);
             }
             else
             {
@@ -1475,14 +1713,15 @@ public partial class Languages
             }
         }
 
-        public static async void Platinum(ITelegramBotClient botClient, long chatId, UserData userData)
+        public static async void Platinum(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+            UserData userData)
         {
             userData.playerData.level_tableType = "platinum";
             var tableType = Table.TableType.platinum;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
             {
-                RoleSelection(botClient, chatId, userData, tableType);
+                RoleSelection(botClient, chatId, callbackData, userData, tableType);
             }
             else
             {
@@ -1554,14 +1793,15 @@ public partial class Languages
             }
         }
 
-        public static async void Diamond(ITelegramBotClient botClient, long chatId, UserData userData)
+        public static async void Diamond(ITelegramBotClient botClient, long chatId,
+            CallbackQuery callbackData, UserData userData)
         {
             userData.playerData.level_tableType = "diamond";
             var tableType = Table.TableType.diamond;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
             {
-                RoleSelection(botClient, chatId, userData, tableType);
+                RoleSelection(botClient, chatId, callbackData, userData, tableType);
             }
             else
             {
