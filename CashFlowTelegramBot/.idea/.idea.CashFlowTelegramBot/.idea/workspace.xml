@@ -7,7 +7,6 @@
     <list default="true" id="2f6e78d2-aa43-4927-abc0-70443e90bdb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Languages.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Languages.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
@@ -78,7 +77,7 @@
       <updated>1660875879712</updated>
       <workItem from="1660875917282" duration="271000" />
       <workItem from="1660919633365" duration="2775000" />
-      <workItem from="1660943990389" duration="6266000" />
+      <workItem from="1660943990389" duration="8590000" />
     </task>
     <servers />
   </component>
