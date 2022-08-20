@@ -26,7 +26,8 @@ public partial class Languages
 
 
     //LANGUAGE MENU//
-    public static async void LanguageMenu(ITelegramBotClient botClient, long chatId)
+    public static async void LanguageMenu(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        UserProfile user)
     {
         string path = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -36,38 +37,142 @@ public partial class Languages
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images\MainMenu\langSelection.png");
-        InlineKeyboardMarkup? inlineKeyboard;
-        inlineKeyboard = new InlineKeyboardMarkup(
-            // keyboard
-            new[]
-            {
-                // first row
-                new[]
-                {
-                    // first button in row
-                    InlineKeyboardButton.WithCallbackData("🇬🇧 English", "ChangeToENG"),
-                    // second button in row
-                    InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "ChangeToFR")
-                },
-                // second row
-                new[]
-                {
-                    // first button in row
-                    InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "ChangeToRU"),
-                    // second button in a row
-                    InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "ChangeToDE")
-                }
-            });
-
-        var sentPhoto = await botClient.SendPhotoAsync(
-            chatId,
-            File.OpenRead(path)!,
-            "🌐 Language menu:" +
-            "\n\nClick the corresponding button to change the language:",
-            replyMarkup: inlineKeyboard);
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        string? caption;
+        
+        switch (user.lang)
+        {
+            case "ru":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇬🇧 English", "ChangeToENG"),
+                            InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "ChangeToFR")
+                            
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "ChangeToRU"),
+                            InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "ChangeToDE")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuRU
+                        },
+                    });
+                caption = $"<b>🌐 Языковое меню</b>" +
+                          $"\n\nНажмите соответствующую кнопку для смены языка:";
+                break;
+            case "eng":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇬🇧 English", "ChangeToENG"),
+                            InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "ChangeToFR")
+                            
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "ChangeToRU"),
+                            InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "ChangeToDE")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuENG
+                        },
+                    });
+                caption = $"<b>🌐 Language menu</b>" +
+                          $"\n\nClick the corresponding button to change the language:";
+                break;
+            case "fr":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇬🇧 English", "ChangeToENG"),
+                            InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "ChangeToFR")
+                            
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "ChangeToRU"),
+                            InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "ChangeToDE")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuFR
+                        },
+                    });
+                caption = $"<b>🌐 Menu Langue</b>" +
+                          $"\n\nCliquez sur le bouton correspondant pour changer la langue:";
+                break;
+            case "de":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇬🇧 English", "ChangeToENG"),
+                            InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "ChangeToFR")
+                            
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "ChangeToRU"),
+                            InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "ChangeToDE")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuDE
+                        },
+                    });
+                caption = $"<b>🌐 Sprachmenü</b>" +
+                          $"\n\nKlicken Sie auf die entsprechende Schaltfläche, um die Sprache zu ändern:";
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇬🇧 English", "ChangeToENG"),
+                            InlineKeyboardButton.WithCallbackData("🇫🇷 Français", "ChangeToFR")
+                            
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🇷🇺 Русский", "ChangeToRU"),
+                            InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "ChangeToDE")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuENG
+                        },
+                    });
+                caption = $"<b>🌐 Language menu</b>" +
+                          $"\n\nClick the corresponding button to change the language:";
+                break;
+        }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
-
-    //FIRST LANGUAGE MENU//
     public static async void RegLanguageMenu(ITelegramBotClient botClient, long chatId)
     {
         string path = null;
@@ -96,12 +201,11 @@ public partial class Languages
         var sentPhoto = await botClient.SendPhotoAsync(
             chatId,
             File.OpenRead(path)!,
-            "🌐 Language menu:" +
+            "<b>🌐 Language menu:</b>" +
             "\n\nClick the corresponding button to change the language:",
+            ParseMode.Html,
             replyMarkup: inlineKeyboard);
     }
-
-    //GET USER DATA//
     public static async void GetUserData(ITelegramBotClient botClient, long chatId, string lang,
         UserProfile SearchedUser,
         Table.TableRole tableRole)
@@ -916,7 +1020,6 @@ public partial class Languages
             }
         }
     }
-
     private static string GetCallbackAddress(Table.TableType tableType)
     {
         var callbackAddress = "";
@@ -944,8 +1047,6 @@ public partial class Languages
 
         return callbackAddress;
     }
-
-    //Team on tables//
     public static async void ShowListTeam(ITelegramBotClient botClient, long chatId, string lang, UserProfile user)
     {
         string path = null;
@@ -1151,7 +1252,6 @@ public partial class Languages
             }
         }
     }
-
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
         UserProfile user, Error error)
     {
@@ -1427,7 +1527,6 @@ public partial class Languages
                 break;
         }
     }
-
     public static async void ConnectingError(ITelegramBotClient botClient, long chatId, UserProfile user, Error error)
     {
         string path = null;
@@ -1607,13 +1706,13 @@ public partial class Languages
                 break;
         }
     }
-
-    //MAIN MENU// DONE
-    public static async void MainMenu(ITelegramBotClient botClient, long chatId, string lang)
+    public static async void MainMenu(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        string lang)
     {
         string path = null;
-        InlineKeyboardMarkup? inlineKeyboard;
+        InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
+        string? caption;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images/MainMenu/mainMenu.png");
@@ -1644,14 +1743,8 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("🌐 Сменить язык", "ChangeLang")
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b🗂 <b>Главное меню</b>" +
-                    "\n\nВыберите нужный раздел:",
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard);
+                caption = $"🗂 <b>Главное меню</b>" +
+                          "\n\nВыберите нужный раздел:";
                 break;
             case "eng":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -1673,13 +1766,8 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("🌐 Change language", "ChangeLang")
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b🗂 Main Menu" +
-                    "\n\nSelect the desired section:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>🗂 Main Menu</b>" +
+                          $"\n\nSelect the desired section:";
                 break;
             case "fr":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -1700,14 +1788,9 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("📲 Soutien technique", "TechSupport"),
                             InlineKeyboardButton.WithCallbackData("🌐 Changer de langue", "ChangeLang")
                         }
-                    });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b🗂 Menu" +
-                    "\n\nSélectionnez la rubrique souhaitée:",
-                    replyMarkup: inlineKeyboard);
+                    }); 
+                caption = $"<b>🗂 Menu</b>" + 
+                          $"\n\nSélectionnez la rubrique souhaitée:";
                 break;
             case "de":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -1729,18 +1812,48 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("🌐 Sprache ändern", "ChangeLang")
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b🗂 Das Menu" +
-                    "\n\nWählen Sie den gewünschten Abschnitt aus:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>🗂 Das Menu</b>" +
+                          $"\n\nWählen Sie den gewünschten Abschnitt aus:";
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("⚜ Choose the table", "ChooseTable"),
+                            InlineKeyboardButton.WithCallbackData("🔖 My status", "Status")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📄 Info", "Info"),
+                            InlineKeyboardButton.WithCallbackData("🔗 Refferal link", "RefLink")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                            InlineKeyboardButton.WithCallbackData("🌐 Change language", "ChangeLang")
+                        }
+                    });
+                caption = $"<b>🗂 Main Menu</b>" +
+                          $"\n\nSelect the desired section:";
                 break;
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
-
-    //STATUS// 
     public static async void Status(ITelegramBotClient botClient, long chatId, UserProfile userData)
     {
         string path = null;
@@ -1864,7 +1977,7 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("🔙 Retour", "MainMenu")
+                            InlineKeyboardButtonMainMenuFR
                         }
                     });
                 if (userData.refId != null)
@@ -1899,7 +2012,7 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("🔙 Zurück", "MainMenu")
+                            InlineKeyboardButtonMainMenuDE
                         }
                     });
                 if (userData.refId != null)
@@ -1926,9 +2039,8 @@ public partial class Languages
                 break;
         }
     }
-
-    //REFFERAL LINK//Done   
-    public static async void RefLink(ITelegramBotClient botClient, long chatId, UserProfile userData)
+    public static async void RefLink(ITelegramBotClient botClient, long chatId, UserProfile userData,
+        CallbackQuery callbackData)
     {
         string path = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -1938,8 +2050,9 @@ public partial class Languages
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images\MainMenu\refLink.png");
-        InlineKeyboardMarkup? inlineKeyboard;
+        InlineKeyboardMarkup inlineKeyboard = null;
         Message? sentMessage;
+        string? caption;
         Console.WriteLine("https://t.me/originalCashFlowbot?start=R" + userData.id);
         Message sentPhoto;
         switch (userData.lang)
@@ -1953,13 +2066,8 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuRU
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b🔗 Ваша реферальная ссылка:" +
-                    "\n\nhttps://t.me/originalCashFlowbot?start=R" + userData.id,
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>🔗 Ваша реферальная ссылка:</b>" +
+                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
                 break;
             case "eng":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -1970,12 +2078,8 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuENG
                         }
                     });
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b🔗 Your referral link:" +
-                    "\n\nhttps://t.me/originalCashFlowbot?start=R" + userData.id,
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>🔗 Your referral link:</b>" +
+                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
                 break;
             case "fr":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -1986,12 +2090,8 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuFR
                         }
                     });
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b🔗 Votre lien de référence:" +
-                    "\n\nhttps://t.me/originalCashFlowbot?start=R" + userData.id,
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>🔗 Votre lien de référence:</b>" +
+                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
                 break;
             case "de":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2002,18 +2102,39 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuDE
                         }
                     });
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b🔗 Ihr Empfehlungslink:" +
-                    "\n\nhttps://t.me/originalCashFlowbot?start=R" + userData.id,
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>🔗 Ihr Empfehlungslink:</b>" +
+                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuENG
+                        }
+                    });
+                caption = $"<b>🔗 Your referral link:</b>" +
+                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
                 break;
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
-
-    //USER AGREEMENT//Done
-    public static async void Agreement(ITelegramBotClient botClient, long chatId, UserProfile userData)
+    public static async void Agreement(ITelegramBotClient botClient, long chatId,
+        CallbackQuery callbackData, UserProfile userData)
     {
         string path = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -2023,9 +2144,10 @@ public partial class Languages
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images\MainMenu\agreement.png");
-        InlineKeyboardMarkup? inlineKeyboard;
+        InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         Message sentPhoto;
+        string? caption;
         switch (userData.lang)
         {
             case "ru":
@@ -2041,13 +2163,8 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("✅ Я принимаю", "MainMenu")
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📌 ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ" +
-                    "\n\nПеред началом игры пользователь обязуется ознакомиться с текстом данного соглашения:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📌 ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</b>" +
+                          $"\n\nПеред началом игры пользователь обязуется ознакомиться с текстом данного соглашения:";
                 break;
             case "eng":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2062,13 +2179,8 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("✅ I accept", "MainMenu")
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📌 User Agreement" +
-                    "\nBefore starting the game, the user undertakes to read the text of this agreement:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📌 User Agreement</b>" +
+                          $"\nBefore starting the game, the user undertakes to read the text of this agreement:";
                 break;
             case "fr":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2083,13 +2195,8 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("✅ J'accepte", "MainMenu")
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📌 Conditions d'utilisation" +
-                    "\nAvant de commencer le jeu, l'utilisateur s'engage à lire le texte de cet accord:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📌 Conditions d'utilisation</b>" +
+                          $"\nAvant de commencer le jeu, l'utilisateur s'engage à lire le texte de cet accord:";
                 break;
             case "de":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2104,19 +2211,43 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("✅ Ich akzeptiere", "MainMenu")
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📌 Benutzervereinbarung" +
-                    "\nVor Spielbeginn verpflichtet sich der Nutzer, den Text dieser Vereinbarung zu lesen:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📌 Benutzervereinbarung</b>" +
+                          $"\nVor Spielbeginn verpflichtet sich der Nutzer, den Text dieser Vereinbarung zu lesen:";
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithUrl("📖 Read", "https://telegra.ph/User-Agreement-07-21")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("✅ I accept", "MainMenu")
+                        }
+                    });
+                caption = $"<b>📌 User Agreement</b>" +
+                          $"\nBefore starting the game, the user undertakes to read the text of this agreement:";
                 break;
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
-
-    //TECH SUPPORT // Done
-    public static async void TechSupport(ITelegramBotClient botClient, long chatId, UserProfile userData)
+    public static async void TechSupport(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        UserProfile userData)
     {
         string path = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -2126,8 +2257,9 @@ public partial class Languages
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images\MainMenu\techSupport.png");
-        InlineKeyboardMarkup? inlineKeyboard;
+        InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
+        string? caption;
         Message sentPhoto;
         switch (userData.lang)
         {
@@ -2150,13 +2282,8 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuRU
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📲 Тех. Поддержка" +
-                    "\n\nВыберите язык тех. поддержки и нажмите, чтобы открыть чат:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📲 Техническая поддержка</b>" +
+                          $"\n\nВыберите язык тех. поддержки и нажмите, чтобы открыть чат:";
                 break;
             case "eng":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2177,13 +2304,8 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuENG
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📲 Tech support" +
-                    "\n\nSelect the language of those. support and click to open chat:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📲 Tech support</b>" +
+                          $"\n\nSelect the language of those. support and click to open chat:";
                 break;
             case "fr":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2201,16 +2323,11 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("🔙 Retour", "MainMenu")
+                            InlineKeyboardButtonMainMenuFR
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📲 Support technique" +
-                    "\n\nSélectionnez la langue de ceux-ci. support et cliquez pour ouvrir le chat :",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📲 Support technique</b>" +
+                          $"\n\nSélectionnez la langue de ceux-ci. support et cliquez pour ouvrir le chat:";
                 break;
             case "de":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2228,22 +2345,54 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("Zurück", "MainMenu")
+                            InlineKeyboardButtonMainMenuDE
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📲 Technischer Support" +
-                    "\n\nWählen Sie die Sprache dieser aus. Support und zum Öffnen des Chats klicken:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📲 Technischer Support</b>" +
+                          $"\n\nWählen Sie die Sprache dieser aus. Support und zum Öffnen des Chats klicken:";
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithUrl("🇬🇧 English", "https://t.me/CF_Support_EN"),
+                            InlineKeyboardButton.WithUrl("🇫🇷 Français", "https://t.me/CF_Support_FR")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithUrl("🇷🇺 Русский", "https://t.me/CF_Support_RU"),
+                            InlineKeyboardButton.WithUrl("🇩🇪 Deutsch", "https://t.me/CF_Support_DE")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuENG
+                        }
+                    });
+                caption = $"<b>📲 Tech support</b>" +
+                          $"\n\nSelect the language of those. support and click to open chat:";
                 break;
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
 
     //BOT INFO// needed to be updated with couple of staff
-    public static async void Info(ITelegramBotClient botClient, long chatId, UserProfile userData)
+    public static async void Info(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        UserProfile userData)
     {
         string path = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -2253,8 +2402,9 @@ public partial class Languages
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images\MainMenu\info.png");
-        InlineKeyboardMarkup? inlineKeyboard;
+        InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
+        string? caption;
         Message sentPhoto;
         switch (userData.lang)
         {
@@ -2264,17 +2414,22 @@ public partial class Languages
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📌 Пользовательское соглашение",
+                            InlineKeyboardButton.WithUrl("🌐 Идеология",
                                 "https://telegra.ph/Opta-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📍 Правила CASH FLOW",
+                            InlineKeyboardButton.WithUrl("🌀 Пользовательское соглашение",
+                                "https://telegra.ph/Opta-07-21")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithUrl("💠 Правила CASH FLOW",
                                 "https://telegra.ph/Pravila-Cash-Flow-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("⚜ Столы", "https://telegra.ph/Stoly-07-21")
+                            InlineKeyboardButton.WithUrl("📘 Столы и условия", "https://telegra.ph/Stoly-07-21")
                         },
                         new[]
                         {
@@ -2282,37 +2437,33 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📌 Условия столов",
-                                "https://telegra.ph/Usloviya-stolov-07-21")
-                        },
-                        new[]
-                        {
                             InlineKeyboardButtonMainMenuRU
                         }
                     });
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b📄 Инфо" +
-                    "\n\nДанный раздел содержит необходимую информацию об игре CASH FLOW:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📄 Инфо</b>" +
+                          $"\n\nДанный раздел содержит необходимую информацию об игре CASH FLOW:";
                 break;
             case "eng":
                 inlineKeyboard = new InlineKeyboardMarkup(
                     new[]
                     {
-                        new[]
+                        new []
                         {
-                            InlineKeyboardButton.WithUrl("📌 User Agreement", "https://telegra.ph/User-Agreement-07-21")
+                            InlineKeyboardButton.WithUrl("🌐 Ideology", "https://telegra.ph/User-Agreement-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📍 Cash Flow Rules",
+                            InlineKeyboardButton.WithUrl("🌀 User Agreement", "https://telegra.ph/User-Agreement-07-21")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithUrl("💠 CASH FLOW Rules",
                                 "https://telegra.ph/Cash-Flow-Rules-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("⚜ Cash Flow tables", "https://telegra.ph/Tables-07-21-2")
+                            InlineKeyboardButton.WithUrl("📘 Tables and conditions",
+                                "https://telegra.ph/Cash-Flow-tables-07-21")
                         },
                         new[]
                         {
@@ -2320,40 +2471,34 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📌 Table conditions",
-                                "https://telegra.ph/Cash-Flow-tables-07-21")
-                        },
-                        new[]
-                        {
                             InlineKeyboardButtonMainMenuENG
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\bInfo" +
-                    "\nThis section contains the necessary information about the CASH FLOW game:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📄 Info</b>" +
+                          $"\nThis section contains the necessary information about the CASH FLOW game:";
                 break;
             case "fr":
                 inlineKeyboard = new InlineKeyboardMarkup(
                     new[]
                     {
+                        new []
+                        {
+                            InlineKeyboardButton.WithUrl("🌐 Idéologie", "https://telegra.ph/User-Agreement-07-21")
+                        },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📌 Conditions d'utilisation",
+                            InlineKeyboardButton.WithUrl("🌀 Conditions d'utilisation",
                                 "https://telegra.ph/Conditions-dutilisation-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📍 Règles de trésorerie",
+                            InlineKeyboardButton.WithUrl("💠 Règles CASH FLOW",
                                 "https://telegra.ph/Cash-Flow-r%C3%A8gles-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("⚜ Tableaux des flux de trésorerie",
-                                "https://telegra.ph/Les-tables-07-21")
+                            InlineKeyboardButton.WithUrl("📘 Tableaux et conditions",
+                                "https://telegra.ph/Cash-Flow-tables-07-21")
                         },
                         new[]
                         {
@@ -2361,39 +2506,34 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📌 Conditions du tableau",
-                                "https://telegra.ph/Cash-Flow-tableaux-07-21")
-                        },
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("Retour", "MainMenu")
+                            InlineKeyboardButtonMainMenuFR
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\bInfo" +
-                    "\nCette section contient les informations nécessaires sur le jeu CASH FLOW :",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📄 Info</b>" +
+                          $"\nCette section contient les informations nécessaires sur le jeu CASH FLOW :";
                 break;
             case "de":
                 inlineKeyboard = new InlineKeyboardMarkup(
                     new[]
                     {
+                        new []
+                        {
+                            InlineKeyboardButton.WithUrl("🌐 Ideologie", "https://telegra.ph/User-Agreement-07-21")
+                        },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📌 Benutzervereinbarung",
+                            InlineKeyboardButton.WithUrl("🌀 Benutzervereinbarung",
                                 "https://telegra.ph/Benutzervereinbarung-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📍 Cashflow-Regeln",
+                            InlineKeyboardButton.WithUrl("💠 CASH FLOW Regeln",
                                 "https://telegra.ph/Cashflow-Regeln-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("⚜ Cashflow-Tabellen", "https://telegra.ph/Tische-07-21")
+                            InlineKeyboardButton.WithUrl("📘 Tabellen und Bedingungen",
+                                "https://telegra.ph/Cash-Flow-tables-07-21")
                         },
                         new[]
                         {
@@ -2401,28 +2541,66 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📌 Tabellenbedingungen",
-                                "https://telegra.ph/Cashflow-Tabellen-07-21")
+                            InlineKeyboardButtonMainMenuDE
+                        }
+                    });
+                caption = $"<b>📄 Info</b>" +
+                          $"\nDieser Abschnitt enthält die notwendigen Informationen zum Spiel CASH FLOW:";
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new []
+                        {
+                            InlineKeyboardButton.WithUrl("🌐 Ideology", "https://telegra.ph/User-Agreement-07-21")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("🔙 Zurück", "MainMenu")
+                            InlineKeyboardButton.WithUrl("🌀 User Agreement", "https://telegra.ph/User-Agreement-07-21")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithUrl("💠 CASH FLOW Rules",
+                                "https://telegra.ph/Cash-Flow-Rules-07-21")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithUrl("📘 Tables and conditions",
+                                "https://telegra.ph/Cash-Flow-tables-07-21")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithUrl("👥 Roles", "https://telegra.ph/Roles-07-21")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuENG
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\bInfo" +
-                    "\nDieser Abschnitt enthält die notwendigen Informationen zum Spiel CASH FLOW:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>📄 Info</b>" +
+                          $"\nThis section contains the necessary information about the CASH FLOW game:";
                 break;
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
 
     //TABLE MENU//
     public static async void TableMenu(ITelegramBotClient botClient, long chatId,
-        UserProfile userData)
+        CallbackQuery callbackData, UserProfile userData)
     {
         string path = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -2432,8 +2610,8 @@ public partial class Languages
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images\MainMenu\tableSelection.png");
-        InlineKeyboardMarkup? inlineKeyboard;
-        Message? sentMessage;
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        string? caption;
         Message sentPhoto;
         switch (userData.lang)
         {
@@ -2456,27 +2634,23 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥇 Золотой стол", "GoldTable")
-                        }, /*
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("🎖 Платиновый стол", "PlatinumTable")
-                    },
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("💎 Алмазный стол", "DiamondTable")
-                    },*/
+                        }, 
+                        new[] 
+                        {
+                            InlineKeyboardButton.WithCallbackData("🎖 Платиновый стол", "PlatinumTable")
+                        
+                        }, 
+                        new[] 
+                        {
+                            InlineKeyboardButton.WithCallbackData("💎 Алмазный стол", "DiamondTable")
+                        },
                         new[]
                         {
                             InlineKeyboardButtonMainMenuRU
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b⚜ Список столов" +
-                    "\n\nВыберите стол на который хотите зайти:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>⚜ Список столов</b>" +
+                          $"\n\nВыберите стол, на который хотите зайти:";
                 break;
             case "eng":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2497,27 +2671,22 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥇 Gold table", "GoldTable")
-                        }, /*
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("🎖 Platinum table", "PlatinumTable")
-                    },
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("💎 Diamond table", "DiamondTable")
-                    },*/
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🎖 Platinum table", "PlatinumTable")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("💎 Diamond table", "DiamondTable")
+                        },
                         new[]
                         {
                             InlineKeyboardButtonMainMenuENG
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b⚜ List of tables" +
-                    "\n\nSelect the table you want to join:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>⚜ List of tables</b>" +
+                          $"\n\nSelect the table you want to join:";
                 break;
             case "fr":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2538,7 +2707,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥇 Tableau doré", "GoldTable")
-                        }, /*
+                        }, 
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🎖 Table de platine", "PlatinumTable")
@@ -2546,19 +2715,14 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("💎 Tableau de diamant", "DiamondTable")
-                        },*/
+                        },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("Retour", "MainMenu")
+                            InlineKeyboardButtonMainMenuFR
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b⚜ Liste des tableaux" +
-                    "\n\nSélectionnez la table que vous souhaitez rejoindre :",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>⚜ Liste des tableaux</b>" +
+                          $"\n\nSélectionnez la table que vous souhaitez rejoindre :";
                 break;
             case "de":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2579,7 +2743,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🥇 goldener Tisch", "GoldTable")
-                        }, /*
+                        },
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("🎖 platin Tisch", "PlatinumTable")
@@ -2587,21 +2751,66 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithCallbackData("💎 diamant Tisch", "DiamondTable")
-                        },*/
+                        },
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("Zurück", "MainMenu")
+                            InlineKeyboardButtonMainMenuDE
                         }
                     });
-
-                sentPhoto = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path)!,
-                    "\b⚜ Tabellenverzeichnis" +
-                    "\n\nWählen Sie den Tisch aus, dem Sie beitreten möchten:",
-                    replyMarkup: inlineKeyboard);
+                caption = $"<b>⚜ Tabellenverzeichnis</b>" +
+                          $"\n\nWählen Sie den Tisch aus, dem Sie beitreten möchten:";
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🎗 Copper table", "CopperTable")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🥉 Bronze table", "BronzeTable")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🥈 Silver table", "SilverTable")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🥇 Gold table", "GoldTable")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("🎖 Platinum table", "PlatinumTable")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("💎 Diamond table", "DiamondTable")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButtonMainMenuENG
+                        }
+                    });
+                caption = $"<b>⚜ List of tables</b>" +
+                          $"\n\nSelect the table you want to join:";
                 break;
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
 
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -2924,7 +3133,7 @@ public partial class Languages
                         @"Images\MainMenu\mainMenu.png");
                 InlineKeyboardMarkup? inlineKeyboard = null;
                 Message sentMessage;
-                string? caption = null;
+                string? caption;
                 switch (userData.lang)
                 {
                     case "ru":
@@ -2979,6 +3188,19 @@ public partial class Languages
                         caption = $"<b>🏃‍♂️ Tisch verlassen</b>" +
                                   $"\n\nNach dem Verlassen des Tisches wird der weitere Zutritt zu diesem Tisch für 24 Stunden gesperrt.";
                         break;
+                    default:
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
+                                }
+                            });
+                        caption = $"<b>🏃‍♂️ Exit the table</b>" +
+                                  $"\n\nAfter leaving the table, further entry to this table will be blocked for 24 hours.";
+                        break;
                 }
                 using (Stream
                        stream = System.IO.File.OpenRead(path)) 
@@ -3009,7 +3231,7 @@ public partial class Languages
                         @"Images\MainMenu\mainMenu.png");
                 InlineKeyboardMarkup inlineKeyboard = null;
                 Message sentMessage;
-                string? caption = null;
+                string? caption;
                 switch (userData.lang)
                 {
                     case "ru":
@@ -3060,6 +3282,18 @@ public partial class Languages
                             });
                         caption = $"<b>Einen Spieler vom Tisch entfernen?</b>";
                         break;
+                    default:
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
+                                }
+                            });
+                        caption = $"<b>Remove a player from the table?</b>";
+                        break;
                 }
                 using (Stream
                        stream = System.IO.File.OpenRead(path)) 
@@ -3090,7 +3324,7 @@ public partial class Languages
                         @"Images\MainMenu\mainMenu.png");
                 InlineKeyboardMarkup inlineKeyboard = null;
                 Message? sentMessage;
-                string? caption = null;
+                string? caption;
                 switch (userData.lang)
                 {
                     case "ru":
@@ -3140,6 +3374,18 @@ public partial class Languages
                                 }
                             });
                         caption = $"<b>Spieler aktivieren?</b>";
+                        break;
+                    default:
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
+                                }
+                            });
+                        caption = $"<b>Activate player?</b>";
                         break;
                 }
                 using (Stream

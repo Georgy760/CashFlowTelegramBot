@@ -65,14 +65,6 @@ public static class UpdateHandlers
     private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message updateMessage)
     {
         Console.WriteLine("MessageReceived: " + updateMessage.Text);
-        /*if (updateMessage.Text == "/start")
-        {
-            var user = new UserProfile(updateMessage.From.Id, updateMessage.From.Username);
-            var error = WebManager.SendData(user, WebManager.RequestType.Register);
-            await botClient.DeleteMessageAsync(updateMessage.Chat.Id, updateMessage.MessageId);
-            Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
-        }
-        */
         if (updateMessage.Text.Contains("/start R"))
         {
             var splitMessage = updateMessage.Text.Split("R");
@@ -113,46 +105,6 @@ public static class UpdateHandlers
             {
                 Languages.Warning(botClient, updateMessage.Chat.Id, callbackQuery, user, Error.UserWithoutUsername);
             }
-
-
-        }
-
-        if (updateMessage.Text == "/menu")
-        {
-            var user = new UserProfile(updateMessage.From!.Id, updateMessage.From.Username!);
-            var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
-            Languages.MainMenu(botClient, updateMessage.From!.Id, userData.playerData.lang);
-        }
-        if (updateMessage.Text == "/GetUserData")
-        {
-            var user = new UserProfile(updateMessage.From!.Id, updateMessage.From.Username!);
-            //User.PrintUserProfile();
-            var getData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
-            getData.playerData.PrintUserProfile();
-            if (getData.playerData.refId == null) Console.WriteLine("NULL");
-        }
-
-        if (updateMessage.Text == "/reg")
-        {
-            var user = new UserProfile(updateMessage.From!.Id, updateMessage.From.Username!);
-            //User.PrintUserProfile();
-            await WebManager.SendData(user, WebManager.RequestType.Register);
-        }
-
-        if (updateMessage.Text == "/langMenu")
-        {
-            var user = new UserProfile(updateMessage.From!.Id, updateMessage.From.Username!);
-            Languages.LanguageMenu(botClient, updateMessage.Chat.Id);
-        }
-
-        if (updateMessage.Text == "/RefLink")
-        {
-        }
-
-        if (updateMessage.Text == "/status")
-        {
-            var user = new UserProfile();
-            //await WebManager.SendData(user, WebManager.RequestType.Register);
         }
     }
 
@@ -229,17 +181,12 @@ public static class UpdateHandlers
         {
             //--------MAIN_MENU--------
             case "MainMenu":
-                Languages.MainMenu(botClient, chatId, userData.playerData.lang);
+                Languages.MainMenu(botClient, chatId, callbackQuery, userData.playerData.lang);
                 break;
             //--------CHOOSE_TABLE--------\\
-            
-            /*case "ChooseTableCaptcha":
-                await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery); //TODO
-                break;*/
             case "ChooseTable":
-                //await Languages.Captcha(botClient, callbackQuery.Message.Chat.Id, callbackQuery);
                 Console.WriteLine("ChooseTable");
-                Languages.TableMenu(botClient, chatId, userData.playerData);
+                Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //--------Table_Selection--------\\
             //-//------CopperTable------\\-\\
@@ -689,7 +636,7 @@ public static class UpdateHandlers
                     if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                         SelectByTableType(botClient, callbackQuery, userData);
                     else
-                        Languages.TableMenu(botClient, chatId, userData.playerData);
+                        Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
                 }
 
                 break;
@@ -712,7 +659,7 @@ public static class UpdateHandlers
                     if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                         SelectByTableType(botClient, callbackQuery, userData);
                     else
-                        Languages.TableMenu(botClient, chatId, userData.playerData);
+                        Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
                 }
 
                 break;
@@ -734,7 +681,7 @@ public static class UpdateHandlers
                     if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                         SelectByTableType(botClient, callbackQuery, userData);
                     else
-                        Languages.TableMenu(botClient, chatId, userData.playerData);
+                        Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
                 }
 
                 break;
@@ -757,7 +704,7 @@ public static class UpdateHandlers
                     if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                         SelectByTableType(botClient, callbackQuery, userData);
                     else
-                        Languages.TableMenu(botClient, chatId, userData.playerData);
+                        Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
                 }
 
                 break;
@@ -770,21 +717,21 @@ public static class UpdateHandlers
             //--------Info--------\\
             case "Info":
                 Console.WriteLine("Info");
-                Languages.Info(botClient, chatId, userData.playerData);
+                Languages.Info(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //--------REF_LINK--------\\
             case "RefLink":
                 Console.WriteLine("RefLink");
-                Languages.RefLink(botClient, chatId, userData.playerData);
+                Languages.RefLink(botClient, chatId, userData.playerData, callbackQuery);
                 break;
             //--------TECH_SUPPORT--------\\
             case "TechSupport":
                 Console.WriteLine("TechSupport");
-                Languages.TechSupport(botClient, chatId, userData.playerData);
+                Languages.TechSupport(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //--------CHANGE_LANG--------\\
             case "ChangeLang":
-                Languages.LanguageMenu(botClient, chatId);
+                Languages.LanguageMenu(botClient, chatId, callbackQuery, userData.playerData);
                 Console.WriteLine("ChangeLang");
                 break;
             //--------LANG_SELECTION--------\\
@@ -896,20 +843,19 @@ public static class UpdateHandlers
         UserData userData)
     {
         await WebManager.SendData(userData.playerData, WebManager.RequestType.LeaveTable);
-        Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id,
-            userData.playerData);
+        Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData);
     }
 
     private static async Task Agreement(ITelegramBotClient botClient, CallbackQuery callbackQuery, UserProfile user)
     {
         await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-        Languages.Agreement(botClient, callbackQuery.Message.Chat.Id, user);
+        Languages.Agreement(botClient, callbackQuery.Message.Chat.Id, callbackQuery, user);
     }
 
     private static async Task ChangeLang(ITelegramBotClient botClient, CallbackQuery callbackQuery, UserProfile user)
     {
         await WebManager.SendData(user, WebManager.RequestType.ChangeLang);
-        Languages.MainMenu(botClient, callbackQuery.Message.Chat.Id, user.lang);
+        Languages.MainMenu(botClient, callbackQuery.Message.Chat.Id, callbackQuery, user.lang);
     }
 
     private static async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
