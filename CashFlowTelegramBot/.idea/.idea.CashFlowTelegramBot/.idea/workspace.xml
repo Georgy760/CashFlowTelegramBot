@@ -7,24 +7,14 @@
     <list default="true" id="2f6e78d2-aa43-4927-abc0-70443e90bdb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Languages.Tables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Languages.Tables.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Web/WebManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Web/WebManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/CashFlowTelegramBot.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CashFlowTelegramBot.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/CashFlowTelegramBot.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CashFlowTelegramBot.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.AssemblyReference.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.genruntimeconfig.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/apphost.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ref/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ref/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/refint/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/refint/CashFlowTelegramBot.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,17 +32,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="CashFlowTelegramBot" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -84,7 +75,7 @@
       <workItem from="1660875917282" duration="271000" />
       <workItem from="1660919633365" duration="2775000" />
       <workItem from="1660943990389" duration="8590000" />
-      <workItem from="1660983738832" duration="807000" />
+      <workItem from="1660983738832" duration="7750000" />
     </task>
     <servers />
   </component>

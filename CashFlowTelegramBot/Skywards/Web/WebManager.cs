@@ -75,8 +75,8 @@ public class WebManager
 
     public static UserData UserData = new();
 
-    private static readonly string targetURL = "http://79.174.13.107/logreg.php";
-
+    //private static readonly string targetURL = "http://79.174.13.107/logreg.php";
+    private static readonly string targetURL = "http://79.174.13.107/logreg_debug.php";
     public static async Task<UserData> SendData(UserProfile usr, RequestType requestType)
     {
         var form = new RequsetForm(usr, requestType);

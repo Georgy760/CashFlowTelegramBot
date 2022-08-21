@@ -65,6 +65,10 @@ public static class UpdateHandlers
     private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message updateMessage)
     {
         Console.WriteLine("MessageReceived: " + updateMessage.Text);
+        if (updateMessage.Text.Contains("/start"))
+        {
+            Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
+        }
         if (updateMessage.Text.Contains("/start R"))
         {
             var splitMessage = updateMessage.Text.Split("R");
