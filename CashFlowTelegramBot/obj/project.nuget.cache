@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "EoU+MztWxjtV7Mv5Y6uJSP/nR9GvFDl1fzyQlCpTBV0ehgKJQgmp7Bk+dhgTFB5VlkrYVcsvrwwRpgXtZSmGTw==",
+  "dgSpecHash": "1kc49GNxOLPXpUDLmwgIGy5f3WXRxSnHcLTXVzC0Y2qqNlfmO8sKOZP7dlCwGvO6MwxwWInZoPP6thboMrcEhQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\zero-pc\\Documents\\GitHub\\CashFlowTelegramBot\\CashFlowTelegramBot\\CashFlowTelegramBot.csproj",
+  "projectFilePath": "E:\\user\\Documents\\CashFlowTelegramBot\\CashFlowTelegramBot\\CashFlowTelegramBot.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\zero-pc\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
-    "C:\\Users\\zero-pc\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512"
+    "C:\\Users\\gosha\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\gosha\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512"
   ],
   "logs": []
 }
