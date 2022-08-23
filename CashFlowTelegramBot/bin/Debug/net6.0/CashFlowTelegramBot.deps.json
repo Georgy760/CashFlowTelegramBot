@@ -9,6 +9,8 @@
       "CashFlowTelegramBot/1.0.0": {
         "dependencies": {
           "SkiaSharp": "2.88.1",
+          "SkiaSharp.NativeAssets.Linux": "2.88.1",
+          "SkiaSharp.NativeAssets.Linux.NoDependencies": "2.88.1",
           "Telegram.Bot": "18.0.0"
         },
         "runtime": {
@@ -33,6 +35,38 @@
             "assemblyVersion": "2.88.0.0",
             "fileVersion": "2.88.1.0"
           }
+        }
+      },
+      "SkiaSharp.NativeAssets.Linux/2.88.1": {
+        "dependencies": {
+          "SkiaSharp": "2.88.1"
+        },
+        "runtimeTargets": {
+          "runtimes/linux-arm/native/libSkiaSharp.so": {
+            "rid": "linux-arm",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-arm64/native/libSkiaSharp.so": {
+            "rid": "linux-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-musl-x64/native/libSkiaSharp.so": {
+            "rid": "linux-musl-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libSkiaSharp.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.Linux.NoDependencies/2.88.1": {
+        "dependencies": {
+          "SkiaSharp": "2.88.1"
         }
       },
       "SkiaSharp.NativeAssets.macOS/2.88.1": {
@@ -95,6 +129,20 @@
       "sha512": "sha512-bEgYq0n0kVb/t/3DgQTILBqlXcNjKmz0t8ur9w41UK+pbufBGcEF8QMJQIhdRYohHqhsBwrCF87WUBkeRAuquA==",
       "path": "skiasharp/2.88.1",
       "hashPath": "skiasharp.2.88.1.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.Linux/2.88.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AAexq6oyn+vnMyNRs02LlJL5Q/W3nF9wrrJo5mKoiaW3AwzXf/xabKfh1stcNz/11SLCPBKhosfbpKj3VUo9wA==",
+      "path": "skiasharp.nativeassets.linux/2.88.1",
+      "hashPath": "skiasharp.nativeassets.linux.2.88.1.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.Linux.NoDependencies/2.88.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JN/OaDBUiD4on+dRDp2MPbFG7Vc+kv0N8CnqWyzd1hfzGm+k4K4noN8Vofks9T9aqVHS+8X3KQ/LF96RatzQIg==",
+      "path": "skiasharp.nativeassets.linux.nodependencies/2.88.1",
+      "hashPath": "skiasharp.nativeassets.linux.nodependencies.2.88.1.nupkg.sha512"
     },
     "SkiaSharp.NativeAssets.macOS/2.88.1": {
       "type": "package",

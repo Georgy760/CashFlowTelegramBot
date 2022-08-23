@@ -39,3 +39,7 @@ E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Debug\net6.0\runti
 E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Debug\net6.0\runtimes\win-arm64\native\libSkiaSharp.dll
 E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Debug\net6.0\runtimes\win-x64\native\libSkiaSharp.dll
 E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Debug\net6.0\runtimes\win-x86\native\libSkiaSharp.dll
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Debug\net6.0\runtimes\linux-arm\native\libSkiaSharp.so
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Debug\net6.0\runtimes\linux-arm64\native\libSkiaSharp.so
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Debug\net6.0\runtimes\linux-musl-x64\native\libSkiaSharp.so
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Debug\net6.0\runtimes\linux-x64\native\libSkiaSharp.so
