@@ -60,16 +60,16 @@ public partial class Languages
             InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverD");
 
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverARU =
-            InlineKeyboardButton.WithCallbackData("✅ Подтвердить", "VerfGiverA");
+            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverA");
 
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverBRU =
-            InlineKeyboardButton.WithCallbackData("✅ Подтвердить", "VerfGiverB");
+            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverB");
 
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverCRU =
-            InlineKeyboardButton.WithCallbackData("✅ Подтвердить", "VerfGiverC");
+            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverC");
 
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverDRU =
-            InlineKeyboardButton.WithCallbackData("✅ Подтвердить", "VerfGiverD");
+            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverD");
 
         //------ENG------\\
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableENG =

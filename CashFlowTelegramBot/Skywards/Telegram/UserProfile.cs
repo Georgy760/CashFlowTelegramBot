@@ -13,6 +13,11 @@ public class UserProfile
         this.id = (int) id;
     }
 
+    public UserProfile(Table.TableRole tableRole)
+    {
+        this.tableRole = tableRole.ToString();
+    }
+
     public UserProfile(long id, string username)
     {
         this.id = (int) id;
@@ -268,34 +273,124 @@ public class UserProfile
         return result;
     }
 
-    public string UserInfo(string lang)
+    public string UserInfo(string lang, bool IsItYou)
     {
         var result = "";
         switch (lang)
         {
             case "ru":
-                result = $"Роль: {GetTableRole(lang)}\n" +
-                         $"Ник: @{username}\n" +
-                         $"Пригласил: @{invitedBy}\n" +
-                         $"Лично приглашённых: {invited}\n\n";
+                result = $"<b>Роль: {GetTableRole(lang)}</b>";
+                if (IsItYou) result += " 🔘";
+                result += $"\n<b>Ник:</b> @{username}" +
+                          $"\n<b>Имя пользователя:</b> " + //TODO Add to db field with first & last names
+                          $"\n<b>Лично приглашённых:</b> {invited}" +
+                          $"\n<b>Пригласил:</b> @{invitedBy}\n\n";
                 break;
             case "eng":
-                result = $"Role: {GetTableRole(lang)}\n" +
-                         $"Nickname: @{username}\n" +
-                         $"Invited: @{invitedBy}\n" +
-                         $"Personally invited: {invited}\n\n";
+                result = $"<b>Role: {GetTableRole(lang)}</b>";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Nickname:</b> @{username}" +
+                          $"\n<b>Username:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Personally invited:</b> {invited}" +
+                          $"\n<b>Invited:</b> @{invitedBy}\n\n";
                 break;
             case "fr":
-                result = $"Rôle: {GetTableRole(lang)}\n" +
-                         $"Pseudonyme: @{username}\n" +
-                         $"Invité: @{invitedBy}\n" +
-                         $"Personnellement invité: {invited}\n\n";
+                result = $"<b>Rôle: {GetTableRole(lang)}</b>";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Pseudonyme: @{username}</b>" +
+                          $"\n<b>Nom d'utilisateur:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Personnellement invité:</b> {invited}" +
+                          $"\n<b>Invité:</b> @{invitedBy}\n\n";
                 break;
             case "de":
-                result = $"Rolle: {GetTableRole(lang)}\n" +
-                         $"Spitzname: @{username}\n" +
-                         $"Eingeladen: @{invitedBy}\n" +
-                         $"Persönlich eingeladen: {invited}\n\n";
+                result = $"<b>Rolle: {GetTableRole(lang)}</b>";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Spitzname:</b> @{username}" +
+                          $"\n<b>Benutzername:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Persönlich eingeladen:</b> {invited}" +
+                          $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
+                break;
+            default:
+                result = "empty";
+                break;
+        }
+
+        return result;
+    }
+    public string UserInfo(string lang, bool IsItYou, bool Verf, int num)
+    {
+        var result = "";
+        switch (lang)
+        {
+            case "ru":
+                result = $"<b>Роль: {GetTableRole(lang)}-{num}</b>";
+                if (Verf) result += " ✅";
+                else result += " ❌";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Ник:</b> @{username}" +
+                          $"\n<b>Имя пользователя:</b> " + //TODO Add to db field with first & last names
+                          $"\n<b>Лично приглашённых:</b> {invited}" +
+                          $"\n<b>Пригласил:</b> @{invitedBy}\n\n";
+                          
+                break;
+            case "eng":
+                result = $"<b>Role: {GetTableRole(lang)}-{num}</b>";
+                if (Verf) result += " ✅";
+                else result += " ❌";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Nickname:</b> @{username}" +
+                          $"\n<b>Username:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Personally invited:</b> {invited}" +
+                          $"\n<b>Invited:</b> @{invitedBy}\n\n";
+                break;
+            case "fr":
+                result = $"<b>Rôle: {GetTableRole(lang)}-{num}</b>";
+                if (Verf) result += " ✅";
+                else result += " ❌";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Pseudonyme: @{username}</b>" +
+                          $"\n<b>Nom d'utilisateur:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Personnellement invité:</b> {invited}" +
+                          $"\n<b>Invité:</b> @{invitedBy}\n\n";
+                break;
+            case "de":
+                result = $"<b>Rolle: {GetTableRole(lang)}-{num}</b>";
+                if (Verf) result += " ✅";
+                else result += " ❌";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Spitzname:</b> @{username}" +
+                          $"\n<b>Benutzername:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Persönlich eingeladen:</b> {invited}" +
+                          $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
+                break;
+            default:
+                result = "empty";
+                break;
+        }
+
+        return result;
+    }
+    public string UserInfo(Table.TableRole tableRole)
+    {
+        var result = "";
+        var user = new UserProfile(tableRole);
+        switch (lang)
+        {
+            case "ru":
+                result = $"<b>Роль: {user.GetTableRole(lang)}</b>" +
+                         "\n<b>Место вакантно...</b>";
+                break;
+            case "eng":
+                result = $"<b>Role: {user.GetTableRole(lang)}</b>" +
+                         "\n<b>Place is vacant...</b>";
+                break;
+            case "fr":
+                result = $"<b>Rôle: {user.GetTableRole(lang)}</b>" +
+                         "\n<b>La place est vacante...</b>";
+                break;
+            case "de":
+                result = $"<b>Rolle: {user.GetTableRole(lang)}</b>" +
+                         "\n<b>Platz ist frei...</b>";
                 break;
             default:
                 result = "empty";

@@ -207,7 +207,7 @@ public static class UpdateHandlers
                     if (tableData.tableData.tableType == Table.TableType.copper)
                         Languages.Tables.Copper(botClient, chatId, callbackQuery, userData);
                     else
-                        Languages.ConnectingError(botClient, chatId, userData.playerData,
+                        Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
                             Error.UserAlreadyAtAnotherTable);
                 }
 
@@ -229,7 +229,7 @@ public static class UpdateHandlers
                     if (tableData.tableData.tableType == Table.TableType.bronze)
                         Languages.Tables.Bronze(botClient, chatId, callbackQuery, userData);
                     else
-                        Languages.ConnectingError(botClient, chatId, userData.playerData,
+                        Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
                             Error.UserAlreadyAtAnotherTable);
                 }
 
@@ -256,14 +256,14 @@ public static class UpdateHandlers
                         if (tableData.tableData.tableType == Table.TableType.silver)
                             Languages.Tables.Silver(botClient, chatId, callbackQuery, userData);
                         else
-                            Languages.ConnectingError(botClient, chatId, userData.playerData,
+                            Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserAlreadyAtAnotherTable);
                     }
                 }
                 else
                 {
-                    Languages.ConnectingError(botClient, chatId, userData.playerData,
-                        Error.UserDontMeetConnetionRequriments);
+                    Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
+                        Error.UserDontMeetConnetionRequriments, 2);
                 }
 
                 break;
@@ -289,14 +289,14 @@ public static class UpdateHandlers
                         if (tableData.tableData.tableType == Table.TableType.gold)
                             Languages.Tables.Gold(botClient, chatId, callbackQuery, userData);
                         else
-                            Languages.ConnectingError(botClient, chatId, userData.playerData,
+                            Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserAlreadyAtAnotherTable);
                     }
                 }
                 else
                 {
-                    Languages.ConnectingError(botClient, chatId, userData.playerData,
-                        Error.UserDontMeetConnetionRequriments);
+                    Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
+                        Error.UserDontMeetConnetionRequriments, 4);
                 }
 
                 break;
@@ -322,14 +322,14 @@ public static class UpdateHandlers
                         if (tableData.tableData.tableType == Table.TableType.platinum)
                             Languages.Tables.Platinum(botClient, chatId, callbackQuery, userData);
                         else
-                            Languages.ConnectingError(botClient, chatId, userData.playerData,
+                            Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserAlreadyAtAnotherTable);
                     }
                 }
                 else
                 {
-                    Languages.ConnectingError(botClient, chatId, userData.playerData,
-                        Error.UserDontMeetConnetionRequriments);
+                    Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
+                        Error.UserDontMeetConnetionRequriments, 6);
                 }
 
                 break;
@@ -355,14 +355,14 @@ public static class UpdateHandlers
                         if (tableData.tableData.tableType == Table.TableType.diamond)
                             Languages.Tables.Diamond(botClient, chatId, callbackQuery, userData);
                         else
-                            Languages.ConnectingError(botClient, chatId, userData.playerData,
+                            Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserAlreadyAtAnotherTable);
                     }
                 }
                 else
                 {
-                    Languages.ConnectingError(botClient, chatId, userData.playerData,
-                        Error.UserDontMeetConnetionRequriments);
+                    Languages.ConnectingError(botClient, chatId, callbackQuery, userData.playerData,
+                        Error.UserDontMeetConnetionRequriments, 12);
                 }
 
                 break;
@@ -385,7 +385,7 @@ public static class UpdateHandlers
                 {
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
                         WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, userData.playerData.lang,
+                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
                         data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
@@ -404,7 +404,7 @@ public static class UpdateHandlers
                 {
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
                         WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, userData.playerData.lang,
+                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
                         data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
@@ -423,7 +423,7 @@ public static class UpdateHandlers
                 {
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
                         WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, userData.playerData.lang,
+                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
                         data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
@@ -443,7 +443,7 @@ public static class UpdateHandlers
                 {
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
                         WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, userData.playerData.lang,
+                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
                         data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
@@ -463,7 +463,7 @@ public static class UpdateHandlers
                 {
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
                         WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, userData.playerData.lang,
+                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
                         data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
@@ -483,7 +483,7 @@ public static class UpdateHandlers
                 {
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
                         WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, userData.playerData.lang,
+                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
                         data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
@@ -505,7 +505,7 @@ public static class UpdateHandlers
                                       (int) tableData.tableData.giverD_ID);
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
                         WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, userData.playerData.lang,
+                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
                         data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
                 }
                 else
@@ -519,7 +519,7 @@ public static class UpdateHandlers
             //-//-//---ShowListTeam---\\-\\-\\
             case "ShowListTeam":
             {
-                Languages.ShowListTeam(botClient, chatId, userData.playerData.lang,
+                Languages.ShowListTeam(botClient, chatId, callbackQuery, userData.playerData.lang,
                     userData.playerData);
                 break;
             }

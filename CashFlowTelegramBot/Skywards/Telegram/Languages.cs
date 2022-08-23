@@ -206,18 +206,15 @@ public partial class Languages
             ParseMode.Html,
             replyMarkup: inlineKeyboard);
     }
-    public static async void GetUserData(ITelegramBotClient botClient, long chatId, string lang,
+    public static async void GetUserData(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        string lang,
         UserProfile SearchedUser,
         Table.TableRole tableRole)
     {
         string path = null;
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/status.png");
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\status.png");
+        string? caption = null;
+        
+        InlineKeyboardMarkup? inlineKeyboard = null;
         UserData invitedBy = null;
         if (SearchedUser.refId != null)
             invitedBy = await WebManager.SendData(new UserProfile((int) SearchedUser.refId),
@@ -226,11 +223,17 @@ public partial class Languages
         var tableToBack = await WebManager.SendData(SearchedUser, WebManager.RequestType.GetTableData);
         if (tableToBack.tableData.tableID != 0)
         {
-            var callbackAddress = GetCallbackAddress(tableToBack.tableData.tableType);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images/MainMenu/status.png");
 
-            InlineKeyboardMarkup? inlineKeyboard = null;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images\MainMenu\status.png");
+            var callbackAddress = GetCallbackAddress(tableToBack.tableData.tableType);
+            
             var flag = false;
-            var searchedUserRole = SearchedUser.GetTableRole(lang);
+            var searchedUserRole = "";
             var IsSearchedUserVerf =
                 (tableToBack.tableData.giverA_ID == SearchedUser.id && tableToBack.tableData.verf_A) ||
                 (tableToBack.tableData.giverB_ID == SearchedUser.id && tableToBack.tableData.verf_B) ||
@@ -242,8 +245,8 @@ public partial class Languages
                                                                     SearchedUser.id))
             {
                 if (IsSearchedUserVerf)
-                    searchedUserRole += " ✅ ";
-                else searchedUserRole += " ❌ ";
+                    searchedUserRole = " ✅ ";
+                else searchedUserRole = " ❌ ";
             }
 
             switch (lang)
@@ -261,12 +264,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverARU,
-                                            Tables.InlineKeyboardButtonVerfGiverARU
+                                            InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverARU,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverARU  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -278,7 +289,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -294,12 +310,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBRU,
-                                            Tables.InlineKeyboardButtonVerfGiverBRU
+                                            InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverBRU,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBRU  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -311,7 +335,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -327,12 +356,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCRU,
-                                            Tables.InlineKeyboardButtonVerfGiverCRU
+                                            InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverCRU,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCRU  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -344,7 +381,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -360,12 +402,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDRU,
-                                            Tables.InlineKeyboardButtonVerfGiverDRU
+                                            InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverDRU,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDRU  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -377,7 +427,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -391,36 +446,23 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress)
+                                    InlineKeyboardButton.WithUrl("📨 Связаться", "https://t.me/" + SearchedUser.username),
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                 }
                             });
-
-                    if (invitedBy != null)
-                    {
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "📋 Информация о пользователе: \n\n" +
-                            $"Роль: {searchedUserRole}\n" +
-                            $"Ник: @{SearchedUser.username}\n" +
-                            $"Пригласил: @{invitedBy.playerData.username}\n" +
-                            $"Лично приглашенных: {SearchedUser.invited}" +
-                            $"\n\nСвязаться c @{SearchedUser.username}",
-                            replyMarkup: inlineKeyboard);
-                    }
-                    else
-                    {
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "📋 Информация о пользователе:\n\n" +
-                            $"Роль: {searchedUserRole}\n" +
-                            $"Ник: @{SearchedUser.username}\n" +
-                            $"Лично приглашенных: {SearchedUser.invited}" +
-                            $"\n\nСвязаться c @{SearchedUser.username}",
-                            replyMarkup: inlineKeyboard);
-                    }
-
+                    
+                    caption = "<b>📋 Информация о пользователе:</b>" + 
+                              "\n" +
+                              $"\n<b>Роль:</b> {SearchedUser.GetTableRole(lang) + searchedUserRole}" +
+                              $"\n<b>Ник:</b> @{SearchedUser.username}" +
+                              $"\n<b>Имя пользователя:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                              $"\n<b>Лично приглашенных:</b> {SearchedUser.invited}" +
+                              "\n" +
+                              $"\n<b>Пригласил:</b> @{invitedBy.playerData.username}";
                     break;
                 }
                 case "eng":
@@ -436,12 +478,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverAENG,
-                                            Tables.InlineKeyboardButtonVerfGiverAENG
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙  Back", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverAENG,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverAENG  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -453,7 +503,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙  Back", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new []
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -469,12 +524,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBENG,
-                                            Tables.InlineKeyboardButtonVerfGiverBENG
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverBENG,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBENG  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -486,7 +549,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new []
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -502,12 +570,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCENG,
-                                            Tables.InlineKeyboardButtonVerfGiverCENG
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverCENG,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCENG  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -519,7 +595,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new []
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -535,12 +616,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDENG,
-                                            Tables.InlineKeyboardButtonVerfGiverDENG
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverDENG,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDENG
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -552,7 +641,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new []
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -566,35 +660,23 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🔙  Back", callbackAddress)
+                                    InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                 }
                             });
-
-                    if (invitedBy != null)
-                    {
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "📋 User info:\n\n" +
-                            $"Role: {searchedUserRole}\n" +
-                            $"Nickname: @{SearchedUser.username}\n" +
-                            $"Invited by: @{invitedBy.playerData.username}\n" +
-                            $"Personally invited: {SearchedUser.invited}" +
-                            $"\n\nContact with @{SearchedUser.username}",
-                            replyMarkup: inlineKeyboard);
-                    }
-                    else
-                    {
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "📋 User info:\n\n" +
-                            $"Role: {searchedUserRole}\n" +
-                            $"Nickname: @{SearchedUser.username}\n" +
-                            $"Personally invited: {SearchedUser.invited}" +
-                            $"\n\nContact with @{SearchedUser.username}",
-                            replyMarkup: inlineKeyboard);
-                    }
+                    
+                    caption = "<b>📋 User info:</b>" + 
+                              "\n" +
+                              $"\n<b>Role:</b> {SearchedUser.GetTableRole(lang) + searchedUserRole}" +
+                              $"\n<b>Nickname:</b> @{SearchedUser.username}" +
+                              $"\n<b>Username:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                              $"\n<b>Personally invited:</b> {SearchedUser.invited}" +
+                              "\n" +
+                              $"\n<b>Invited by:</b> @{invitedBy.playerData.username}";
 
                     break;
                 }
@@ -611,12 +693,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverAFR,
-                                            Tables.InlineKeyboardButtonVerfGiverAFR
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverAFR,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverAFR  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -628,7 +718,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -644,12 +739,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBFR,
-                                            Tables.InlineKeyboardButtonVerfGiverBFR
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverBFR,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBFR  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -661,7 +764,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -677,12 +785,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCFR,
-                                            Tables.InlineKeyboardButtonVerfGiverCFR
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverCFR,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCFR  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -694,7 +810,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -710,12 +831,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDFR,
-                                            Tables.InlineKeyboardButtonVerfGiverDFR
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverDFR,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDFR  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -727,7 +856,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -741,37 +875,24 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                    InlineKeyboardButton.WithUrl("📨 Contact", "https://t.me/" + SearchedUser.username),
+                                },
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                 }
                             });
-
-                    if (invitedBy != null)
-                    {
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "📋 Informations de l'utilisateur:\n\n" +
-                            $"Rôle: {searchedUserRole}\n" +
-                            $"Surnom: @{SearchedUser.username}\n" +
-                            $"inviter par: @{invitedBy.playerData.username}\n" +
-                            $"invité personnellement: {SearchedUser.invited}" +
-                            $"\n\nContacter avec @{SearchedUser.username}",
-                            replyMarkup: inlineKeyboard);
-                    }
-                    else
-                    {
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "📋 Informations de l'utilisateur:\n\n" +
-                            $"Rôle: {searchedUserRole}\n" +
-                            $"Surnom: @{SearchedUser.username}\n" +
-                            $"invité personnellement: {SearchedUser.invited}" +
-                            $"\n\nContacter avec @{SearchedUser.username}",
-                            replyMarkup: inlineKeyboard);
-                    }
-
-                    break;
+                    
+                        caption = "<b>📋 Informations de l'utilisateur:</b>" + 
+                                  "\n" +
+                                  $"\n<b>Rôle:</b> {SearchedUser.GetTableRole(lang) + searchedUserRole}" +
+                                  $"\n<b>Surnom:</b> @{SearchedUser.username}" +
+                                  $"\n<b>Nom d'utilisateur:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                                  $"\n<b>invité personnellement:</b> {SearchedUser.invited}" +
+                                  "\n" +
+                                  $"\n<b>inviter par:</b> @{invitedBy.playerData.username}";
+                        break;
                 }
                 case "de":
                 {
@@ -786,12 +907,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverADE,
-                                            Tables.InlineKeyboardButtonVerfGiverADE
+                                            InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverADE,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverADE  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -803,7 +932,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new []
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -819,12 +953,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBDE,
-                                            Tables.InlineKeyboardButtonVerfGiverBDE
+                                            InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverBDE,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBDE  
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -836,7 +978,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new []
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -852,12 +999,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCDE,
-                                            Tables.InlineKeyboardButtonVerfGiverCDE
+                                            InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverCDE,
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCDE 
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -869,7 +1024,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new []
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -885,12 +1045,20 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDDE,
-                                            Tables.InlineKeyboardButtonVerfGiverDDE
+                                            InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),  
                                         },
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                            Tables.InlineKeyboardButtonVerfGiverDDE
+                                        },
+                                        new []
+                                        {
+                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDDE
+                                        },
+                                        new[]
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -902,7 +1070,12 @@ public partial class Languages
                                     {
                                         new[]
                                         {
-                                            InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                            InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),
+                                        },
+                                        new []
+                                        {
+                                            InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                         }
                                     });
                                 flag = true;
@@ -916,13 +1089,15 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                    InlineKeyboardButton.WithUrl("📨 Kontakt", "https://t.me/" + SearchedUser.username),
+                                },
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                 }
                             });
-
-                    if (invitedBy != null)
-                    {
-                        var sentMessage = await botClient.SendTextMessageAsync(
+                    var sentMessage = await botClient.SendTextMessageAsync(
                             chatId,
                             "📋 Benutzerinformation: \n\n" +
                             $"Rolle: {searchedUserRole}\n" +
@@ -931,18 +1106,14 @@ public partial class Languages
                             $"Persönlich eingeladen: {SearchedUser.invited}" +
                             $"\n\nKontakt mit @{SearchedUser.username}",
                             replyMarkup: inlineKeyboard);
-                    }
-                    else
-                    {
-                        var sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Benutzerinformation\n\n" +
-                            $"Rolle: {searchedUserRole}\n" +
-                            $"Spitzname: @{SearchedUser.username}\n" +
-                            $"Persönlich eingeladen: {SearchedUser.invited}" +
-                            $"\n\nKontakt mit @{SearchedUser.username}",
-                            replyMarkup: inlineKeyboard);
-                    }
+                    caption = "<b>📋 Benutzerinformation:</b>" + 
+                              "\n" +
+                              $"\n<b>Rolle:</b> {SearchedUser.GetTableRole(lang) + searchedUserRole}" +
+                              $"\n<b>Spitzname:</b> @{SearchedUser.username}" +
+                              $"\n<b>Benutzername:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                              $"\n<b>Persönlich eingeladen:</b> {SearchedUser.invited}" +
+                              "\n" +
+                              $"\n<b>ingeladen von:</b> @{invitedBy.playerData.username}";
 
                     break;
                 }
@@ -950,7 +1121,13 @@ public partial class Languages
         }
         else
         {
-            InlineKeyboardMarkup? inlineKeyboard;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images/MainMenu/status.png");
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images\MainMenu\status.png");
             switch (lang)
             {
                 case "ru":
@@ -963,10 +1140,7 @@ public partial class Languages
                                 InlineKeyboardButton.WithCallbackData("Ok", "ChooseTable")
                             }
                         });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Вы больше не участник стола",
-                        replyMarkup: inlineKeyboard);
+                    caption = "Вы больше не участник стола";
                     break;
                 }
                 case "eng":
@@ -979,10 +1153,7 @@ public partial class Languages
                                 InlineKeyboardButton.WithCallbackData("Ok", "ChooseTable")
                             }
                         });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "You are no longer a member of the table",
-                        replyMarkup: inlineKeyboard);
+                    caption = "You are no longer a member of the table";
                     break;
                 }
                 case "fe":
@@ -995,10 +1166,7 @@ public partial class Languages
                                 InlineKeyboardButton.WithCallbackData("Ok", "ChooseTable")
                             }
                         });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Vous n'êtes plus membre de la table",
-                        replyMarkup: inlineKeyboard);
+                    caption = "Vous n'êtes plus membre de la table";
                     break;
                 }
                 case "de":
@@ -1011,14 +1179,25 @@ public partial class Languages
                                 InlineKeyboardButton.WithCallbackData("Ok", "ChooseTable")
                             }
                         });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Sie sind kein Mitglied des Tisches mehr",
-                        replyMarkup: inlineKeyboard);
+                    caption = "Sie sind kein Mitglied des Tisches mehr";
                     break;
                 }
             }
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html,
+            null,
+            inlineKeyboard
+        );
     }
     private static string GetCallbackAddress(Table.TableType tableType)
     {
@@ -1047,78 +1226,124 @@ public partial class Languages
 
         return callbackAddress;
     }
-    public static async void ShowListTeam(ITelegramBotClient botClient, long chatId, string lang, UserProfile user)
+    public static async void ShowListTeam(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        string lang, UserProfile user)
     {
-        string path = null;
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/status.png");
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\status.png");
         var table = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
+        string path = null;
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        string? caption = null;
+
         if (table.tableData.tableID != 0)
         {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images/Tables/");
+                path += table.tableData.tableType + ".MP4";
+            }
+
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images\Tables\");
+                path += table.tableData.tableType + ".MP4";
+            }
             var callbackAddress = GetCallbackAddress(table.tableData.tableType);
 
 
-            var tableInfo = "";
-            InlineKeyboardMarkup? inlineKeyboard = null;
+            caption = "";
+            inlineKeyboard = null;
             if (table.tableData.bankerID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.bankerID),
                     WebManager.RequestType.GetUserData);
-                tableInfo += userData.playerData.UserInfo(user.lang);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData.bankerID == user.id);
+                //if (table.tableData.bankerID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🏦Банкир: @{userData.playerData.username}\n";
+            }
+            else
+            {
+                caption += user.UserInfo(Table.TableRole.banker);
             }
 
             if (table.tableData.managerA_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerA_ID),
                     WebManager.RequestType.GetUserData);
-                tableInfo += userData.playerData.UserInfo(user.lang);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData.managerA_ID == user.id);
+                //if (table.tableData.managerA_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"👤Менеджер-1: @{userData.playerData.username}\n";
+            }
+            else
+            {
+                caption += user.UserInfo(Table.TableRole.manager);
             }
 
             if (table.tableData.managerB_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerB_ID),
                     WebManager.RequestType.GetUserData);
-                tableInfo += userData.playerData.UserInfo(user.lang);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData.managerB_ID == user.id);
+                //if (table.tableData.managerB_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"👤Менеджер-2: @{userData.playerData.username}\n";
+            }
+            else
+            {
+                caption += user.UserInfo(Table.TableRole.manager);
             }
 
             if (table.tableData.giverA_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverA_ID),
                     WebManager.RequestType.GetUserData);
-                tableInfo += userData.playerData.UserInfo(user.lang);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData.giverA_ID == user.id, table.tableData.verf_A, 1);
+                //if (table.tableData.giverA_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-1: @{userData.playerData.username}\n";
+            }
+            else
+            {
+                caption += user.UserInfo(Table.TableRole.giver);
             }
 
             if (table.tableData.giverB_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverB_ID),
                     WebManager.RequestType.GetUserData);
-                tableInfo += userData.playerData.UserInfo(user.lang);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData.giverB_ID == user.id, table.tableData.verf_B, 2);
+                //if (table.tableData.giverB_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-2: @{userData.playerData.username}\n";
+            }
+            else
+            {
+                caption += user.UserInfo(Table.TableRole.giver);
             }
 
             if (table.tableData.giverC_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverC_ID),
                     WebManager.RequestType.GetUserData);
-                tableInfo += userData.playerData.UserInfo(user.lang);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData.giverC_ID == user.id, table.tableData.verf_C, 3);
+                //if (table.tableData.giverC_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-3: @{userData.playerData.username}\n";
+            }
+            else
+            {
+                caption += user.UserInfo(Table.TableRole.giver);
             }
 
             if (table.tableData.giverD_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverD_ID),
                     WebManager.RequestType.GetUserData);
-                tableInfo += userData.playerData.UserInfo(user.lang);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData.giverD_ID == user.id, table.tableData.verf_D, 4);
+                //if (table.tableData.giverD_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-4: @{userData.playerData.username}\n";
+            }
+            else
+            {
+                caption += user.UserInfo(Table.TableRole.giver);
             }
 
 //TODO
@@ -1131,7 +1356,8 @@ public partial class Languages
                         {
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("Назад", callbackAddress)
+                                InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                             }
                         });
                     break;
@@ -1143,7 +1369,8 @@ public partial class Languages
                         {
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("Back", callbackAddress)
+                                InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                             }
                         });
                     break;
@@ -1155,7 +1382,8 @@ public partial class Languages
                         {
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                             }
                         });
                     break;
@@ -1167,22 +1395,23 @@ public partial class Languages
                         {
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                InlineKeyboardButton.WithCallbackData("🔙 Zurück", callbackAddress),
+                                InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                             }
                         });
                     break;
                 }
             }
-
-            var sentPhoto = await botClient.SendPhotoAsync(
-                chatId,
-                File.OpenRead(path)!,
-                tableInfo,
-                replyMarkup: inlineKeyboard);
         }
         else
         {
-            InlineKeyboardMarkup? inlineKeyboard;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images/MainMenu/mainMenu.png");
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images\MainMenu\mainMenu.png");
             switch (lang)
             {
                 case "ru":
@@ -1195,10 +1424,7 @@ public partial class Languages
                                 InlineKeyboardButton.WithCallbackData("Ok", "ChooseTable")
                             }
                         });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Вы больше не участник стола",
-                        replyMarkup: inlineKeyboard);
+                    caption = "Вы больше не участник стола";
                     break;
                 }
                 case "eng":
@@ -1211,10 +1437,7 @@ public partial class Languages
                                 InlineKeyboardButton.WithCallbackData("Ok", "ChooseTable")
                             }
                         });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "You are no longer a member of the table",
-                        replyMarkup: inlineKeyboard);
+                    caption = "You are no longer a member of the table";
                     break;
                 }
                 case "fe":
@@ -1227,10 +1450,7 @@ public partial class Languages
                                 InlineKeyboardButton.WithCallbackData("Ok", "ChooseTable")
                             }
                         });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Vous n'êtes plus membre de la table",
-                        replyMarkup: inlineKeyboard);
+                    caption = "Vous n'êtes plus membre de la table";
                     break;
                 }
                 case "de":
@@ -1243,14 +1463,25 @@ public partial class Languages
                                 InlineKeyboardButton.WithCallbackData("Ok", "ChooseTable")
                             }
                         });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Sie sind kein Mitglied des Tisches mehr",
-                        replyMarkup: inlineKeyboard);
+                    caption = "Sie sind kein Mitglied des Tisches mehr";
                     break;
                 }
             }
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
     }
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
         UserProfile user, Error error)
@@ -1281,15 +1512,12 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Назад", callbackAddress)
+                                    InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                 }
                             });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "🤷‍♂️ Этот Даритель ещё не присоединился к игре.",
-                            replyMarkup: inlineKeyboard);
+                        
+                        caption = "🤷‍♂️ Этот Даритель ещё не присоединился к игре.";
                         break;
                     }
 
@@ -1300,15 +1528,11 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Back", callbackAddress)
+                                    InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                 }
                             });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "🤷‍♂️ This Giver has not joined the game yet.",
-                            replyMarkup: inlineKeyboard);
+                        caption = "🤷‍♂️ This Giver has not joined the game yet.";
                         break;
                     }
 
@@ -1319,15 +1543,11 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Retour", callbackAddress)
+                                    InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                 }
                             });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "🤷‍♂️ Ce Donateur n'a pas encore rejoint le jeu.",
-                            replyMarkup: inlineKeyboard);
+                        caption = "🤷‍♂️ Ce Donateur n'a pas encore rejoint le jeu.";
                         break;
                     }
 
@@ -1338,19 +1558,40 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("Zurück", callbackAddress)
+                                    InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                 }
                             });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "🤷‍♂️ Dieser Geber ist dem Spiel noch nicht beigetreten.",
-                            replyMarkup: inlineKeyboard);
+                        caption = "🤷‍♂️ Dieser Geber ist dem Spiel noch nicht beigetreten.";
                         break;
                     }
+                    default:
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                }
+                            });
+                        caption = "🤷‍♂️ This Giver has not joined the game yet.";
+                        break;
                 }
-
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
                 break;
             }
             case Error.RefLinkInvalid:
@@ -1527,27 +1768,36 @@ public partial class Languages
                 break;
         }
     }
-    public static async void ConnectingError(ITelegramBotClient botClient, long chatId, UserProfile user, Error error)
+    public static async void ConnectingError(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        UserProfile user, Error error)
     {
+        string? caption = null;
         string path = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/tableSelection.png");
+                @"Images/MainMenu/mainMenu.png");
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\tableSelection.png");
+                @"Images\MainMenu\mainMenu.png");
+        InlineKeyboardMarkup? inlineKeyboard = null;
         switch (error)
         {
             case Error.UserAlreadyAtAnotherTable:
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
 
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
                 var tableData = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
                 Console.WriteLine(tableData.tableData.tableType);
                 switch (user.lang)
                 {
                     case "ru":
                     {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
+                        inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
@@ -1555,18 +1805,15 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("Назад", "ChooseTable")
                                 }
                             });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"🤷 Вы уже находитесь на столе: {tableData.tableData.GetTableType(user)}.",
-                            replyMarkup: inlineKeyboard);
+                        
+                        caption = $"🤷 Вы уже находитесь на столе: {tableData.tableData.GetTableType(user)}.";
+                        
                         break;
                     }
 
                     case "eng":
                     {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
+                        inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
@@ -1574,18 +1821,13 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("Back", "ChooseTable")
                                 }
                             });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"🤷 You are already on the table: {tableData.tableData.GetTableType(user)}.",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"🤷 You are already on the table: {tableData.tableData.GetTableType(user)}.";
                         break;
                     }
 
                     case "fr":
                     {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
+                        inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
@@ -1593,18 +1835,13 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("Retour", "ChooseTable")
                                 }
                             });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"🤷 Vous êtes déjà sur la table: {tableData.tableData.GetTableType(user)}.",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"🤷 Vous êtes déjà sur la table: {tableData.tableData.GetTableType(user)}.";
                         break;
                     }
 
                     case "de":
                     {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
+                        inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
                                 new[]
@@ -1612,99 +1849,135 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("Zurück", "ChooseTable")
                                 }
                             });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"🤷 Sie sind bereits auf dem Tisch: {tableData.tableData.GetTableType(user)}.",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    }
-                }
-
-                break;
-            case Error.UserDontMeetConnetionRequriments:
-                switch (user.lang)
-                {
-                    case "ru":
-                    {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
-                                new[]
-                                {
-                                    InlineKeyboardButton.WithCallbackData("Назад", "ChooseTable")
-                                }
-                            });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "🤷 Для открытия данного стола Вам необходимо выполнить условия по приглашённым игрокам ИЛИ пройти стол уровнем ниже.",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    }
-
-                    case "eng":
-                    {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
-                                new[]
-                                {
-                                    InlineKeyboardButton.WithCallbackData("Back", "ChooseTable")
-                                }
-                            });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "🤷 To open this table, you need to fulfill the conditions for invited players OR go through the table below.",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    }
-
-                    case "fr":
-                    {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
-                                new[]
-                                {
-                                    InlineKeyboardButton.WithCallbackData("Retour", "ChooseTable")
-                                }
-                            });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "🤷 Pour ouvrir ce tableau, vous devez remplir les conditions des joueurs invités OU passer par le tableau ci-dessous.",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    }
-
-                    case "de":
-                    {
-                        var inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
-                                new[]
-                                {
-                                    InlineKeyboardButton.WithCallbackData("Zurück", "ChooseTable")
-                                }
-                            });
-
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            "🤷 Um diese Tabelle zu öffnen, müssen Sie die Bedingungen für eingeladene Spieler erfüllen ODER die Tabelle unten durchgehen.",
-                            replyMarkup: inlineKeyboard);
+                        caption = $"🤷 Sie sind bereits auf dem Tisch: {tableData.tableData.GetTableType(user)}.";
                         break;
                     }
                 }
 
                 break;
         }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Markdown, 
+            null, 
+            inlineKeyboard
+        );
+    }
+    public static async void ConnectingError(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        UserProfile user, Error error, int toInvite)
+    {
+        string? caption = null;
+        string path = null;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images/MainMenu/mainMenu.png");
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images\MainMenu\mainMenu.png");
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        toInvite = Math.Abs(user.invited - toInvite);
+        switch (error)
+        {
+            case Error.UserDontMeetConnetionRequriments:
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                switch (user.lang)
+                {
+                    case "ru":
+                    {
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Назад", "ChooseTable"),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
+                                }
+                            });
+                        if (toInvite < 2)
+                        {
+                            
+                        }
+                        caption = $"🤷 Для открытия данного стола Вам необходимо пригласить на Бронзовый стол еще {toInvite} игроков";
+                        break;
+                    }
+
+                    case "eng":
+                    {
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Back", "ChooseTable"),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                }
+                            });
+                        caption = "🤷 To open this table, you need to fulfill the conditions for invited players OR go through the table below.";
+                        break;
+                    }
+
+                    case "fr":
+                    {
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Retour", "ChooseTable"),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
+                                }
+                            });
+                        caption = "🤷 Pour ouvrir ce tableau, vous devez remplir les conditions des joueurs invités OU passer par le tableau ci-dessous.";
+                        break;
+                    }
+
+                    case "de":
+                    {
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("🔙 Zurück", "ChooseTable"),
+                                    InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
+                                }
+                            });
+                        caption = "🤷 Um diese Tabelle zu öffnen, müssen Sie die Bedingungen für eingeladene Spieler erfüllen ODER die Tabelle unten durchgehen.";
+                        break;
+                    }
+                }
+
+                break;
+        }
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Markdown, 
+            null, 
+            inlineKeyboard
+        );
     }
     public static async void MainMenu(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
         string lang)
