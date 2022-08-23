@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "1kc49GNxOLPXpUDLmwgIGy5f3WXRxSnHcLTXVzC0Y2qqNlfmO8sKOZP7dlCwGvO6MwxwWInZoPP6thboMrcEhQ==",
+  "dgSpecHash": "5fyNnbuylPPncAQFor8YER4bFpJ5GJGT6L9M8/ZILCdEA1kWJrXa99ywBB0MM8tNW3K2WU7DUeQGMKlH3DYQWQ==",
   "success": true,
   "projectFilePath": "E:\\user\\Documents\\CashFlowTelegramBot\\CashFlowTelegramBot\\CashFlowTelegramBot.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gosha\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\gosha\\.nuget\\packages\\skiasharp\\2.88.1\\skiasharp.2.88.1.nupkg.sha512",
+    "C:\\Users\\gosha\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.1\\skiasharp.nativeassets.macos.2.88.1.nupkg.sha512",
+    "C:\\Users\\gosha\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.1\\skiasharp.nativeassets.win32.2.88.1.nupkg.sha512",
     "C:\\Users\\gosha\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512"
   ],
   "logs": []

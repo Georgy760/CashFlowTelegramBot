@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "CashFlowTelegramBot/1.0.0": {
         "dependencies": {
+          "SkiaSharp": "2.88.1",
           "Telegram.Bot": "18.0.0"
         },
         "runtime": {
@@ -19,6 +20,46 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {
             "assemblyVersion": "12.0.0.0",
             "fileVersion": "12.0.2.23222"
+          }
+        }
+      },
+      "SkiaSharp/2.88.1": {
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "2.88.1",
+          "SkiaSharp.NativeAssets.macOS": "2.88.1"
+        },
+        "runtime": {
+          "lib/net6.0/SkiaSharp.dll": {
+            "assemblyVersion": "2.88.0.0",
+            "fileVersion": "2.88.1.0"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.macOS/2.88.1": {
+        "runtimeTargets": {
+          "runtimes/osx/native/libSkiaSharp.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "SkiaSharp.NativeAssets.Win32/2.88.1": {
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/libSkiaSharp.dll": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/libSkiaSharp.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x86/native/libSkiaSharp.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -47,6 +88,27 @@
       "sha512": "sha512-rTK0s2EKlfHsQsH6Yx2smvcTCeyoDNgCW7FEYyV01drPlh2T243PR2DiDXqtC5N4GDm4Ma/lkxfW5a/4793vbA==",
       "path": "newtonsoft.json/12.0.2",
       "hashPath": "newtonsoft.json.12.0.2.nupkg.sha512"
+    },
+    "SkiaSharp/2.88.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bEgYq0n0kVb/t/3DgQTILBqlXcNjKmz0t8ur9w41UK+pbufBGcEF8QMJQIhdRYohHqhsBwrCF87WUBkeRAuquA==",
+      "path": "skiasharp/2.88.1",
+      "hashPath": "skiasharp.2.88.1.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.macOS/2.88.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pJETwmhPe7L3w9x5eBHjmFucj5WiI4cYhG+v04IzZs0gcdC7aTeIh6D+vE3hjxaRBr6eDEr/U/JEPSm7YEfxPg==",
+      "path": "skiasharp.nativeassets.macos/2.88.1",
+      "hashPath": "skiasharp.nativeassets.macos.2.88.1.nupkg.sha512"
+    },
+    "SkiaSharp.NativeAssets.Win32/2.88.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rea9/AzPq3n5tQJ9ffQJqhrhl1EkO9XtnPjEDu+6ovsLJoSIj4khvPiqNvxo/j97bo1/qQP6VsWjk06U0TUtYg==",
+      "path": "skiasharp.nativeassets.win32/2.88.1",
+      "hashPath": "skiasharp.nativeassets.win32.2.88.1.nupkg.sha512"
     },
     "Telegram.Bot/18.0.0": {
       "type": "package",

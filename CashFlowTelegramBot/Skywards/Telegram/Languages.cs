@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using CashFlowTelegramBot.Skywards.ImageEditor;
 using CashFlowTelegramBot.Skywards.Web;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -1345,8 +1346,7 @@ public partial class Languages
             {
                 caption += user.UserInfo(Table.TableRole.giver);
             }
-
-//TODO
+            
             switch (lang)
             {
                 case "ru":
@@ -1473,6 +1473,45 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
                 callbackData.Message.MessageId, 
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html, 
+            null, 
+            inlineKeyboard
+        );
+    }
+    public static async void ShowTableAsImage(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        UserProfile userData)
+    {
+        string path = null;
+        var tableData = await WebManager.SendData(userData, WebManager.RequestType.GetTableData);
+        /*if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images/MainMenu/techSupport.png");
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images\MainMenu\techSupport.png");*/
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        Message? sentMessage;
+        string? caption;
+        Message sentPhoto;
+        var callbackAddress = GetCallbackAddress(tableData.tableData.tableType);
+        inlineKeyboard = new InlineKeyboardMarkup(
+            new[]
+            {
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("🔙", callbackAddress),
+                }
+            });
+        caption = $"<b>Table ID: {tableData.tableData.tableID}</b>";
+        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(TableImage.CreateTableImage(tableData.tableData).Result, "media"))
             );
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id, 
@@ -2662,6 +2701,7 @@ public partial class Languages
             inlineKeyboard
         );
     }
+    
 
     //BOT INFO// needed to be updated with couple of staff
     public static async void Info(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -3111,59 +3151,45 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("❌ Нет", "ChooseTable")
                         }
                     });
-                if (userData.playerData.tableRole == "giver")
-                {
-                    switch (tableType)
+                switch (tableType)
                     {
                         case Table.TableType.copper:
                         {
-                            caption =
-                                "На этом столе Вам нужно сделать подарок *$100*" +
-                                "\nВы точно хотите зайти на данный стол?";
+                            caption = "*Вы действительно хотите войти*" +
+                                      "\n*на 🎗 Медный стол?*";
                             break;
                         }
                         case Table.TableType.bronze:
                         {
-                            caption =
-                                "На этом столе Вам нужно сделать подарок *$400*" +
-                                "\nВы точно хотите зайти на данный стол?";
+                            caption = "*Вы действительно хотите войти*" +
+                                      "\n*на 🥉 Бронзовый стол?*";
                             break;
                         }
                         case Table.TableType.silver:
                         {
-                            caption =
-                                "На этом столе Вам нужно сделать подарок *$1000*" +
-                                "\nВы точно хотите зайти на данный стол?";
+                            caption = "*Вы действительно хотите войти*" +
+                                      "\n*на 🥈 Серебрянный стол?*";
                             break;
                         }
                         case Table.TableType.gold:
                         {
-                            caption =
-                                "На этом столе Вам нужно сделать подарок *$2500*" +
-                                "\nВы точно хотите зайти на данный стол?";
+                            caption = "*Вы действительно хотите войти*" +
+                                      "\n*на 🥇 Золотой стол?*";
                             break;
                         }
                         case Table.TableType.platinum:
                         {
-                            caption =
-                                "На этом столе Вам нужно сделать подарок *$5000*" +
-                                "\nВы точно хотите зайти на данный стол?";
+                            caption = "*Вы действительно хотите войти*" +
+                                      "\n*на 🎖 Платиновый стол?*";
                             break;
                         }
                         case Table.TableType.diamond:
                         {
-                            caption =
-                                "На этом столе Вам нужно сделать подарок *$10000*" +
-                                "\nВы точно хотите зайти на данный стол?";
+                            caption = "*Вы действительно хотите войти*" +
+                                      "\n*на 💎 Алмазный стол?*";
                             break;
                         }
                     }
-                }
-                else
-                {
-                    caption = "Вы точно хотите зайти на данный стол?";
-                }
-
                 break;
             case "eng":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -3175,64 +3201,46 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("❌ No", "ChooseTable"),
                         }
                     });
-                if (userData.playerData.tableRole == "giver")
-                {
+                
                     switch (tableType)
                     {
                         case Table.TableType.copper:
                         {
-                            caption =
-                                "On this table you need to make a gift of *$100*" +
-                                "\nAre you sure you want to go to this table?";
+                            caption = "*Are you sure you want to join* " +
+                                      "\n*🎗 Copper Table?*";
                             break;
                         }
                         case Table.TableType.bronze:
                         {
-                            caption =
-                                "On this table you need to make a gift of *$400*" +
-                                "\nAre you sure you want to go to this table?";
+                            caption = "*Are you sure you want to join*" +
+                                      "\n* 🥉 Bronze Table?*";
                             break;
                         }
                         case Table.TableType.silver:
                         {
-                            caption =
-                                "On this table you need to make a gift of *$1000*" +
-                                "\nAre you sure you want to go to this table?";
+                            caption = "*Are you sure you want to join*" +
+                                      "\n* 🥈 Silver Table?*";
                             break;
                         }
                         case Table.TableType.gold:
                         {
-                            caption =
-                                "On this table you need to make a gift of *$2500*" +
-                                "\nAre you sure you want to go to this table?";
+                            caption = "*Are you sure you want to join*" +
+                                      "\n* 🥇 Gold Table?*";
                             break;
                         }
                         case Table.TableType.platinum:
                         {
-                            caption =
-                                "On this table you need to make a gift of *$5000*" +
-                                "\nAre you sure you want to go to this table?";
+                            caption = "*Are you sure you want to join*" +
+                                      "\n* 🎖 Platinum Table?*";
                             break;
                         }
                         case Table.TableType.diamond:
                         {
-                            caption =
-                                "On this table you need to make a gift of *$10000*" +
-                                "\nAre you sure you want to go to this table?";
+                            caption = "*Are you sure you want to join*" +
+                                      "\n* 💎 Diamond Table?*";
                             break;
                         }
                     }
-                }
-                else
-                {
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Are you sure you want to join this table?",
-                        replyMarkup: inlineKeyboard);
-                    
-                    caption = "Are you sure you want to join this table?";
-                }
-
                 break;
             case "fr":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -3245,60 +3253,44 @@ public partial class Languages
                         }
                     });
 
-                if (userData.playerData.tableRole == "giver")
+                switch (tableType)
                 {
-                    switch (tableType)
+                    case Table.TableType.copper:
                     {
-                        case Table.TableType.copper:
-                        {
-                            caption =
-                                "Sur cette table, vous devez faire un don de *$100*" +
-                                "\nÊtes-vous sûr de vouloir aller à cette table?";
-                            break;
-                        }
-                        case Table.TableType.bronze:
-                        {
-                            caption =
-                                "Sur cette table, vous devez faire un don de *$400*" +
-                                "\nÊtes-vous sûr de vouloir aller à cette table?";
-                            break;
-                        }
-                        case Table.TableType.silver:
-                        {
-                            caption =
-                                "Sur cette table, vous devez faire un don de *$1000*" +
-                                "\nÊtes-vous sûr de vouloir aller à cette table?";
-                            break;
-                        }
-                        case Table.TableType.gold:
-                        {
-                            caption =
-                                "Sur cette table, vous devez faire un don de *$2500*" +
-                                "\nÊtes-vous sûr de vouloir aller à cette table?";
-                            break;
-                        }
-                        case Table.TableType.platinum:
-                        {
-                            caption =
-                                "Sur cette table, vous devez faire un don de *$5000*" +
-                                "\nÊtes-vous sûr de vouloir aller à cette table?";
-                            break;
-                        }
-                        case Table.TableType.diamond:
-                        {
-                            caption =
-                                "Sur cette table, vous devez faire un don de *$10000*" +
-                                "\nÊtes-vous sûr de vouloir aller à cette table?";
-                            break;
-                        }
+                        caption = "*Êtes-vous sûr de vouloir rejoindre*" +
+                                  "\n* 🎗 Copper Table?*";
+                        break;
                     }
-                }
-                else
-                {
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Êtes-vous sûr de vouloir rejoindre cette table?",
-                        replyMarkup: inlineKeyboard);
+                    case Table.TableType.bronze:
+                    {
+                        caption = "*Êtes-vous sûr de vouloir rejoindre*" +
+                                  "\n* 🥉 Table Bronze?*";
+                        break;
+                    }
+                    case Table.TableType.silver:
+                    {
+                        caption = "*Êtes-vous sûr de vouloir rejoindre*" +
+                                  "\n* 🥈 Silver Table?*";
+                        break;
+                    }
+                    case Table.TableType.gold:
+                    {
+                        caption = "*Êtes-vous sûr de vouloir rejoindre*" +
+                                  "\n* 🥇 Gold Table?*";
+                        break;
+                    }
+                    case Table.TableType.platinum:
+                    {
+                        caption = "*Êtes-vous sûr de vouloir rejoindre*" +
+                                  "\n* 🎖 Platinum Table?*";
+                        break;
+                    }
+                    case Table.TableType.diamond:
+                    {
+                        caption = "*Êtes-vous sûr de vouloir rejoindre*" +
+                                  "\n* 💎 Diamond Table?*";
+                        break;
+                    }
                 }
 
                 break;
@@ -3312,57 +3304,44 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("❌ NEIN", "ChooseTable"),
                         }
                     });
-                if (userData.playerData.tableRole == "giver")
+                switch (tableType)
                 {
-                    switch (tableType)
+                    case Table.TableType.copper:
                     {
-                        case Table.TableType.copper:
-                        {
-                            caption =
-                                "An diesem Tisch müssen Sie *$100* spenden" +
-                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
-                            break;
-                        }
-                        case Table.TableType.bronze:
-                        {
-                            caption =
-                                "An diesem Tisch müssen Sie *$400* spenden" +
-                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
-                            break;
-                        }
-                        case Table.TableType.silver:
-                        {
-                            caption =
-                                "An diesem Tisch müssen Sie *$1000* spenden" +
-                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
-                            break;
-                        }
-                        case Table.TableType.gold:
-                        {
-                            caption =
-                                "An diesem Tisch müssen Sie *$2500* spenden" +
-                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
-                            break;
-                        }
-                        case Table.TableType.platinum:
-                        {
-                            caption =
-                                "An diesem Tisch müssen Sie *$5000* spenden" +
-                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
-                            break;
-                        }
-                        case Table.TableType.diamond:
-                        {
-                            caption =
-                                "An diesem Tisch müssen Sie *$10000* spenden" +
-                                "\nSind Sie sicher, dass Sie an diesen Tisch gehen möchten?";
-                            break;
-                        }
+                        caption = "*Bist du sicher, dass du*" +
+                                  "\n* 🎗 Copper Table beitreten möchtest?*";
+                        break;
                     }
-                }
-                else
-                {
-                    caption = "Sind Sie sicher, dass Sie an diesem Tisch teilnehmen möchten?";
+                    case Table.TableType.bronze:
+                    {
+                        caption = "*Bist du sicher, dass du am*" +
+                                  "\n* 🥉 Bronze Table teilnehmen möchtest?*";
+                        break;
+                    }
+                    case Table.TableType.silver:
+                    {
+                        caption = "*Bist du sicher, dass du am*" +
+                                  "\n* 🥈 Silver Table teilnehmen möchtest?*";
+                        break;
+                    }
+                    case Table.TableType.gold:
+                    {
+                        caption = "*Bist du sicher, dass du am*" +
+                                  "\n* 🥇 Gold Table teilnehmen möchtest?*";
+                        break;
+                    }
+                    case Table.TableType.platinum:
+                    {
+                        caption = "*Bist du sicher, dass du am*" +
+                                  "\n* 🎖 Platinum Table teilnehmen möchtest?*";
+                        break;
+                    }
+                    case Table.TableType.diamond:
+                    {
+                        caption = "*Bist du sicher, dass du am*" +
+                                  "\n* 💎 diamond Table teilnehmen möchtest?*";
+                        break;
+                    }
                 }
                 break;
             default:
@@ -3375,64 +3354,46 @@ public partial class Languages
                             InlineKeyboardButton.WithCallbackData("❌ No", "ChooseTable"),
                         }
                     });
-                if (userData.playerData.tableRole == "giver")
+                
+                switch (tableType)
                 {
-                    switch (tableType)
+                    case Table.TableType.copper:
                     {
-                        case Table.TableType.copper:
-                        {
-                            caption =
-                                "On this table you need to make a gift of *$100*" +
-                                "\nAre you sure you want to go to this table?";
-                            break;
-                        }
-                        case Table.TableType.bronze:
-                        {
-                            caption =
-                                "On this table you need to make a gift of *$400*" +
-                                "\nAre you sure you want to go to this table?";
-                            break;
-                        }
-                        case Table.TableType.silver:
-                        {
-                            caption =
-                                "On this table you need to make a gift of *$1000*" +
-                                "\nAre you sure you want to go to this table?";
-                            break;
-                        }
-                        case Table.TableType.gold:
-                        {
-                            caption =
-                                "On this table you need to make a gift of *$2500*" +
-                                "\nAre you sure you want to go to this table?";
-                            break;
-                        }
-                        case Table.TableType.platinum:
-                        {
-                            caption =
-                                "On this table you need to make a gift of *$5000*" +
-                                "\nAre you sure you want to go to this table?";
-                            break;
-                        }
-                        case Table.TableType.diamond:
-                        {
-                            caption =
-                                "On this table you need to make a gift of *$10000*" +
-                                "\nAre you sure you want to go to this table?";
-                            break;
-                        }
+                        caption = "*Are you sure you want to join* " +
+                                  "\n*🎗 Copper Table?*";
+                        break;
+                    }
+                    case Table.TableType.bronze:
+                    {
+                        caption = "*Are you sure you want to join*" +
+                                  "\n* 🥉 Bronze Table?*";
+                        break;
+                    }
+                    case Table.TableType.silver:
+                    {
+                        caption = "*Are you sure you want to join*" +
+                                  "\n* 🥈 Silver Table?*";
+                        break;
+                    }
+                    case Table.TableType.gold:
+                    {
+                        caption = "*Are you sure you want to join*" +
+                                  "\n* 🥇 Gold Table?*";
+                        break;
+                    }
+                    case Table.TableType.platinum:
+                    {
+                        caption = "*Are you sure you want to join*" +
+                                  "\n* 🎖 Platinum Table?*";
+                        break;
+                    }
+                    case Table.TableType.diamond:
+                    {
+                        caption = "*Are you sure you want to join*" +
+                                  "\n* 💎 Diamond Table?*";
+                        break;
                     }
                 }
-                else
-                {
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "Are you sure you want to join this table?",
-                        replyMarkup: inlineKeyboard);
-                    
-                    caption = "Are you sure you want to join this table?";
-                }
-
                 break;
                 
         }
@@ -3446,7 +3407,7 @@ public partial class Languages
             callbackData.Message.Chat.Id, 
             callbackData.Message.MessageId, 
             caption, 
-            ParseMode.Html, 
+            ParseMode.MarkdownV2, 
             null, 
             inlineKeyboard
         );

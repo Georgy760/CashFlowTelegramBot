@@ -1,4 +1,5 @@
-﻿using CashFlowTelegramBot.Skywards.Web;
+﻿using CashFlowTelegramBot.Skywards.ImageEditor;
+using CashFlowTelegramBot.Skywards.Web;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
@@ -65,6 +66,11 @@ public static class UpdateHandlers
     private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message updateMessage)
     {
         Console.WriteLine("MessageReceived: " + updateMessage.Text);
+        if (updateMessage.Text.Contains("/TableImage"))
+        {
+            var tableData = await WebManager.SendData(new UserProfile(updateMessage.From.Id),
+                WebManager.RequestType.GetTableData);
+        }
         if (updateMessage.Text.Contains("/start"))
         {
             Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
@@ -523,6 +529,10 @@ public static class UpdateHandlers
                     userData.playerData);
                 break;
             }
+            //-//-//---ShowTableAsImage---\\-\\-\\
+            case "TableImage":
+                Languages.ShowTableAsImage(botClient, chatId, callbackQuery, userData.playerData);
+                break;
             //-//-//---RemoveFromTable---\\-\\-\\
             //-//-//-//RemoveFromTableManagerA\\-\\-\\-\\
             case "RemoveFromTableManagerA":
