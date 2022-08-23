@@ -91,6 +91,7 @@ public class TableImage
             var resultImage = SKImage.FromBitmap(bitmap);
             var data = resultImage.Encode(SKEncodedImageFormat.Png, 100);
             return data.AsStream();
+            
             //return Convert.ToBase64String(data.ToArray());
             //Console.WriteLine("\nInfo: " + bitmap.Info.BytesPerPixel + "\nHeight: " + bitmap.Height + "\nWidth: " + bitmap.Width);
             //return image;

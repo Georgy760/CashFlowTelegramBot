@@ -1509,9 +1509,10 @@ public partial class Languages
                 }
             });
         caption = $"<b>Table ID: {tableData.tableData.tableID}</b>";
+        Stream stream = TableImage.CreateTableImage(tableData.tableData).Result;
         await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
                 callbackData.Message.MessageId, 
-                media: new InputMediaPhoto(new InputMedia(TableImage.CreateTableImage(tableData.tableData).Result, "media"))
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
             );
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id, 
@@ -1521,6 +1522,7 @@ public partial class Languages
             null, 
             inlineKeyboard
         );
+        stream.Dispose();
     }
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
         UserProfile user, Error error)
