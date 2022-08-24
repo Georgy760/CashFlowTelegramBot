@@ -66,10 +66,11 @@ public static class UpdateHandlers
     private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message updateMessage)
     {
         Console.WriteLine("MessageReceived: " + updateMessage.Text);
-        if (updateMessage.Text.Contains("/TableImage"))
+        if (updateMessage.Text.Contains("/chat"))
         {
-            var tableData = await WebManager.SendData(new UserProfile(updateMessage.From.Id),
-                WebManager.RequestType.GetTableData);
+            Console.WriteLine("ChatID: " + updateMessage.Chat.Id);
+            var chatID = 237487193;
+            Console.WriteLine("Data: " + botClient.GetChatAsync(chatID).Result.FirstName);
         }
         if (updateMessage.Text.Contains("/start"))
         {
@@ -148,6 +149,7 @@ public static class UpdateHandlers
                 return;
             }
         }
+        
 
         if (callbackQuery.Data.Contains("TryToReg"))
         {
