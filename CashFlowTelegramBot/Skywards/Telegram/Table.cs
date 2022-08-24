@@ -23,11 +23,11 @@ public class Table
     public TableType tableType { get; set; }
     public int? bankerID { get; set; } = null;
     public int? managerA_ID { get; set; } = null;
-    public int? managerB_ID { get; set; } = null;
     public int? giverA_ID { get; set; } = null;
     public bool verf_A { get; set; }
     public int? giverB_ID { get; set; } = null;
     public bool verf_B { get; set; }
+    public int? managerB_ID { get; set; } = null;
     public int? giverC_ID { get; set; } = null;
     public bool verf_C { get; set; }
     public int? giverD_ID { get; set; } = null;
@@ -44,6 +44,11 @@ public class TableProfile : Table
     {
         TableType = TableType;
         TableRole = TableRole;
+    }
+
+    public TableProfile(int tableID)
+    {
+        this.tableID = tableID;
     }
 
     private TableType TableType { get; }
@@ -176,7 +181,123 @@ public class TableProfile : Table
 
         return result;
     }
+    public static string GetTableType(UserProfile user, TableType tableType)
+    {
+        var result = "";
+        switch (user.lang)
+        {
+            case "ru":
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        result = "🎗 Медный";
+                        break;
+                    case Table.TableType.bronze:
+                        result = "🥉 Бронзовый";
+                        break;
+                    case Table.TableType.silver:
+                        result = "🥈 Серебрянный";
+                        break;
+                    case Table.TableType.gold:
+                        result = "🥇 Золотой";
+                        break;
+                    case Table.TableType.platinum:
+                        result = "🎖 Платиновый";
+                        break;
+                    case Table.TableType.diamond:
+                        result = "💎 Алмазный";
+                        break;
+                    default:
+                        result = "empty";
+                        break;
+                }
 
+                break;
+            case "eng":
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        result = "🎗 Copper";
+                        break;
+                    case Table.TableType.bronze:
+                        result = "🥉 Bronze";
+                        break;
+                    case Table.TableType.silver:
+                        result = "🥈 Silver";
+                        break;
+                    case Table.TableType.gold:
+                        result = "🥇 Gold";
+                        break;
+                    case Table.TableType.platinum:
+                        result = "🎖 Platinum";
+                        break;
+                    case Table.TableType.diamond:
+                        result = "💎 Diamond";
+                        break;
+                    default:
+                        result = "empty";
+                        break;
+                }
+
+                break;
+            case "fr":
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        result = "🎗 Cuivre";
+                        break;
+                    case Table.TableType.bronze:
+                        result = "🥉 bronze";
+                        break;
+                    case Table.TableType.silver:
+                        result = "🥈 Argent";
+                        break;
+                    case Table.TableType.gold:
+                        result = "🥇 Doré";
+                        break;
+                    case Table.TableType.platinum:
+                        result = "🎖 Platine";
+                        break;
+                    case Table.TableType.diamond:
+                        result = "💎 Diamant";
+                        break;
+                    default:
+                        result = "empty";
+                        break;
+                }
+
+                break;
+            case "de":
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        result = "🎗 Kupfer";
+                        break;
+                    case Table.TableType.bronze:
+                        result = "🥉 Bronze";
+                        break;
+                    case Table.TableType.silver:
+                        result = "🥈 Silberner";
+                        break;
+                    case Table.TableType.gold:
+                        result = "🥇 Goldener";
+                        break;
+                    case Table.TableType.platinum:
+                        result = "🎖 Platin";
+                        break;
+                    case Table.TableType.diamond:
+                        result = "💎 Diamant";
+                        break;
+                    default:
+                        result = "empty";
+                        break;
+                }
+
+                break;
+        }
+
+        return result;
+    }
     public void PrintTableProfile()
     {
         Console.WriteLine("\ntableID: " + tableID + "\nTableType: " + tableType + "\nBankerID: " + bankerID +

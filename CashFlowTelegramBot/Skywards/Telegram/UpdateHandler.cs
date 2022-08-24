@@ -72,10 +72,10 @@ public static class UpdateHandlers
             var chatID = 237487193;
             Console.WriteLine("Data: " + botClient.GetChatAsync(chatID).Result.FirstName);
         }
-        if (updateMessage.Text.Contains("/start"))
+        /*if (updateMessage.Text.Contains("/start"))
         {
             Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
-        }
+        }*/
         if (updateMessage.Text.Contains("/start R"))
         {
             var splitMessage = updateMessage.Text.Split("R");
@@ -153,7 +153,6 @@ public static class UpdateHandlers
 
         if (callbackQuery.Data.Contains("TryToReg"))
         {
-            //GeorgyK1
             var refIdString = callbackQuery.Data.Split("|");
             var refId = Int32.Parse(refIdString[0]);
             var NewUser = new UserProfile(callbackQuery.From.Id, refId, callbackQuery.From.Username);
@@ -191,6 +190,35 @@ public static class UpdateHandlers
         }
         switch (callbackQuery.Data)
         {
+            //--------REG_LANG--------
+            case "Reg_RUCaptcha":
+                await Languages.Captcha(botClient, chatId, callbackQuery);
+                break;
+            case "Reg_RU":
+                user.AddLang("ru");
+                await Agreement(botClient, callbackQuery, user);
+                break;
+            case "Reg_ENGCaptcha":
+                await Languages.Captcha(botClient, chatId, callbackQuery);
+                break;
+            case "Reg_ENG":
+                user.AddLang("eng");
+                await Agreement(botClient, callbackQuery, user);
+                break;
+            case "Reg_FRCaptcha":
+                await Languages.Captcha(botClient, chatId, callbackQuery);
+                break;
+            case "Reg_FR":
+                user.AddLang("fr");
+                await Agreement(botClient, callbackQuery, user);
+                break;
+            case "Reg_DECaptcha":
+                await Languages.Captcha(botClient, chatId, callbackQuery);
+                break;
+            case "Reg_DE":
+                user.AddLang("de");
+                await Agreement(botClient, callbackQuery, user);
+                break;
             //--------MAIN_MENU--------
             case "MainMenu":
                 Languages.MainMenu(botClient, chatId, callbackQuery, userData.playerData.lang);
@@ -204,7 +232,7 @@ public static class UpdateHandlers
             //-//------CopperTable------\\-\\
             case "CopperTable":
                 Console.WriteLine("TableSelected: Copper");
-                if (userData.playerData.table_id == null)
+                if (userData.playerData.UserTableList.table_ID_copper == null)
                 {
                     Languages.Warning(botClient, chatId, callbackQuery, userData,
                         Table.TableType.copper);
@@ -226,7 +254,7 @@ public static class UpdateHandlers
             //-//------BronzeTable------\\-\\
             case "BronzeTable":
                 Console.WriteLine("TableSelected: Bronze");
-                if (userData.playerData.table_id == null)
+                if (userData.playerData.UserTableList.table_ID_bronze == null)
                 {
                     Languages.Warning(botClient, chatId, callbackQuery, userData,
                         Table.TableType.bronze);
@@ -249,10 +277,9 @@ public static class UpdateHandlers
             case "SilverTable":
                 Console.WriteLine("TableSelected: Silver");
                 if (userData.playerData.invited >= 2 ||
-                    Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true)
-                        .CompareTo(Table.TableType.silver) >= 0)
+                    userData.playerData.level_tableType.CompareTo(Table.TableType.silver) >= 0)
                 {
-                    if (userData.playerData.table_id == null)
+                    if (userData.playerData.UserTableList.table_ID_silver == null)
                     {
                         Languages.Warning(botClient, chatId, callbackQuery, userData,
                             Table.TableType.silver);
@@ -282,10 +309,9 @@ public static class UpdateHandlers
             case "GoldTable":
                 Console.WriteLine("TableSelected: Gold");
                 if (userData.playerData.invited >= 4 ||
-                    Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true)
-                        .CompareTo(Table.TableType.gold) >= 0)
+                    userData.playerData.level_tableType.CompareTo(Table.TableType.gold) >= 0)
                 {
-                    if (userData.playerData.table_id == null)
+                    if (userData.playerData.UserTableList.table_ID_silver == null)
                     {
                         Languages.Warning(botClient, chatId, callbackQuery, userData,
                             Table.TableType.gold);
@@ -315,10 +341,9 @@ public static class UpdateHandlers
             case "PlatinumTable":
                 Console.WriteLine("TableSelected: Platinum");
                 if (userData.playerData.invited >= 6 ||
-                    Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true)
-                        .CompareTo(Table.TableType.platinum) >= 0)
+                    userData.playerData.level_tableType.CompareTo(Table.TableType.platinum) >= 0)
                 {
-                    if (userData.playerData.table_id == null)
+                    if (userData.playerData.UserTableList.table_ID_platinum == null)
                     {
                         Languages.Warning(botClient, chatId, callbackQuery, userData,
                             Table.TableType.platinum);
@@ -348,10 +373,9 @@ public static class UpdateHandlers
             case "DiamondTable":
                 Console.WriteLine("TableSelected: Diamond");
                 if (userData.playerData.invited >= 12 ||
-                    Enum.Parse<Table.TableType>(userData.playerData.level_tableType, true)
-                        .CompareTo(Table.TableType.diamond) >= 0)
+                    userData.playerData.level_tableType.CompareTo(Table.TableType.diamond) >= 0)
                 {
-                    if (userData.playerData.table_id == null)
+                    if (userData.playerData.UserTableList.table_ID_diamond == null)
                     {
                         Languages.Warning(botClient, chatId, callbackQuery, userData,
                             Table.TableType.diamond);
@@ -385,16 +409,17 @@ public static class UpdateHandlers
             case "ConfirmLeaveTable":
                 await ConfirmLeaveTable(botClient, callbackQuery, userData);
                 break;
-            //-//-//---GetBankerData---\\-\\-\\
-            case "GetBankerData":
+            //-//-//---GetBankerData---\\-\\-\\ //TODO
+            /*case "GetBankerData":
             {
+                //var userTableList = await WebManager.SendData()
                 var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.bankerID != null)
                 {
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
                         WebManager.RequestType.GetUserData);
                     Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                        data.playerData, Table.TableRole.banker, tableData.tableData);
                 }
                 else
                 {
@@ -403,9 +428,9 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//---GetManagerAData---\\-\\-\\
-            case "GetManagerAData":
+            } */
+            //-//-//---GetManagerAData---\\-\\-\\ //TODO
+            /*case "GetManagerAData":
             {
                 var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.managerA_ID != null)
@@ -413,7 +438,7 @@ public static class UpdateHandlers
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
                         WebManager.RequestType.GetUserData);
                     Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                        data.playerData, Table.TableRole.manager, tableData.tableData);
                 }
                 else
                 {
@@ -422,9 +447,9 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//---GetManagerBData---\\-\\-\\
-            case "GetManagerBData":
+            }*/
+            //-//-//---GetManagerBData---\\-\\-\\ //TODO
+            /*case "GetManagerBData": 
             {
                 var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (tableData.tableData.managerB_ID != null)
@@ -432,7 +457,7 @@ public static class UpdateHandlers
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
                         WebManager.RequestType.GetUserData);
                     Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                        data.playerData, Table.TableRole.manager, tableData.tableData);
                 }
                 else
                 {
@@ -441,9 +466,9 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//---GetGiverAData---\\-\\-\\
-            case "GetGiverAData":
+            } */
+            //-//-//---GetGiverAData---\\-\\-\\ //TODO
+            /*case "GetGiverAData":
             {
                 Console.WriteLine("GetGiverAData");
                 var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
@@ -452,7 +477,7 @@ public static class UpdateHandlers
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
                         WebManager.RequestType.GetUserData);
                     Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                        data.playerData, Table.TableRole.giver, tableData.tableData);
                 }
                 else
                 {
@@ -461,9 +486,9 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//---GetGiverBData---\\-\\-\\
-            case "GetGiverBData":
+            }*/
+            //-//-//---GetGiverBData---\\-\\-\\ //TODO
+            /*case "GetGiverBData":
             {
                 Console.WriteLine("GetGiverBData");
                 var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
@@ -472,7 +497,7 @@ public static class UpdateHandlers
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
                         WebManager.RequestType.GetUserData);
                     Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                        data.playerData, Table.TableRole.giver, tableData.tableData);
                 }
                 else
                 {
@@ -481,9 +506,9 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//---GetGiverCData---\\-\\-\\
-            case "GetGiverCData":
+            }*/
+            //-//-//---GetGiverCData---\\-\\-\\ //TODO
+            /*case "GetGiverCData":
             {
                 Console.WriteLine("GetGiverCData");
                 var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
@@ -492,7 +517,7 @@ public static class UpdateHandlers
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
                         WebManager.RequestType.GetUserData);
                     Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                        data.playerData, Table.TableRole.giver, tableData.tableData);
                 }
                 else
                 {
@@ -501,9 +526,9 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//---GetGiverDData---\\-\\-\\
-            case "GetGiverDData":
+            }*/
+            //-//-//---GetGiverDData---\\-\\-\\ //TODO
+            /*case "GetGiverDData":
             {
                 Console.WriteLine("GetGiverDData");
                 var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
@@ -514,7 +539,7 @@ public static class UpdateHandlers
                     var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
                         WebManager.RequestType.GetUserData);
                     Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Enum.Parse<Table.TableRole>(userData.playerData.tableRole, true));
+                        data.playerData, Table.TableRole.giver, tableData.tableData);
                 }
                 else
                 {
@@ -523,8 +548,8 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//---ShowListTeam---\\-\\-\\
+            }*/
+            //-//-//---ShowListTeam---\\-\\-\\ 
             case "ShowListTeam":
             {
                 Languages.ShowListTeam(botClient, chatId, callbackQuery, userData.playerData.lang,
@@ -536,13 +561,13 @@ public static class UpdateHandlers
                 Languages.ShowTableAsImage(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //-//-//---RemoveFromTable---\\-\\-\\
-            //-//-//-//RemoveFromTableManagerA\\-\\-\\-\\
+            //-//-//-//RemoveFromTableManagerA\\-\\-\\-\\ //TODO
             case "RemoveFromTableManagerA":
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.RemoveFromTable);
                 break;
-            case "ConfirmRemoveFromTableManagerA":
-                dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+            /*case "ConfirmRemoveFromTableManagerA":
+                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.managerA_ID != null)
                 {
                     await WebManager.SendData(
@@ -552,13 +577,13 @@ public static class UpdateHandlers
                     SelectByTableType(botClient, callbackQuery, userData);
                 }
 
-                break;
-            //-//-//-//RemoveFromTableManagerB\\-\\-\\-\\
+                break;*/
+            //-//-//-//RemoveFromTableManagerB\\-\\-\\-\\ //TODO
             case "RemoveFromTableManagerB":
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.RemoveFromTable);
                 break;
-            case "ConfirmRemoveFromTableManagerB":
+            /*case "ConfirmRemoveFromTableManagerB":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.managerB_ID != null)
                 {
@@ -568,13 +593,13 @@ public static class UpdateHandlers
                     SelectByTableType(botClient, callbackQuery, userData);
                 }
 
-                break;
-            //-//-//-//RemoveFromTableGiverA\\-\\-\\-\\
+                break;*/
+            //-//-//-//RemoveFromTableGiverA\\-\\-\\-\\ //TODO
             case "RemoveFromTableGiverA":
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.RemoveFromTable);
                 break;
-            case "ConfirmRemoveFromTableGiverA":
+            /*case "ConfirmRemoveFromTableGiverA":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverA_ID != null)
                 {
@@ -584,13 +609,13 @@ public static class UpdateHandlers
                     SelectByTableType(botClient, callbackQuery, userData);
                 }
 
-                break;
-            //-//-//-//RemoveFromTableGiverB\\-\\-\\-\\
+                break;*/
+            //-//-//-//RemoveFromTableGiverB\\-\\-\\-\\ //TODO
             case "RemoveFromTableGiverB":
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.RemoveFromTable);
                 break;
-            case "ConfirmRemoveFromTableGiverB":
+            /*case "ConfirmRemoveFromTableGiverB":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverB_ID != null)
                 {
@@ -600,13 +625,13 @@ public static class UpdateHandlers
                     SelectByTableType(botClient, callbackQuery, userData);
                 }
 
-                break;
-            //-//-//-//RemoveFromTableGiverC\\-\\-\\-\\
+                break;*/
+            //-//-//-//RemoveFromTableGiverC\\-\\-\\-\\ //TODO
             case "RemoveFromTableGiverC":
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.RemoveFromTable);
                 break;
-            case "ConfirmRemoveFromTableGiverC":
+            /*case "ConfirmRemoveFromTableGiverC":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverC_ID != null)
                 {
@@ -616,13 +641,13 @@ public static class UpdateHandlers
                     SelectByTableType(botClient, callbackQuery, userData);
                 }
 
-                break;
-            //-//-//-//RemoveFromTableGiverD\\-\\-\\-\\
+                break;*/
+            //-//-//-//RemoveFromTableGiverD\\-\\-\\-\\ //TODO
             case "RemoveFromTableGiverD":
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.RemoveFromTable);
                 break;
-            case "ConfirmRemoveFromTableGiverD":
+            /*case "ConfirmRemoveFromTableGiverD":
                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverD_ID != null)
                 {
@@ -632,16 +657,16 @@ public static class UpdateHandlers
                     SelectByTableType(botClient, callbackQuery, userData);
                 }
 
-                break;
+                break;*/
             //-//-//---VerfGiver---\\-\\-\\
-            //-//-//-//VerfGiverA\\-\\-\\-\\
+            //-//-//-//VerfGiverA\\-\\-\\-\\ //TODO
             case "VerfGiverA":
             {
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.Confirm);
                 break;
             }
-            case "ConfirmVerfGiverA":
+            /*case "ConfirmVerfGiverA":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
@@ -656,15 +681,15 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//-//VerfGiverB\\-\\-\\-\\
+            }*/
+            //-//-//-//VerfGiverB\\-\\-\\-\\ //TODO
             case "VerfGiverB":
             {
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.Confirm);
                 break;
             }
-            case "ConfirmVerfGiverB":
+            /*case "ConfirmVerfGiverB":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverB_ID != null)
@@ -679,14 +704,15 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
+            }*/
+            //-//-//-//VerfGiverC\\-\\-\\-\\ //TODO
             case "VerfGiverC":
             {
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.Confirm);
                 break;
             }
-            case "ConfirmVerfGiverC":
+            /*case "ConfirmVerfGiverC":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverC_ID != null)
@@ -701,15 +727,15 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
-            //-//-//-//VerfGiverD\\-\\-\\-\\
+            }*/
+            //-//-//-//VerfGiverD\\-\\-\\-\\ //TODO
             case "VerfGiverD":
             {
                 Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                     WebManager.RequestType.Confirm);
                 break;
             }
-            case "ConfirmVerfGiverD":
+            /*case "ConfirmVerfGiverD":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
                 if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverD_ID != null)
@@ -724,11 +750,11 @@ public static class UpdateHandlers
                 }
 
                 break;
-            }
+            }*/
             //--------STATUS--------\\
             case "Status":
                 Console.WriteLine("Status");
-                Languages.Status(botClient, chatId, userData.playerData);
+                Languages.Status(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //--------Info--------\\
             case "Info":
@@ -771,36 +797,7 @@ public static class UpdateHandlers
                 await ChangeLang(botClient, callbackQuery, user);
                 Console.WriteLine("de");
                 break;
-            //--------REG_LANG--------
-            case "Reg_RUCaptcha":
-                await Languages.Captcha(botClient, chatId, callbackQuery);
-                break;
-            case "Reg_RU":
-                user.AddLang("ru");
-                await Agreement(botClient, callbackQuery, user);
-                break;
-            case "Reg_ENGCaptcha":
-                await Languages.Captcha(botClient, chatId, callbackQuery);
-                break;
-            case "Reg_ENG":
-                user.AddLang("eng");
-                await Agreement(botClient, callbackQuery, user);
-                break;
-            case "Reg_FRCaptcha":
-                await Languages.Captcha(botClient, chatId, callbackQuery);
-                break;
-            case "Reg_FR":
-                user.AddLang("fr");
-                await Agreement(botClient, callbackQuery, user);
-                break;
-            case "Reg_DECaptcha":
-                await Languages.Captcha(botClient, chatId, callbackQuery);
-                break;
-            case "Reg_DE":
-                user.AddLang("de");
-                await Agreement(botClient, callbackQuery, user);
-                break;
-
+            
 
             default:
                 Console.WriteLine("\nWrong data");
@@ -822,32 +819,32 @@ public static class UpdateHandlers
     {
         switch (userData.playerData.level_tableType)
         {
-            case "copper":
+            case Table.TableType.copper:
             {
                 Languages.Tables.Copper(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
-            case "bronze":
+            case Table.TableType.bronze:
             {
                 Languages.Tables.Bronze(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
-            case "silver":
+            case Table.TableType.silver:
             {
                 Languages.Tables.Silver(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
-            case "gold":
+            case Table.TableType.gold:
             {
                 Languages.Tables.Gold(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
-            case "platinum":
+            case Table.TableType.platinum:
             {
                 Languages.Tables.Platinum(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;
             }
-            case "diamond":
+            case Table.TableType.diamond:
             {
                 Languages.Tables.Diamond(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData);
                 break;

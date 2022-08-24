@@ -560,7 +560,7 @@ public partial class Languages
                             verf = @"✅ Все дарители подтверждены\!";
                         else verf = @"❌ Не все дарители подтверждены\!";
                         caption = "*Добро пожаловать на*" + "\n" +
-                                  $@"*{userData.playerData.GetTableType()} стол\!*" + "\n" +
+                                  $@"*{TableProfile.GetTableType(userData.playerData,tableType)} стол\!*" + "\n" +
                                   $"*ID стола:* {tableData.tableData.tableID}" +
                                   $"\n\n*{verf}*" +
                                   $"\n\n*Всего дарителей на столе:* {giverCount} из 4" + "\n" +
@@ -609,7 +609,7 @@ public partial class Languages
                             verf = @"✅ All Givers are confirmed\!";
                         else verf = @"❌ Not all Givers are verified\!";
                         caption = "*Welcome to*" + "\n" +
-                                  $@"*{userData.playerData.GetTableType()} table\!*" + "\n" +
+                                  $@"*{TableProfile.GetTableType(userData.playerData,tableType)} table\!*" + "\n" +
                                   $"*Table ID: * {tableData.tableData.tableID}" +
                                   $"\n\n*{verf}*" +
                                   $"\n\n*Total givers on the table:* {giverCount} of 4" + "\n" +
@@ -657,7 +657,7 @@ public partial class Languages
                             verf = @"✅ Tous les Donneurs sont confirmés\!";
                         else verf = @"❌ Tous les Donneurs ne sont pas vérifiés\!";
                         caption = "*Bienvenue à table*" + "\n" +
-                                  $@"*{userData.playerData.GetTableType()}\!*" + "\n" +
+                                  $@"*{TableProfile.GetTableType(userData.playerData,tableType)}\!*" + "\n" +
                                   $"*ID de table: * {tableData.tableData.tableID}" +
                                   $"\n\n*{verf}*" +
                                   $"\n\n*Total des donateurs sur la table:* {giverCount} sur 4" + "\n" +
@@ -705,7 +705,7 @@ public partial class Languages
                             verf = @"✅ Alle Geber sind bestätigt\!";
                         else verf = @"❌ Nicht alle Geber sind verifiziert\!";
                         caption = "*Willkommen am*" + "\n" +
-                                  $@"*{userData.playerData.GetTableType()} tisch\!*" + "\n" +
+                                  $@"*{TableProfile.GetTableType(userData.playerData,tableType)} tisch\!*" + "\n" +
                                   $@"*Tabellen\-ID: * {tableData.tableData.tableID}" +
                                   $"\n\n*{verf}*" +
                                   $"\n\n*Gesamtzahl der Geber auf dem Tisch:* {giverCount} von 4" + "\n" +
@@ -738,7 +738,7 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                 }
                             });
-                        caption = $"*Добро пожаловать на {userData.playerData.GetTableType()}*" +
+                        caption = $"*Добро пожаловать на {TableProfile.GetTableType(userData.playerData,tableType)}*" +
                                   $"\n\n*ID стола:* {tableData.tableData.tableID}" +
                                   "\n\n*Фиксированный курс:*\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" + 
@@ -774,7 +774,7 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                 }
                             });
-                        caption = $"*Welcome to {userData.playerData.GetTableType()}*" +
+                        caption = $"*Welcome to {TableProfile.GetTableType(userData.playerData,tableType)}*" +
                                   $"\n\n*Table ID:* {tableData.tableData.tableID}" +
                                   "\n\n*Fixed exchange rate:*" + "\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" +
@@ -810,7 +810,7 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                 }
                             });
-                        caption = $"*Bienvenue à {userData.playerData.GetTableType()}*" +
+                        caption = $"*Bienvenue à {TableProfile.GetTableType(userData.playerData,tableType)}*" +
                                   $"\n\n*Identifiant du tableau:* {tableData.tableData.tableID}" +
                                   "\n\n*Taux de change fixe:*" + "\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" +
@@ -848,7 +848,7 @@ public partial class Languages
                                 }
                             });
                         
-                        caption = $"*Willkommen bei {userData.playerData.GetTableType()}*" +
+                        caption = $"*Willkommen bei {TableProfile.GetTableType(userData.playerData,tableType)}*" +
                                   "\n\n" +
                                   $@"*Tabellen\-ID:* {tableData.tableData.tableID}" +
                                   "\n\n*Fester Wechselkurs:*" + "\n" +
@@ -1214,7 +1214,7 @@ public partial class Languages
                         verf = "✅ Все дарители подтверждены!";
                     else verf = "❌ Не все дарители подтверждены!";
                     caption = "*Добро пожаловать на*" +
-                              $"\n*{userData.playerData.GetTableType()} стол!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} стол!*" +
                               $"*ID стола: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Всего дарителей на столе:* {giverCount} из 4" +
@@ -1263,7 +1263,7 @@ public partial class Languages
                         verf = "✅ All Givers are confirmed!";
                     else verf = "❌ Not all Givers are verified!";
                     caption = "*Welcome to*" +
-                              $"\n*{userData.playerData.GetTableType()} table!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} table!*" +
                               $"*Table ID: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Total givers on the table:* {giverCount} of 4" +
@@ -1311,7 +1311,7 @@ public partial class Languages
                         verf = "✅ Tous les Donneurs sont confirmés!";
                     else verf = "❌ Tous les Donneurs ne sont pas vérifiés!";
                     caption = "*Bienvenue à table*" +
-                              $"\n*{userData.playerData.GetTableType()}!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)}!*" +
                               $"*ID de table: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Total des donateurs sur la table:* {giverCount} sur 4" +
@@ -1359,7 +1359,7 @@ public partial class Languages
                         verf = "✅ Alle Geber sind bestätigt!";
                     else verf = "❌ Nicht alle Geber sind verifiziert!";
                     caption = "*Willkommen am*" +
-                              $"\n*{userData.playerData.GetTableType()} tisch!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} tisch!*" +
                               $"*Tabellen-ID: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Gesamtzahl der Geber auf dem Tisch:* {giverCount} von 4" +
@@ -1682,7 +1682,7 @@ public partial class Languages
                         verf = "✅ Все дарители подтверждены!";
                     else verf = "❌ Не все дарители подтверждены!";
                     caption = "*Добро пожаловать на*" +
-                              $"\n*{userData.playerData.GetTableType()} стол!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} стол!*" +
                               $"*ID стола: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Всего дарителей на столе:* {giverCount} из 4" +
@@ -1731,7 +1731,7 @@ public partial class Languages
                         verf = "✅ All Givers are confirmed!";
                     else verf = "❌ Not all Givers are verified!";
                     caption = "*Welcome to*" +
-                              $"\n*{userData.playerData.GetTableType()} table!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} table!*" +
                               $"*Table ID: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Total givers on the table:* {giverCount} of 4" +
@@ -1779,7 +1779,7 @@ public partial class Languages
                         verf = "✅ Tous les Donneurs sont confirmés!";
                     else verf = "❌ Tous les Donneurs ne sont pas vérifiés!";
                     caption = "*Bienvenue à table*" +
-                              $"\n*{userData.playerData.GetTableType()}!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)}!*" +
                               $"*ID de table: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Total des donateurs sur la table:* {giverCount} sur 4" +
@@ -1827,7 +1827,7 @@ public partial class Languages
                         verf = "✅ Alle Geber sind bestätigt!";
                     else verf = "❌ Nicht alle Geber sind verifiziert!";
                     caption = "*Willkommen am*" +
-                              $"\n*{userData.playerData.GetTableType()} tisch!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} tisch!*" +
                               $"*Tabellen-ID: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Gesamtzahl der Geber auf dem Tisch:* {giverCount} von 4" +
@@ -1855,24 +1855,100 @@ public partial class Languages
             UserData userData,
             Table.TableType tableType)
         {
-            switch (userData.playerData.tableRole)
+            switch (tableType)
             {
-                case "giver":
-                    Giver(botClient, chatId, callbackData, tableType, userData);
+                case Table.TableType.copper:
+                    switch (userData.playerData.UserTableList.copperTableRole)
+                    {
+                        case Table.TableRole.giver:
+                            Giver(botClient, chatId, callbackData, Table.TableType.copper, userData);
+                            break;
+                        case Table.TableRole.manager:
+                            Manager(botClient, chatId, callbackData, Table.TableType.copper, userData);
+                            break;
+                        case Table.TableRole.banker:
+                            Banker(botClient, chatId, callbackData, Table.TableType.copper, userData);
+                            break;
+                    }
                     break;
-                case "manager":
-                    Manager(botClient, chatId, callbackData, tableType, userData);
+                case Table.TableType.bronze:
+                    switch (userData.playerData.UserTableList.bronzeTableRole)
+                    {
+                        case Table.TableRole.giver:
+                            Giver(botClient, chatId, callbackData, Table.TableType.bronze, userData);
+                            break;
+                        case Table.TableRole.manager:
+                            Manager(botClient, chatId, callbackData, Table.TableType.bronze, userData);
+                            break;
+                        case Table.TableRole.banker:
+                            Banker(botClient, chatId, callbackData, Table.TableType.bronze, userData);
+                            break;
+                    }
                     break;
-                case "banker":
-                    Banker(botClient, chatId, callbackData, tableType, userData);
+                case Table.TableType.silver:
+                    switch (userData.playerData.UserTableList.silverTableRole)
+                    {
+                        case Table.TableRole.giver:
+                            Giver(botClient, chatId, callbackData, Table.TableType.silver, userData);
+                            break;
+                        case Table.TableRole.manager:
+                            Manager(botClient, chatId, callbackData, Table.TableType.silver, userData);
+                            break;
+                        case Table.TableRole.banker:
+                            Banker(botClient, chatId, callbackData, Table.TableType.silver, userData);
+                            break;
+                    }
+                    break;
+                case Table.TableType.gold:
+                    switch (userData.playerData.UserTableList.goldTableRole)
+                    {
+                        case Table.TableRole.giver:
+                            Giver(botClient, chatId, callbackData, Table.TableType.gold, userData);
+                            break;
+                        case Table.TableRole.manager:
+                            Manager(botClient, chatId, callbackData, Table.TableType.gold, userData);
+                            break;
+                        case Table.TableRole.banker:
+                            Banker(botClient, chatId, callbackData, Table.TableType.gold, userData);
+                            break;
+                    }
+                    break;
+                case Table.TableType.platinum:
+                    switch (userData.playerData.UserTableList.platinumTableRole)
+                    {
+                        case Table.TableRole.giver:
+                            Giver(botClient, chatId, callbackData, Table.TableType.platinum, userData);
+                            break;
+                        case Table.TableRole.manager:
+                            Manager(botClient, chatId, callbackData, Table.TableType.platinum, userData);
+                            break;
+                        case Table.TableRole.banker:
+                            Banker(botClient, chatId, callbackData, Table.TableType.platinum, userData);
+                            break;
+                    }
+                    break;
+                case Table.TableType.diamond:
+                    switch (userData.playerData.UserTableList.diamondTableRole)
+                    {
+                        case Table.TableRole.giver:
+                            Giver(botClient, chatId, callbackData, Table.TableType.diamond, userData);
+                            break;
+                        case Table.TableRole.manager:
+                            Manager(botClient, chatId, callbackData, Table.TableType.diamond, userData);
+                            break;
+                        case Table.TableRole.banker:
+                            Banker(botClient, chatId, callbackData, Table.TableType.diamond, userData);
+                            break;
+                    }
                     break;
             }
+            
         }
 
         public static async void Copper(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
             UserData userData) 
         {
-            userData.playerData.level_tableType = "copper";
+            userData.playerData.level_tableType = Table.TableType.copper;
             var tableType = Table.TableType.copper;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
@@ -1952,7 +2028,7 @@ public partial class Languages
         public static async void Bronze(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
             UserData userData)
         {
-            userData.playerData.level_tableType = "bronze";
+            userData.playerData.level_tableType = Table.TableType.bronze;
             var tableType = Table.TableType.bronze;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
@@ -2032,7 +2108,7 @@ public partial class Languages
         public static async void Silver(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
             UserData userData)
         {
-            userData.playerData.level_tableType = "silver";
+            userData.playerData.level_tableType = Table.TableType.silver;
             var tableType = Table.TableType.silver;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
@@ -2112,7 +2188,7 @@ public partial class Languages
         public static async void Gold(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
             UserData userData)
         {
-            userData.playerData.level_tableType = "gold";
+            userData.playerData.level_tableType = Table.TableType.gold;
             var tableType = Table.TableType.gold;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
@@ -2192,7 +2268,7 @@ public partial class Languages
         public static async void Platinum(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
             UserData userData)
         {
-            userData.playerData.level_tableType = "platinum";
+            userData.playerData.level_tableType = Table.TableType.platinum;
             var tableType = Table.TableType.platinum;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)
@@ -2272,7 +2348,7 @@ public partial class Languages
         public static async void Diamond(ITelegramBotClient botClient, long chatId,
             CallbackQuery callbackData, UserData userData)
         {
-            userData.playerData.level_tableType = "diamond";
+            userData.playerData.level_tableType = Table.TableType.diamond;
             var tableType = Table.TableType.diamond;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (!data.error.isError)

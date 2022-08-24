@@ -210,8 +210,9 @@ public partial class Languages
     public static async void GetUserData(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
         string lang,
         UserProfile SearchedUser,
-        Table.TableRole tableRole)
-    {
+        Table.TableRole tableRole, TableProfile tableData)
+    { //TODO
+        /*
         string path = null;
         string? caption = null;
         
@@ -1199,6 +1200,7 @@ public partial class Languages
             null,
             inlineKeyboard
         );
+        */
     }
     private static string GetCallbackAddress(Table.TableType tableType)
     {
@@ -1260,7 +1262,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.bankerID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData.bankerID == user.id);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.bankerID == user.id);
                 //if (table.tableData.bankerID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🏦Банкир: @{userData.playerData.username}\n";
             }
@@ -1273,7 +1275,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerA_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData.managerA_ID == user.id);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.managerA_ID == user.id);
                 //if (table.tableData.managerA_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"👤Менеджер-1: @{userData.playerData.username}\n";
             }
@@ -1286,7 +1288,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerB_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData.managerB_ID == user.id);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.managerB_ID == user.id);
                 //if (table.tableData.managerB_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"👤Менеджер-2: @{userData.playerData.username}\n";
             }
@@ -1299,7 +1301,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverA_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData.giverA_ID == user.id, table.tableData.verf_A, 1);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.giverA_ID == user.id, table.tableData.verf_A, 1);
                 //if (table.tableData.giverA_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-1: @{userData.playerData.username}\n";
             }
@@ -1312,7 +1314,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverB_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData.giverB_ID == user.id, table.tableData.verf_B, 2);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.giverB_ID == user.id, table.tableData.verf_B, 2);
                 //if (table.tableData.giverB_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-2: @{userData.playerData.username}\n";
             }
@@ -1325,7 +1327,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverC_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData.giverC_ID == user.id, table.tableData.verf_C, 3);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.giverC_ID == user.id, table.tableData.verf_C, 3);
                 //if (table.tableData.giverC_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-3: @{userData.playerData.username}\n";
             }
@@ -1338,7 +1340,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverD_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData.giverD_ID == user.id, table.tableData.verf_D, 4);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.giverD_ID == user.id, table.tableData.verf_D, 4);
                 //if (table.tableData.giverD_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-4: @{userData.playerData.username}\n";
             }
@@ -2168,17 +2170,11 @@ public partial class Languages
             inlineKeyboard
         );
     }
-    public static async void Status(ITelegramBotClient botClient, long chatId, UserProfile userData)
+    public static async void Status(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
+        UserProfile userData)
     {
+        //GetTableData - TableIsNotFound - ERROR
         string path = null;
-        var tableData = await WebManager.SendData(userData, WebManager.RequestType.GetTableData);
-        string tableType;
-        string tableRole;
-        var giverCount = 0;
-        if (tableData.tableData.giverA_ID != null) giverCount++;
-        if (tableData.tableData.giverB_ID != null) giverCount++;
-        if (tableData.tableData.giverC_ID != null) giverCount++;
-        if (tableData.tableData.giverD_ID != null) giverCount++;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images/MainMenu/status.png");
@@ -2186,11 +2182,8 @@ public partial class Languages
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                 @"Images\MainMenu\status.png");
-        InlineKeyboardMarkup? inlineKeyboard;
-        Message? sentMessage;
-        tableRole = userData.GetTableRole(userData.lang);
-        userData.level_tableType = tableData.tableData.tableType.ToString();
-        tableType = userData.GetTableType();
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        string? caption = null;
         switch (userData.lang)
         {
             case "ru":
@@ -2207,41 +2200,26 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuRU
                         }
                     });
-                if (userData.table_id != null)
-                {
-                    if (userData.refId != null)
-                    {
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"\nВаш ID: {userData.id}\nВаш ник: @{userData.username}\nФиксированный курс:\n📈 1$ = 0.98€ = 62₽" +
-                            $"\n\nВас пригласил: @{userData.invitedBy}\nЛично приглашенных: {userData.invited}" +
-                            $"\nВаши столы:\n\n{tableType} стол " +
-                            $"\nВаша роль: ({tableRole})\nВсего дарителей на столе: {giverCount} из 4",
-                            replyMarkup: inlineKeyboard);
-                    }
-                    else
-                    {
-                        var sentPhoto = await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path)!,
-                            $"\nВаш ID: {userData.id}\nВаш ник: @{userData.username}\nФиксированный курс:\n📈 1$ = 0.98€ = 62₽" +
-                            $"\n\nВас пригласил: @{userData.invitedBy}\nЛично приглашенных: {userData.invited}" +
-                            $"\nВаши столы:\n\n{tableType} стол " +
-                            $"\n\nВаша роль: ({tableRole})\nВсего дарителей на столе: {giverCount} из 4",
-                            replyMarkup: inlineKeyboard);
-                    }
-                }
-                else
-                {
-                    var sentPhoto = await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path)!,
-                        $"\nВаш ID: {userData.id}\nВаш ник: @{userData.username}\nФиксированный курс:\n📈 1$ = 0.98€ = 62₽" +
-                        $"\n\nВас пригласил: @{userData.invitedBy}\nЛично приглашенных: {userData.invited}",
-                        replyMarkup: inlineKeyboard);
-                }
-
+                caption = "🔖 <b>Мой статус</b>" +
+                          "\n\n" +
+                          $"<b>Ваш ID:</b> {userData.id}" +
+                          "\n" +
+                          $"<b>Ваш ник:</b> @{userData.username}" +
+                          "\n" +
+                          $"<b>Лично приглашённых:</b> {userData.invited}" +
+                          "\n" +
+                          $"<b>Общая команда:</b> {userData.team}" +
+                          "\n\n" +
+                          $"<b>Получено подарков на сумму:</b> {userData.giftsReceived}$" +
+                          "\n" +
+                          "<b>Фиксированный курс:</b>" +
+                          "\n" +
+                          "📈 1$ = 0.98€ = 62₽" +
+                          "\n\n" +
+                          $"<b>Вас пригласил:</b> @{userData.invitedBy}" +
+                          "\n" +
+                          "<b>Ваши столы:</b>" +
+                          "\n";
                 break;
             case "eng":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2257,28 +2235,26 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuENG
                         }
                     });
-
-                if (userData.refId != null)
-                {
-                    var sentPhoto = await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path)!,
-                        $"\nYour ID: {userData.id}\nYour nickname: @{userData.username}\nFixed rate:\n📈 1$ = 0.98€ = 62₽" +
-                        $"\n\nInvited by: @{userData.invitedBy}\nYour Invites: {userData.invited}" +
-                        $"\nYour tables:\n\n{tableType} table: ({tableRole})\nGivers on table: {giverCount} of 4",
-                        replyMarkup: inlineKeyboard);
-                }
-                else
-                {
-                    var sentPhoto = await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path)!,
-                        $"\nYour ID: {userData.id}\nYour nickname: @{userData.username}\nFixed rate:\n📈 1$ = 0.98€ = 62₽" +
-                        $"\n\nYour Invites: {userData.invited}" +
-                        $"\nYour tables:\n\n{tableType} table: ({tableRole})\nGivers on table: {giverCount} of 4",
-                        replyMarkup: inlineKeyboard);
-                }
-
+                caption = "🔖 <b>My Status</b>" +
+                          "\n\n" +
+                          $"<b>Your ID:</b> {userData.id}" +
+                          "\n" +
+                          $"<b>Your nickname:</b> @{userData.username}" +
+                          "\n" +
+                          $"<b>Personally invited:</b> {userData.invited}" +
+                          "\n" +
+                          $"<b>Common team:</b> {userData.team}" +
+                          "\n\n" +
+                          $"<b>Gifts worth:</b> {userData.giftsReceived}$" +
+                          "\n" +
+                          "<b>Fixed exchange rate:</b>" +
+                          "\n" +
+                          "📈 1$ = 0.98€ = 62₽" +
+                          "\n\n" +
+                          $"<b>You were invited by:</b> @{userData.invitedBy}" +
+                          "\n" +
+                          "<b>Your tables:</b>" +
+                          "\n";
                 break;
             case "fr":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2294,26 +2270,26 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuFR
                         }
                     });
-                if (userData.refId != null)
-                {
-                    var sentPhoto = await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path)!,
-                        $"\nVotre identifiant: {userData.id}\nTon surnom: @{userData.username}\nTaux fixe :\n📈 1$ = 0.98€ = 62₽" +
-                        $"\n\nInviter par: @{userData.invitedBy}\nAuto-invité: {userData.invited}" +
-                        $"\nVos tableaux:\n\n{tableType} table: ({tableRole})\nDonneurs sur table: {giverCount} sur 4",
-                        replyMarkup: inlineKeyboard);
-                }
-                else
-                {
-                    var sentPhoto = await botClient.SendPhotoAsync(
-                        chatId,
-                        $"\nVotre identifiant: {userData.id}\nTon surnom: @{userData.username}\nTaux fixe :\n📈 1$ = 0.98€ = 62₽" +
-                        $"\n\nAuto-invité: {userData.invited}" +
-                        $"\nVos tableaux:\n\n{tableType} table: ({tableRole})\nDonneurs sur table: {giverCount} sur 4",
-                        replyMarkup: inlineKeyboard);
-                }
-
+                caption = "🔖 <b>Mon statut</b>" +
+                          "\n\n" +
+                          $"<b>Votre identifiant:</b> {userData.id}" +
+                          "\n" +
+                          $"<b>Votre surnom:</b> @{userData.username}" +
+                          "\n" +
+                          $"<b>Personnellement invité:</b> {userData.invited}" +
+                          "\n" +
+                          $"<b>Équipe commune:</b> {userData.team}" +
+                          "\n\n" +
+                          $"<b>Valeur des cadeaux:</b> {userData.giftsReceived}$"+
+                          "\n" +
+                          "<b>Taux de change fixe:</b>" +
+                          "\n" +
+                          "📈 1$ = 0,98€ = 62₽" +
+                          "\n\n" +
+                          $"<b>Vous avez été invité par:</b> @{userData.invitedBy}" +
+                          "\n" +
+                          "<b>Vos tableaux:</b>" +
+                          "\n";
                 break;
             case "de":
                 inlineKeyboard = new InlineKeyboardMarkup(
@@ -2329,29 +2305,718 @@ public partial class Languages
                             InlineKeyboardButtonMainMenuDE
                         }
                     });
-                if (userData.refId != null)
-                {
-                    var sentPhoto = await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path)!,
-                        $"\nIhre ID: {userData.id}\nDein Spitzname: @{userData.username}\nFester Zinssatz:\n1$ = 62₽ = 0.98€" +
-                        $"\n\nDich eingeladen: @{userData.invitedBy}\nPersönlich eingeladen: {userData.invited}" +
-                        $"\nIhre Tische:\n\n{tableType} Tisch: ({tableRole})\nGesamtspender auf dem Tisch: {giverCount} von 4",
-                        replyMarkup: inlineKeyboard);
-                }
-                else
-                {
-                    var sentPhoto = await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path)!,
-                        $"\nIhre ID: {userData.id}\nDein Spitzname: @{userData.username}\nFester Zinssatz:\n1$ = 62₽ = 0.98€" +
-                        $"\n\nPersönlich eingeladen: {userData.invited}" +
-                        $"\nIhre Tische:\n\n{tableType} Tisch: ({tableRole})\nGesamtspender auf dem Tisch: {giverCount} von 4",
-                        replyMarkup: inlineKeyboard);
-                }
-
+                caption = "🔖 <b>Mein Status</b>" +
+                          "\n\n" +
+                          $"<b>Ihre ID:</b> {userData.id}" +
+                          "\n" +
+                          $"<b>Ihr Nickname:</b> @{userData.username}" +
+                          "\n" +
+                          $"<b>Persönlich eingeladen:</b> {userData.invited}" +
+                          "\n" +
+                          $"<b>Gemeinsames Team:</b> {userData.team}" +
+                          "\n\n" +
+                          $"<b>Geschenke im Wert von:</b> {userData.giftsReceived}$" +
+                          "\n" +
+                          "<b>Fester Wechselkurs:</b>" +
+                          "\n" +
+                          "📈 1$ = 0,98€ = 62₽" +
+                          "\n\n" +
+                          $"<b>Sie wurden eingeladen von:</b> @{userData.invitedBy}" +
+                          "\n" +
+                          "<b>Ihre Tabellen:</b>" +
+                          "\n";
                 break;
         }
+        var copper = false;
+        var bronze = false;
+        var silver = false;
+        var gold = false;
+        var platinum = false;
+        var diamond = false;
+        
+        var IsGiverVerf = false;
+        string tableType;
+        string tableRole;
+        
+        if (userData.UserTableList.table_ID_copper != null)
+        {
+            var tableDataCopper = await WebManager.SendData(
+                new TableProfile((int) userData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+
+            copper = true;
+            var giverCountCopper = 0;
+            tableRole = userData.GetTableRole(userData.lang);
+            if (tableDataCopper.tableData.giverA_ID != null)
+            {
+                if (tableDataCopper.tableData.giverA_ID == userData.id)
+                {
+                    if (tableDataCopper.tableData.verf_A)
+                        IsGiverVerf = true;
+                }
+                giverCountCopper++;
+            }
+            if (tableDataCopper.tableData.giverB_ID != null)
+            {
+                if (tableDataCopper.tableData.giverB_ID == userData.id)
+                {
+                    if (tableDataCopper.tableData.verf_B)
+                        IsGiverVerf = true;
+                }
+                giverCountCopper++;
+            }
+            if (tableDataCopper.tableData.giverC_ID != null)
+            {
+                if (tableDataCopper.tableData.giverC_ID == userData.id)
+                {
+                    if (tableDataCopper.tableData.verf_C)
+                        IsGiverVerf = true;
+                }
+                giverCountCopper++;
+            }
+            if (tableDataCopper.tableData.giverD_ID != null)
+            {
+                if (tableDataCopper.tableData.giverD_ID == userData.id)
+                {
+                    if (tableDataCopper.tableData.verf_D)
+                        IsGiverVerf = true;
+                }
+                giverCountCopper++;
+            }
+            tableType = TableProfile.GetTableType(userData, Table.TableType.copper);
+            switch (userData.lang)
+            {
+                case "ru":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ваша роль: {tableRole}" +
+                               "\n" +
+                               $"Всего дарителей на столе: {giverCountCopper} из 4";
+                    if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Вы активированы на столе";
+                        else caption += "❌ Вы не активированы на столе";
+
+                    }
+                    break;
+                case "eng":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Your role: {tableRole}" +
+                               "\n" +
+                               $"Total givers on the table: {giverCountCopper} of 4";
+                    if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ You are activated on the table";
+                        else caption += "❌ You are not activated on the table";
+
+                    }
+                    break;
+                case "fr":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Votre rôle: {tableRole}" +
+                               "\n" +
+                               $"Total des donateurs sur la table: {giverCountCopper} sur 4";
+                    if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Vous êtes activé sur la table";
+                        else caption += "❌ Vous n'êtes pas activé sur la table";
+
+                    }
+                    break;
+                case "de": 
+                    caption += "\n" + 
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ihre Rolle: {tableRole}" +
+                               "\n" +
+                               $"Gesamtzahl der Geber auf dem Tisch: {giverCountCopper} von 4";
+                    if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Du bist auf dem Tisch aktiviert";
+                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+
+                    }
+                    break;
+            }
+        }
+
+        if (userData.UserTableList.table_ID_bronze != null)
+        {
+            var tableDataBronze = await WebManager.SendData(
+                new TableProfile((int) userData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+            
+            bronze = true;
+            var giverCountBronze = 0;
+            tableRole = userData.GetTableRole(userData.lang);
+            if (tableDataBronze.tableData.giverA_ID != null)
+            {
+                if (tableDataBronze.tableData.giverA_ID == userData.id)
+                {
+                    if (tableDataBronze.tableData.verf_A)
+                        IsGiverVerf = true;
+                }
+                giverCountBronze++;
+            }
+
+            if (tableDataBronze.tableData.giverB_ID != null)
+            {
+                if (tableDataBronze.tableData.giverB_ID == userData.id)
+                {
+                    if (tableDataBronze.tableData.verf_B)
+                        IsGiverVerf = true;
+                }
+                giverCountBronze++;
+            }
+            if (tableDataBronze.tableData.giverC_ID != null)
+            {
+                if (tableDataBronze.tableData.giverC_ID == userData.id)
+                {
+                    if (tableDataBronze.tableData.verf_C)
+                        IsGiverVerf = true;
+                }
+                giverCountBronze++;
+            }
+            if (tableDataBronze.tableData.giverD_ID != null)
+            {
+                if (tableDataBronze.tableData.giverD_ID == userData.id)
+                {
+                    if (tableDataBronze.tableData.verf_D)
+                        IsGiverVerf = true;
+                }
+                giverCountBronze++;
+            }
+            tableType = TableProfile.GetTableType(userData, Table.TableType.bronze);
+            switch (userData.lang)
+            {
+                case "ru":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ваша роль: {tableRole}" +
+                               "\n" +
+                               $"Всего дарителей на столе: {giverCountBronze} из 4";
+                    if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Вы активированы на столе";
+                        else caption += "❌ Вы не активированы на столе";
+
+                    }
+                    break;
+                case "eng":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Your role: {tableRole}" +
+                               "\n" +
+                               $"Total givers on the table: {giverCountBronze} of 4";
+                    if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ You are activated on the table";
+                        else caption += "❌ You are not activated on the table";
+
+                    }
+                    break;
+                case "fr":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Votre rôle: {tableRole}" +
+                               "\n" +
+                               $"Total des donateurs sur la table: {giverCountBronze} sur 4";
+                    if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Vous êtes activé sur la table";
+                        else caption += "❌ Vous n'êtes pas activé sur la table";
+
+                    }
+                    break;
+                case "de": 
+                    caption += "\n" + 
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ihre Rolle: {tableRole}" +
+                               "\n" +
+                               $"Gesamtzahl der Geber auf dem Tisch: {giverCountBronze} von 4";
+                    if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Du bist auf dem Tisch aktiviert";
+                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+
+                    }
+                    break;
+            }
+        }
+
+        if (userData.UserTableList.table_ID_silver != null)
+        {
+            var tableDataSilver = await WebManager.SendData(
+                new TableProfile((int) userData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+            
+            silver = true;
+            var giverCountSilver = 0;
+            
+            tableRole = userData.GetTableRole(userData.lang);
+            if (tableDataSilver.tableData.giverA_ID != null)
+            {
+                if (tableDataSilver.tableData.giverA_ID == userData.id)
+                {
+                    if (tableDataSilver.tableData.verf_A)
+                        IsGiverVerf = true;
+                }
+                giverCountSilver++;
+            }
+            if (tableDataSilver.tableData.giverB_ID != null)
+            {
+                if (tableDataSilver.tableData.giverB_ID == userData.id)
+                {
+                    if (tableDataSilver.tableData.verf_B)
+                        IsGiverVerf = true;
+                }
+                giverCountSilver++;
+            }
+            if (tableDataSilver.tableData.giverC_ID != null)
+            {
+                if (tableDataSilver.tableData.giverC_ID == userData.id)
+                {
+                    if (tableDataSilver.tableData.verf_C)
+                        IsGiverVerf = true;
+                }
+                giverCountSilver++;
+            }
+            if (tableDataSilver.tableData.giverD_ID != null)
+            {
+                if (tableDataSilver.tableData.giverD_ID == userData.id)
+                {
+                    if (tableDataSilver.tableData.verf_D)
+                        IsGiverVerf = true;
+                }
+                giverCountSilver++;
+            }
+            tableType = TableProfile.GetTableType(userData, Table.TableType.silver);
+            switch (userData.lang)
+            {
+                case "ru":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ваша роль: {tableRole}" +
+                               "\n" +
+                               $"Всего дарителей на столе: {giverCountSilver} из 4";
+                    if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Вы активированы на столе";
+                        else caption += "❌ Вы не активированы на столе";
+
+                    }
+                    break;
+                case "eng":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Your role: {tableRole}" +
+                               "\n" +
+                               $"Total givers on the table: {giverCountSilver} of 4";
+                    if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ You are activated on the table";
+                        else caption += "❌ You are not activated on the table";
+
+                    }
+                    break;
+                case "fr":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Votre rôle: {tableRole}" +
+                               "\n" +
+                               $"Total des donateurs sur la table: {giverCountSilver} sur 4";
+                    if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Vous êtes activé sur la table";
+                        else caption += "❌ Vous n'êtes pas activé sur la table";
+
+                    }
+                    break;
+                case "de": 
+                    caption += "\n" + 
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ihre Rolle: {tableRole}" +
+                               "\n" +
+                               $"Gesamtzahl der Geber auf dem Tisch: {giverCountSilver} von 4";
+                    if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Du bist auf dem Tisch aktiviert";
+                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+
+                    }
+                    break;
+            }
+        }
+
+        if (userData.UserTableList.table_ID_gold != null)
+        {
+            var tableDataGold = await WebManager.SendData(new TableProfile((int) userData.UserTableList.table_ID_gold),
+                WebManager.RequestType.GetTableData);
+            
+            gold = true;
+            var giverCountGold = 0;
+            
+            tableRole = userData.GetTableRole(userData.lang);
+            if (tableDataGold.tableData.giverA_ID != null)
+            {
+                if (tableDataGold.tableData.giverA_ID == userData.id)
+                {
+                    if (tableDataGold.tableData.verf_A)
+                        IsGiverVerf = true;
+                }
+                giverCountGold++;
+            }
+            if (tableDataGold.tableData.giverB_ID != null)
+            {
+                if (tableDataGold.tableData.giverB_ID == userData.id)
+                {
+                    if (tableDataGold.tableData.verf_B)
+                        IsGiverVerf = true;
+                }
+                giverCountGold++;
+            }
+            if (tableDataGold.tableData.giverC_ID != null)
+            {
+                if (tableDataGold.tableData.giverC_ID == userData.id)
+                {
+                    if (tableDataGold.tableData.verf_C)
+                        IsGiverVerf = true;
+                }
+                giverCountGold++;
+            }
+            if (tableDataGold.tableData.giverD_ID != null)
+            {
+                if (tableDataGold.tableData.giverD_ID == userData.id)
+                {
+                    if (tableDataGold.tableData.verf_D)
+                        IsGiverVerf = true;
+                }
+                giverCountGold++;
+            }
+            tableType = TableProfile.GetTableType(userData, Table.TableType.gold);
+            switch (userData.lang)
+            {
+                case "ru":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ваша роль: {tableRole}" +
+                               "\n" +
+                               $"Всего дарителей на столе: {giverCountGold} из 4";
+                    if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Вы активированы на столе";
+                        else caption += "❌ Вы не активированы на столе";
+
+                    }
+                    break;
+                case "eng":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Your role: {tableRole}" +
+                               "\n" +
+                               $"Total givers on the table: {giverCountGold} of 4";
+                    if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ You are activated on the table";
+                        else caption += "❌ You are not activated on the table";
+
+                    }
+                    break;
+                case "fr":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Votre rôle: {tableRole}" +
+                               "\n" +
+                               $"Total des donateurs sur la table: {giverCountGold} sur 4";
+                    if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Vous êtes activé sur la table";
+                        else caption += "❌ Vous n'êtes pas activé sur la table";
+
+                    }
+                    break;
+                case "de": 
+                    caption += "\n" + 
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ihre Rolle: {tableRole}" +
+                               "\n" +
+                               $"Gesamtzahl der Geber auf dem Tisch: {giverCountGold} von 4";
+                    if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Du bist auf dem Tisch aktiviert";
+                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+
+                    }
+                    break;
+            }
+        }
+
+        if (userData.UserTableList.table_ID_platinum != null)
+        {
+            var tableDataPlatinum = await WebManager.SendData(
+                new TableProfile((int) userData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+            
+            platinum = true;
+            var giverCountPlatinum = 0;
+            
+            tableRole = userData.GetTableRole(userData.lang);
+            if (tableDataPlatinum.tableData.giverA_ID != null)
+            {
+                if (tableDataPlatinum.tableData.giverA_ID == userData.id)
+                {
+                    if (tableDataPlatinum.tableData.verf_A)
+                        IsGiverVerf = true;
+                }
+                giverCountPlatinum++;
+            }
+            if (tableDataPlatinum.tableData.giverB_ID != null)
+            {
+                if (tableDataPlatinum.tableData.giverB_ID == userData.id)
+                {
+                    if (tableDataPlatinum.tableData.verf_B)
+                        IsGiverVerf = true;
+                }
+                giverCountPlatinum++;
+            }
+            if (tableDataPlatinum.tableData.giverC_ID != null)
+            {
+                if (tableDataPlatinum.tableData.giverC_ID == userData.id)
+                {
+                    if (tableDataPlatinum.tableData.verf_C)
+                        IsGiverVerf = true;
+                }
+                giverCountPlatinum++;
+            }
+            if (tableDataPlatinum.tableData.giverD_ID != null)
+            {
+                if (tableDataPlatinum.tableData.giverD_ID == userData.id)
+                {
+                    if (tableDataPlatinum.tableData.verf_D)
+                        IsGiverVerf = true;
+                }
+                giverCountPlatinum++;
+            }
+            tableType = TableProfile.GetTableType(userData, Table.TableType.platinum);
+            switch (userData.lang)
+            {
+                case "ru":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ваша роль: {tableRole}" +
+                               "\n" +
+                               $"Всего дарителей на столе: {giverCountPlatinum} из 4";
+                    if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Вы активированы на столе";
+                        else caption += "❌ Вы не активированы на столе";
+
+                    }
+                    break;
+                case "eng":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Your role: {tableRole}" +
+                               "\n" +
+                               $"Total givers on the table: {giverCountPlatinum} of 4";
+                    if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ You are activated on the table";
+                        else caption += "❌ You are not activated on the table";
+
+                    }
+                    break;
+                case "fr":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Votre rôle: {tableRole}" +
+                               "\n" +
+                               $"Total des donateurs sur la table: {giverCountPlatinum} sur 4";
+                    if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Vous êtes activé sur la table";
+                        else caption += "❌ Vous n'êtes pas activé sur la table";
+
+                    }
+                    break;
+                case "de": 
+                    caption += "\n" + 
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ihre Rolle: {tableRole}" +
+                               "\n" +
+                               $"Gesamtzahl der Geber auf dem Tisch: {giverCountPlatinum} von 4";
+                    if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Du bist auf dem Tisch aktiviert";
+                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+
+                    }
+                    break;
+            }
+        }
+
+        if (userData.UserTableList.table_ID_diamond != null)
+        {
+            var tableDataDiamond = await WebManager.SendData(
+                new TableProfile((int) userData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+            
+            diamond = true;
+            var giverCountDiamond = 0;
+            
+            tableRole = userData.GetTableRole(userData.lang);
+            if (tableDataDiamond.tableData.giverA_ID != null)
+            {
+                if (tableDataDiamond.tableData.giverA_ID == userData.id)
+                {
+                    if (tableDataDiamond.tableData.verf_A)
+                        IsGiverVerf = true;
+                }
+                giverCountDiamond++;
+            }
+            if (tableDataDiamond.tableData.giverB_ID != null)
+            {
+                if (tableDataDiamond.tableData.giverB_ID == userData.id)
+                {
+                    if (tableDataDiamond.tableData.verf_B)
+                        IsGiverVerf = true;
+                }
+                giverCountDiamond++;
+            }
+            if (tableDataDiamond.tableData.giverC_ID != null)
+            {
+                if (tableDataDiamond.tableData.giverC_ID == userData.id)
+                {
+                    if (tableDataDiamond.tableData.verf_C)
+                        IsGiverVerf = true;
+                }
+                giverCountDiamond++;
+            }
+            if (tableDataDiamond.tableData.giverD_ID != null)
+            {
+                if (tableDataDiamond.tableData.giverD_ID == userData.id)
+                {
+                    if (tableDataDiamond.tableData.verf_D)
+                        IsGiverVerf = true;
+                }
+                giverCountDiamond++;
+            }
+            tableType = TableProfile.GetTableType(userData, Table.TableType.diamond);
+            switch (userData.lang)
+            {
+                case "ru":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ваша роль: {tableRole}" +
+                               "\n" +
+                               $"Всего дарителей на столе: {giverCountDiamond} из 4";
+                    if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Вы активированы на столе";
+                        else caption += "❌ Вы не активированы на столе";
+
+                    }
+                    break;
+                case "eng":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Your role: {tableRole}" +
+                               "\n" +
+                               $"Total givers on the table: {giverCountDiamond} of 4";
+                    if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ You are activated on the table";
+                        else caption += "❌ You are not activated on the table";
+
+                    }
+                    break;
+                case "fr":
+                    caption += "\n" +
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Votre rôle: {tableRole}" +
+                               "\n" +
+                               $"Total des donateurs sur la table: {giverCountDiamond} sur 4";
+                    if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Vous êtes activé sur la table";
+                        else caption += "❌ Vous n'êtes pas activé sur la table";
+
+                    }
+                    break;
+                case "de": 
+                    caption += "\n" + 
+                               $"<b>{tableType}</b>" +
+                               "\n" +
+                               $"Ihre Rolle: {tableRole}" +
+                               "\n" +
+                               $"Gesamtzahl der Geber auf dem Tisch: {giverCountDiamond} von 4";
+                    if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
+                    {
+                        if (IsGiverVerf)
+                            caption += "✅ Du bist auf dem Tisch aktiviert";
+                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+
+                    }
+                    break;
+            }
+        }
+        
+        using (Stream
+               stream = System.IO.File.OpenRead(path)) 
+            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                callbackData.Message.MessageId, 
+                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+            );
+        await botClient.EditMessageCaptionAsync(
+            callbackData.Message.Chat.Id, 
+            callbackData.Message.MessageId, 
+            caption, 
+            ParseMode.Html,
+            null,
+            inlineKeyboard
+        );
     }
     public static async void RefLink(ITelegramBotClient botClient, long chatId, UserProfile userData,
         CallbackQuery callbackData)
