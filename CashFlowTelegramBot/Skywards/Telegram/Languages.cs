@@ -208,11 +208,10 @@ public partial class Languages
             replyMarkup: inlineKeyboard);
     }
     public static async void GetUserData(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
-        string lang,
-        UserProfile SearchedUser,
-        Table.TableRole tableRole, TableProfile tableData)
+        UserProfile userData, UserProfile SearchedUser, Table.TableType tableType)
     { //TODO
-        /*
+        var lang = userData.lang;
+        Table.TableRole? tableRole = Table.TableRole.giver;
         string path = null;
         string? caption = null;
         
@@ -221,8 +220,48 @@ public partial class Languages
         if (SearchedUser.refId != null)
             invitedBy = await WebManager.SendData(new UserProfile((int) SearchedUser.refId),
                 WebManager.RequestType.GetUserData);
-
-        var tableToBack = await WebManager.SendData(SearchedUser, WebManager.RequestType.GetTableData);
+        UserData tableToBack = new UserData();
+        Table.TableRole? userTableRole = Table.TableRole.giver;
+        switch (tableType)
+        {
+            case Table.TableType.copper:
+                tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_copper),
+                    WebManager.RequestType.GetTableData);
+                userTableRole = SearchedUser.UserTableList.copperTableRole;
+                tableRole = userData.UserTableList.copperTableRole;
+                break;
+            case Table.TableType.bronze:
+                tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_bronze),
+                    WebManager.RequestType.GetTableData);
+                userTableRole = SearchedUser.UserTableList.bronzeTableRole;
+                tableRole = userData.UserTableList.bronzeTableRole;
+                break;
+            case Table.TableType.silver:
+                tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_silver),
+                    WebManager.RequestType.GetTableData);
+                userTableRole = SearchedUser.UserTableList.silverTableRole;
+                tableRole = userData.UserTableList.silverTableRole;
+                break;
+            case Table.TableType.gold:
+                tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_gold),
+                    WebManager.RequestType.GetTableData);
+                userTableRole = SearchedUser.UserTableList.goldTableRole;
+                tableRole = userData.UserTableList.goldTableRole;
+                break;
+            case Table.TableType.platinum:
+                tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_platinum),
+                    WebManager.RequestType.GetTableData);
+                userTableRole = SearchedUser.UserTableList.platinumTableRole;
+                tableRole = userData.UserTableList.platinumTableRole;
+                break;
+            case Table.TableType.diamond:
+                tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_diamond),
+                    WebManager.RequestType.GetTableData);
+                userTableRole = SearchedUser.UserTableList.diamondTableRole;
+                tableRole = userData.UserTableList.diamondTableRole;
+                break;
+        }
+         //await WebManager.SendData(SearchedUser, WebManager.RequestType.GetTableData);
         if (tableToBack.tableData.tableID != 0)
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -233,9 +272,13 @@ public partial class Languages
                 path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                     @"Images\MainMenu\status.png");
             var callbackAddress = GetCallbackAddress(tableToBack.tableData.tableType);
-            
             var flag = false;
             var searchedUserRole = "";
+            string? firstName = "";
+            string? lastName = "";
+            firstName = botClient.GetChatAsync(SearchedUser.id).Result.FirstName;
+            lastName = botClient.GetChatAsync(SearchedUser.id).Result.LastName;
+            
             var IsSearchedUserVerf =
                 (tableToBack.tableData.giverA_ID == SearchedUser.id && tableToBack.tableData.verf_A) ||
                 (tableToBack.tableData.giverB_ID == SearchedUser.id && tableToBack.tableData.verf_B) ||
@@ -250,12 +293,12 @@ public partial class Languages
                     searchedUserRole = " ✅ ";
                 else searchedUserRole = " ❌ ";
             }
-
+            
             switch (lang)
             {
                 case "ru":
                 {
-                    if (tableRole == Table.TableRole.banker && SearchedUser.tableRole == "giver")
+                    if (tableRole == Table.TableRole.banker && userTableRole == Table.TableRole.giver)
                     {
                         if (tableToBack.tableData.giverA_ID == SearchedUser.id && !flag)
                         {
@@ -459,9 +502,9 @@ public partial class Languages
                     
                     caption = "<b>📋 Информация о пользователе:</b>" + 
                               "\n" +
-                              $"\n<b>Роль:</b> {SearchedUser.GetTableRole(lang) + searchedUserRole}" +
+                              $"\n<b>Роль:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
                               $"\n<b>Ник:</b> @{SearchedUser.username}" +
-                              $"\n<b>Имя пользователя:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                              $"\n<b>Имя пользователя:</b> {firstName} {lastName}" +
                               $"\n<b>Лично приглашенных:</b> {SearchedUser.invited}" +
                               "\n" +
                               $"\n<b>Пригласил:</b> @{invitedBy.playerData.username}";
@@ -469,7 +512,7 @@ public partial class Languages
                 }
                 case "eng":
                 {
-                    if (tableRole == Table.TableRole.banker && SearchedUser.tableRole == "giver")
+                    if (tableRole == Table.TableRole.banker && userTableRole == Table.TableRole.giver)
                     {
                         if (tableToBack.tableData.giverA_ID == SearchedUser.id && !flag)
                         {
@@ -673,9 +716,9 @@ public partial class Languages
                     
                     caption = "<b>📋 User info:</b>" + 
                               "\n" +
-                              $"\n<b>Role:</b> {SearchedUser.GetTableRole(lang) + searchedUserRole}" +
+                              $"\n<b>Role:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
                               $"\n<b>Nickname:</b> @{SearchedUser.username}" +
-                              $"\n<b>Username:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                              $"\n<b>Username:</b> {firstName} {lastName}" +
                               $"\n<b>Personally invited:</b> {SearchedUser.invited}" +
                               "\n" +
                               $"\n<b>Invited by:</b> @{invitedBy.playerData.username}";
@@ -684,7 +727,7 @@ public partial class Languages
                 }
                 case "fr":
                 {
-                    if (tableRole == Table.TableRole.banker && SearchedUser.tableRole == "giver")
+                    if (tableRole == Table.TableRole.banker && userTableRole == Table.TableRole.giver)
                     {
                         if (tableToBack.tableData.giverA_ID == SearchedUser.id && !flag)
                         {
@@ -888,9 +931,9 @@ public partial class Languages
                     
                         caption = "<b>📋 Informations de l'utilisateur:</b>" + 
                                   "\n" +
-                                  $"\n<b>Rôle:</b> {SearchedUser.GetTableRole(lang) + searchedUserRole}" +
+                                  $"\n<b>Rôle:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
                                   $"\n<b>Surnom:</b> @{SearchedUser.username}" +
-                                  $"\n<b>Nom d'utilisateur:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                                  $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" +
                                   $"\n<b>invité personnellement:</b> {SearchedUser.invited}" +
                                   "\n" +
                                   $"\n<b>inviter par:</b> @{invitedBy.playerData.username}";
@@ -898,7 +941,7 @@ public partial class Languages
                 }
                 case "de":
                 {
-                    if (tableRole == Table.TableRole.banker && SearchedUser.tableRole == "giver")
+                    if (tableRole == Table.TableRole.banker && userTableRole == Table.TableRole.giver)
                     {
                         if (tableToBack.tableData.giverA_ID == SearchedUser.id && !flag)
                         {
@@ -1110,9 +1153,9 @@ public partial class Languages
                             replyMarkup: inlineKeyboard);
                     caption = "<b>📋 Benutzerinformation:</b>" + 
                               "\n" +
-                              $"\n<b>Rolle:</b> {SearchedUser.GetTableRole(lang) + searchedUserRole}" +
+                              $"\n<b>Rolle:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
                               $"\n<b>Spitzname:</b> @{SearchedUser.username}" +
-                              $"\n<b>Benutzername:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                              $"\n<b>Benutzername:</b> {firstName} {lastName}" +
                               $"\n<b>Persönlich eingeladen:</b> {SearchedUser.invited}" +
                               "\n" +
                               $"\n<b>ingeladen von:</b> @{invitedBy.playerData.username}";
@@ -1200,7 +1243,7 @@ public partial class Languages
             null,
             inlineKeyboard
         );
-        */
+        
     }
     private static string GetCallbackAddress(Table.TableType tableType)
     {
@@ -1230,9 +1273,37 @@ public partial class Languages
         return callbackAddress;
     }
     public static async void ShowListTeam(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
-        string lang, UserProfile user)
+        string lang, UserProfile user, Table.TableType tableType)
     {
-        var table = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
+        UserData? table = null;
+        switch (tableType)
+        {
+            case Table.TableType.copper:
+                    table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_copper),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.bronze:
+                table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_bronze),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.silver:
+                table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_silver),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.gold:
+                table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_gold),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.platinum:
+                table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_platinum),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.diamond:
+                table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_diamond),
+                    WebManager.RequestType.GetTableData);
+                break;
+        }
+
         string path = null;
         InlineKeyboardMarkup? inlineKeyboard = null;
         string? caption = null;
@@ -1284,19 +1355,6 @@ public partial class Languages
                 caption += user.UserInfo(Table.TableRole.manager);
             }
 
-            if (table.tableData.managerB_ID != null)
-            {
-                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerB_ID),
-                    WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.managerB_ID == user.id);
-                //if (table.tableData.managerB_ID == user.id) tableInfo += "🔘";
-                //tableInfo += $"👤Менеджер-2: @{userData.playerData.username}\n";
-            }
-            else
-            {
-                caption += user.UserInfo(Table.TableRole.manager);
-            }
-
             if (table.tableData.giverA_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverA_ID),
@@ -1323,6 +1381,19 @@ public partial class Languages
                 caption += user.UserInfo(Table.TableRole.giver);
             }
 
+            if (table.tableData.managerB_ID != null)
+            {
+                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerB_ID),
+                    WebManager.RequestType.GetUserData);
+                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.managerB_ID == user.id);
+                //if (table.tableData.managerB_ID == user.id) tableInfo += "🔘";
+                //tableInfo += $"👤Менеджер-2: @{userData.playerData.username}\n";
+            }
+            else
+            {
+                caption += user.UserInfo(Table.TableRole.manager);
+            }
+            
             if (table.tableData.giverC_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverC_ID),
@@ -1486,17 +1557,38 @@ public partial class Languages
         );
     }
     public static async void ShowTableAsImage(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
-        UserProfile userData)
+        UserProfile userData, Table.TableType tableType)
     {
+        UserData? tableData = null;
+        switch (tableType)
+        {
+            case Table.TableType.copper:
+                tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_copper),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.bronze:
+                tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_bronze),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.silver:
+                tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_silver),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.gold:
+                tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_gold),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.platinum:
+                tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_platinum),
+                    WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.diamond:
+                tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_diamond),
+                    WebManager.RequestType.GetTableData);
+                break;
+        }
         string path = null;
-        var tableData = await WebManager.SendData(userData, WebManager.RequestType.GetTableData);
-        /*if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/techSupport.png");
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\techSupport.png");*/
+        
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         string? caption;
@@ -2345,7 +2437,7 @@ public partial class Languages
 
             copper = true;
             var giverCountCopper = 0;
-            tableRole = userData.GetTableRole(userData.lang);
+            tableRole = userData.GetTableRole(userData.lang, Table.TableType.copper);
             if (tableDataCopper.tableData.giverA_ID != null)
             {
                 if (tableDataCopper.tableData.giverA_ID == userData.id)
@@ -2395,8 +2487,8 @@ public partial class Languages
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Вы активированы на столе";
-                        else caption += "❌ Вы не активированы на столе";
+                            caption += "\n✅ Вы активированы на столе\n";
+                        else caption += "\n❌ Вы не активированы на столе\n";
 
                     }
                     break;
@@ -2410,8 +2502,8 @@ public partial class Languages
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ You are activated on the table";
-                        else caption += "❌ You are not activated on the table";
+                            caption += "\n✅ You are activated on the table\n";
+                        else caption += "\n❌ You are not activated on the table\n";
 
                     }
                     break;
@@ -2425,13 +2517,13 @@ public partial class Languages
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Vous êtes activé sur la table";
-                        else caption += "❌ Vous n'êtes pas activé sur la table";
+                            caption += "\n✅ Vous êtes activé sur la table\n";
+                        else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
 
                     }
                     break;
                 case "de": 
-                    caption += "\n" + 
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}" +
@@ -2440,8 +2532,8 @@ public partial class Languages
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Du bist auf dem Tisch aktiviert";
-                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+                            caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
+                        else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
 
                     }
                     break;
@@ -2455,7 +2547,7 @@ public partial class Languages
             
             bronze = true;
             var giverCountBronze = 0;
-            tableRole = userData.GetTableRole(userData.lang);
+            tableRole = userData.GetTableRole(userData.lang, Table.TableType.bronze);
             if (tableDataBronze.tableData.giverA_ID != null)
             {
                 if (tableDataBronze.tableData.giverA_ID == userData.id)
@@ -2497,7 +2589,7 @@ public partial class Languages
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}" +
@@ -2506,13 +2598,13 @@ public partial class Languages
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Вы активированы на столе";
-                        else caption += "❌ Вы не активированы на столе";
+                            caption += "\n✅ Вы активированы на столе\n";
+                        else caption += "\n❌ Вы не активированы на столе\n";
 
                     }
                     break;
                 case "eng":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Your role: {tableRole}" +
@@ -2521,13 +2613,13 @@ public partial class Languages
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ You are activated on the table";
-                        else caption += "❌ You are not activated on the table";
+                            caption += "\n✅ You are activated on the table\n";
+                        else caption += "\n❌ You are not activated on the table\n";
 
                     }
                     break;
                 case "fr":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}" +
@@ -2536,13 +2628,13 @@ public partial class Languages
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Vous êtes activé sur la table";
-                        else caption += "❌ Vous n'êtes pas activé sur la table";
+                            caption += "\n✅ Vous êtes activé sur la table\n";
+                        else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
 
                     }
                     break;
                 case "de": 
-                    caption += "\n" + 
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}" +
@@ -2551,8 +2643,8 @@ public partial class Languages
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Du bist auf dem Tisch aktiviert";
-                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+                            caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
+                        else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
 
                     }
                     break;
@@ -2567,7 +2659,7 @@ public partial class Languages
             silver = true;
             var giverCountSilver = 0;
             
-            tableRole = userData.GetTableRole(userData.lang);
+            tableRole = userData.GetTableRole(userData.lang, Table.TableType.silver);
             if (tableDataSilver.tableData.giverA_ID != null)
             {
                 if (tableDataSilver.tableData.giverA_ID == userData.id)
@@ -2608,7 +2700,7 @@ public partial class Languages
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}" +
@@ -2617,13 +2709,13 @@ public partial class Languages
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Вы активированы на столе";
-                        else caption += "❌ Вы не активированы на столе";
+                            caption += "\n✅ Вы активированы на столе\n";
+                        else caption += "\n❌ Вы не активированы на столе\n";
 
                     }
                     break;
                 case "eng":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Your role: {tableRole}" +
@@ -2632,13 +2724,13 @@ public partial class Languages
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ You are activated on the table";
-                        else caption += "❌ You are not activated on the table";
+                            caption += "\n✅ You are activated on the table\n";
+                        else caption += "\n❌ You are not activated on the table\n";
 
                     }
                     break;
                 case "fr":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}" +
@@ -2647,13 +2739,13 @@ public partial class Languages
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Vous êtes activé sur la table";
-                        else caption += "❌ Vous n'êtes pas activé sur la table";
+                            caption += "\n✅ Vous êtes activé sur la table\n";
+                        else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
 
                     }
                     break;
                 case "de": 
-                    caption += "\n" + 
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}" +
@@ -2662,8 +2754,8 @@ public partial class Languages
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Du bist auf dem Tisch aktiviert";
-                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+                            caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
+                        else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
 
                     }
                     break;
@@ -2678,7 +2770,7 @@ public partial class Languages
             gold = true;
             var giverCountGold = 0;
             
-            tableRole = userData.GetTableRole(userData.lang);
+            tableRole = userData.GetTableRole(userData.lang, Table.TableType.gold);
             if (tableDataGold.tableData.giverA_ID != null)
             {
                 if (tableDataGold.tableData.giverA_ID == userData.id)
@@ -2719,7 +2811,7 @@ public partial class Languages
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}" +
@@ -2728,13 +2820,13 @@ public partial class Languages
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Вы активированы на столе";
-                        else caption += "❌ Вы не активированы на столе";
+                            caption += "\n✅ Вы активированы на столе\n";
+                        else caption += "\n❌ Вы не активированы на столе\n";
 
                     }
                     break;
                 case "eng":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Your role: {tableRole}" +
@@ -2743,13 +2835,13 @@ public partial class Languages
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ You are activated on the table";
-                        else caption += "❌ You are not activated on the table";
+                            caption += "\n✅ You are activated on the table\n";
+                        else caption += "\n❌ You are not activated on the table\n";
 
                     }
                     break;
                 case "fr":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}" +
@@ -2758,13 +2850,13 @@ public partial class Languages
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Vous êtes activé sur la table";
-                        else caption += "❌ Vous n'êtes pas activé sur la table";
+                            caption += "\n✅ Vous êtes activé sur la table\n";
+                        else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
 
                     }
                     break;
                 case "de": 
-                    caption += "\n" + 
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}" +
@@ -2773,8 +2865,8 @@ public partial class Languages
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Du bist auf dem Tisch aktiviert";
-                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+                            caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
+                        else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
 
                     }
                     break;
@@ -2789,7 +2881,7 @@ public partial class Languages
             platinum = true;
             var giverCountPlatinum = 0;
             
-            tableRole = userData.GetTableRole(userData.lang);
+            tableRole = userData.GetTableRole(userData.lang, Table.TableType.platinum);
             if (tableDataPlatinum.tableData.giverA_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverA_ID == userData.id)
@@ -2830,7 +2922,7 @@ public partial class Languages
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}" +
@@ -2839,13 +2931,13 @@ public partial class Languages
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Вы активированы на столе";
-                        else caption += "❌ Вы не активированы на столе";
+                            caption += "\n✅ Вы активированы на столе\n";
+                        else caption += "\n❌ Вы не активированы на столе\n";
 
                     }
                     break;
                 case "eng":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Your role: {tableRole}" +
@@ -2854,13 +2946,13 @@ public partial class Languages
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ You are activated on the table";
-                        else caption += "❌ You are not activated on the table";
+                            caption += "\n✅ You are activated on the table\n";
+                        else caption += "\n❌ You are not activated on the table\n";
 
                     }
                     break;
                 case "fr":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}" +
@@ -2869,13 +2961,13 @@ public partial class Languages
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Vous êtes activé sur la table";
-                        else caption += "❌ Vous n'êtes pas activé sur la table";
+                            caption += "\n✅ Vous êtes activé sur la table\n";
+                        else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
 
                     }
                     break;
                 case "de": 
-                    caption += "\n" + 
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}" +
@@ -2884,8 +2976,8 @@ public partial class Languages
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Du bist auf dem Tisch aktiviert";
-                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+                            caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
+                        else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
 
                     }
                     break;
@@ -2900,7 +2992,7 @@ public partial class Languages
             diamond = true;
             var giverCountDiamond = 0;
             
-            tableRole = userData.GetTableRole(userData.lang);
+            tableRole = userData.GetTableRole(userData.lang, Table.TableType.diamond);
             if (tableDataDiamond.tableData.giverA_ID != null)
             {
                 if (tableDataDiamond.tableData.giverA_ID == userData.id)
@@ -2941,7 +3033,7 @@ public partial class Languages
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}" +
@@ -2950,13 +3042,13 @@ public partial class Languages
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Вы активированы на столе";
-                        else caption += "❌ Вы не активированы на столе";
+                            caption += "\n✅ Вы активированы на столе\n";
+                        else caption += "\n❌ Вы не активированы на столе\n";
 
                     }
                     break;
                 case "eng":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Your role: {tableRole}" +
@@ -2965,13 +3057,13 @@ public partial class Languages
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ You are activated on the table";
-                        else caption += "❌ You are not activated on the table";
+                            caption += "\n✅ You are activated on the table\n";
+                        else caption += "\n❌ You are not activated on the table\n";
 
                     }
                     break;
                 case "fr":
-                    caption += "\n" +
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}" +
@@ -2980,13 +3072,13 @@ public partial class Languages
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Vous êtes activé sur la table";
-                        else caption += "❌ Vous n'êtes pas activé sur la table";
+                            caption += "\n✅ Vous êtes activé sur la table\n";
+                        else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
 
                     }
                     break;
                 case "de": 
-                    caption += "\n" + 
+                    caption += "\n\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}" +
@@ -2995,8 +3087,8 @@ public partial class Languages
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
                     {
                         if (IsGiverVerf)
-                            caption += "✅ Du bist auf dem Tisch aktiviert";
-                        else caption += "❌ Du bist am Tisch nicht aktiviert";
+                            caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
+                        else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
 
                     }
                     break;

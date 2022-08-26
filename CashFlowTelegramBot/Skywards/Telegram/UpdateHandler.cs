@@ -71,6 +71,9 @@ public static class UpdateHandlers
             Console.WriteLine("ChatID: " + updateMessage.Chat.Id);
             var chatID = 237487193;
             Console.WriteLine("Data: " + botClient.GetChatAsync(chatID).Result.FirstName);
+            var user = new UserProfile(updateMessage.From.Id, updateMessage.From.Username!);
+            var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
+            
         }
         /*if (updateMessage.Text.Contains("/start"))
         {
@@ -124,6 +127,7 @@ public static class UpdateHandlers
     {
         Console.WriteLine("\nCallbackQuery.from.Username : " + callbackQuery.From.Username);
         Console.WriteLine("\nCallbackQuery.from.Id : " + callbackQuery.From.Id);
+        Console.WriteLine("\nCallbackQuery.Data : " + callbackQuery.Data);
         var user = new UserProfile(callbackQuery.From.Id, callbackQuery.From.Username!);
         var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
         Console.WriteLine("\n---------------------------------------------------"
@@ -149,8 +153,6 @@ public static class UpdateHandlers
                 return;
             }
         }
-        
-
         if (callbackQuery.Data.Contains("TryToReg"))
         {
             var refIdString = callbackQuery.Data.Split("|");
@@ -187,6 +189,743 @@ public static class UpdateHandlers
             {
                 Languages.Warning(botClient, chatId, callbackQuery, NewUser, Error.RefLinkInvalid);
             }
+        }
+        if (callbackQuery.Data.Contains("GetBankerData"))
+        {
+            Console.WriteLine("\nGetBankerData");
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var tableRole = Table.TableRole.banker;
+            if (tableType != null)
+            {
+                UserData? tableData;
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.bankerID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.bronze:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.bankerID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.silver:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.bankerID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.gold:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.bankerID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.platinum:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.bankerID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.diamond:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.bankerID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                }
+            }
+        }
+        if (callbackQuery.Data.Contains("GetManagerAData"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var tableRole = Table.TableRole.manager;
+            if (tableType != null)
+            {
+                UserData? tableData;
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.bronze:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.silver:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.gold:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.platinum:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.diamond:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                }
+            }
+        }
+        if (callbackQuery.Data.Contains("GetManagerBData"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var tableRole = Table.TableRole.manager;
+            if (tableType != null)
+            {
+                UserData? tableData;
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.bronze:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.silver:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.gold:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.platinum:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.diamond:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                }
+            }
+        }
+        if (callbackQuery.Data.Contains("GetGiverAData"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var tableRole = Table.TableRole.giver;
+            if (tableType != null)
+            {
+                UserData? tableData;
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.bronze:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.silver:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.gold:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.platinum:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.diamond:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverA_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                }
+            }
+        }
+        if (callbackQuery.Data.Contains("GetGiverBData"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var tableRole = Table.TableRole.giver;
+            if (tableType != null)
+            {
+                UserData? tableData;
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.bronze:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.silver:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.gold:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.platinum:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.diamond:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                }
+            }
+        }
+        if (callbackQuery.Data.Contains("GetGiverCData"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var tableRole = Table.TableRole.giver;
+            if (tableType != null)
+            {
+                UserData? tableData;
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverC_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.bronze:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverC_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.silver:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverC_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.gold:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverC_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.platinum:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverC_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.diamond:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverC_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                }
+            }
+        }
+        if (callbackQuery.Data.Contains("GetGiverDData"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var tableRole = Table.TableRole.giver;
+            if (tableType != null)
+            {
+                UserData? tableData;
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.managerB_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.bronze:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverD_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.silver:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverD_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.gold:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverD_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.platinum:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverD_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                    case Table.TableType.diamond:
+                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        if (tableData.tableData.giverD_ID != null)
+                        {
+                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                                WebManager.RequestType.GetUserData);
+                            Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
+                                data.playerData, tableType);
+                        }
+                        else
+                        {
+                            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                                Error.UserIsNotExist);
+                        }
+                        break;
+                }
+            }
+        }
+        if (callbackQuery.Data.Contains("ShowListTeam"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.ShowListTeam(botClient, chatId, callbackQuery, userData.playerData.lang,
+                userData.playerData, tableType);
+        }
+
+        if (callbackQuery.Data.Contains("TableImage"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            
+            Languages.ShowTableAsImage(botClient, chatId, callbackQuery, userData.playerData, tableType);
         }
         switch (callbackQuery.Data)
         {
@@ -239,7 +978,7 @@ public static class UpdateHandlers
                 }
                 else
                 {
-                    var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                    var tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
                     if (tableData.tableData.tableType == Table.TableType.copper)
                         Languages.Tables.Copper(botClient, chatId, callbackQuery, userData);
                     else
@@ -261,7 +1000,7 @@ public static class UpdateHandlers
                 }
                 else
                 {
-                    var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                    var tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
                     if (tableData.tableData.tableType == Table.TableType.bronze)
                         Languages.Tables.Bronze(botClient, chatId, callbackQuery, userData);
                     else
@@ -287,7 +1026,7 @@ public static class UpdateHandlers
                     else
                     {
                         var tableData =
-                            await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.silver)
                             Languages.Tables.Silver(botClient, chatId, callbackQuery, userData);
                         else
@@ -311,7 +1050,7 @@ public static class UpdateHandlers
                 if (userData.playerData.invited >= 4 ||
                     userData.playerData.level_tableType.CompareTo(Table.TableType.gold) >= 0)
                 {
-                    if (userData.playerData.UserTableList.table_ID_silver == null)
+                    if (userData.playerData.UserTableList.table_ID_gold == null)
                     {
                         Languages.Warning(botClient, chatId, callbackQuery, userData,
                             Table.TableType.gold);
@@ -319,7 +1058,7 @@ public static class UpdateHandlers
                     else
                     {
                         var tableData =
-                            await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.gold)
                             Languages.Tables.Gold(botClient, chatId, callbackQuery, userData);
                         else
@@ -351,7 +1090,7 @@ public static class UpdateHandlers
                     else
                     {
                         var tableData =
-                            await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.platinum)
                             Languages.Tables.Platinum(botClient, chatId, callbackQuery, userData);
                         else
@@ -383,7 +1122,7 @@ public static class UpdateHandlers
                     else
                     {
                         var tableData =
-                            await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.diamond)
                             Languages.Tables.Diamond(botClient, chatId, callbackQuery, userData);
                         else
@@ -408,157 +1147,6 @@ public static class UpdateHandlers
                 break;
             case "ConfirmLeaveTable":
                 await ConfirmLeaveTable(botClient, callbackQuery, userData);
-                break;
-            //-//-//---GetBankerData---\\-\\-\\ //TODO
-            /*case "GetBankerData":
-            {
-                //var userTableList = await WebManager.SendData()
-                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (tableData.tableData.bankerID != null)
-                {
-                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
-                        WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Table.TableRole.banker, tableData.tableData);
-                }
-                else
-                {
-                    Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                        Error.UserIsNotExist);
-                }
-
-                break;
-            } */
-            //-//-//---GetManagerAData---\\-\\-\\ //TODO
-            /*case "GetManagerAData":
-            {
-                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (tableData.tableData.managerA_ID != null)
-                {
-                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
-                        WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Table.TableRole.manager, tableData.tableData);
-                }
-                else
-                {
-                    Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                        Error.UserIsNotExist);
-                }
-
-                break;
-            }*/
-            //-//-//---GetManagerBData---\\-\\-\\ //TODO
-            /*case "GetManagerBData": 
-            {
-                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (tableData.tableData.managerB_ID != null)
-                {
-                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
-                        WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Table.TableRole.manager, tableData.tableData);
-                }
-                else
-                {
-                    Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                        Error.UserIsNotExist);
-                }
-
-                break;
-            } */
-            //-//-//---GetGiverAData---\\-\\-\\ //TODO
-            /*case "GetGiverAData":
-            {
-                Console.WriteLine("GetGiverAData");
-                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (tableData.tableData.giverA_ID != null)
-                {
-                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
-                        WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Table.TableRole.giver, tableData.tableData);
-                }
-                else
-                {
-                    Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                        Error.UserIsNotExist);
-                }
-
-                break;
-            }*/
-            //-//-//---GetGiverBData---\\-\\-\\ //TODO
-            /*case "GetGiverBData":
-            {
-                Console.WriteLine("GetGiverBData");
-                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (tableData.tableData.giverB_ID != null)
-                {
-                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
-                        WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Table.TableRole.giver, tableData.tableData);
-                }
-                else
-                {
-                    Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                        Error.UserIsNotExist);
-                }
-
-                break;
-            }*/
-            //-//-//---GetGiverCData---\\-\\-\\ //TODO
-            /*case "GetGiverCData":
-            {
-                Console.WriteLine("GetGiverCData");
-                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (tableData.tableData.giverC_ID != null)
-                {
-                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
-                        WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Table.TableRole.giver, tableData.tableData);
-                }
-                else
-                {
-                    Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                        Error.UserIsNotExist);
-                }
-
-                break;
-            }*/
-            //-//-//---GetGiverDData---\\-\\-\\ //TODO
-            /*case "GetGiverDData":
-            {
-                Console.WriteLine("GetGiverDData");
-                var tableData = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (tableData.tableData.giverD_ID != null)
-                {
-                    Console.WriteLine("ID-----------------------------------------------------------------------" +
-                                      (int) tableData.tableData.giverD_ID);
-                    var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
-                        WebManager.RequestType.GetUserData);
-                    Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData.lang,
-                        data.playerData, Table.TableRole.giver, tableData.tableData);
-                }
-                else
-                {
-                    Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                        Error.UserIsNotExist);
-                }
-
-                break;
-            }*/
-            //-//-//---ShowListTeam---\\-\\-\\ 
-            case "ShowListTeam":
-            {
-                Languages.ShowListTeam(botClient, chatId, callbackQuery, userData.playerData.lang,
-                    userData.playerData);
-                break;
-            }
-            //-//-//---ShowTableAsImage---\\-\\-\\
-            case "TableImage":
-                Languages.ShowTableAsImage(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //-//-//---RemoveFromTable---\\-\\-\\
             //-//-//-//RemoveFromTableManagerA\\-\\-\\-\\ //TODO

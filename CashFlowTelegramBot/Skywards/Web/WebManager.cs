@@ -97,9 +97,10 @@ public class WebManager
 
     public static async Task<UserData> SendData(UserProfile data, RequestType requestType)
     {
+        var Debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
-        Console.WriteLine("\nJSON: " + json);
+        if(Debug) Console.WriteLine("\nJSON: " + json);
 
         var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
         httpWebRequest.Method = "POST";
@@ -120,12 +121,12 @@ public class WebManager
         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
             var result = streamReader.ReadToEnd();
-            Console.WriteLine("\nResponse: " + result);
+            if(Debug) Console.WriteLine("\nResponse: " + result);
             
-            UserData = await SetResponseData(result);
+            UserData = await SetResponseData(result, Debug);
         }
 
-        Console.WriteLine(httpResponse.StatusCode);
+        if(Debug) Console.WriteLine(httpResponse.StatusCode);
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }
@@ -134,9 +135,10 @@ public class WebManager
     }
     public static async Task<UserData> SendData(TableProfile data, RequestType requestType)
     {
+        var Debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
-        Console.WriteLine("\nJSON: " + json);
+        if(Debug) Console.WriteLine("\nJSON: " + json);
 
         var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
         httpWebRequest.Method = "POST";
@@ -157,20 +159,21 @@ public class WebManager
         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
             var result = streamReader.ReadToEnd();
-            Console.WriteLine("\nResponse: " + result);
+            if(Debug) Console.WriteLine("\nResponse: " + result);
             
-            UserData = await SetResponseData(result);
+            UserData = await SetResponseData(result, Debug);
         }
 
-        Console.WriteLine(httpResponse.StatusCode);
+        if(Debug) Console.WriteLine(httpResponse.StatusCode);
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }
 
         return UserData;
     }
-    public static async Task<UserData> SetResponseData(string response)
+    public static async Task<UserData> SetResponseData(string response, bool Debug)
     {
+        
         var userData = new UserData();
         var responseUser = new UserProfile();
         if (!response.Contains("userProfile\":null"))
@@ -179,8 +182,8 @@ public class WebManager
             var res = JObject.Parse(response);
             //userProfileJSON_DESERIALIZE 
             IList<JToken> results = res["userProfile"].Children().ToList();
-            Console.WriteLine("--------------\nuserProfile:\n--------------");
-            foreach (var obj in results) Console.WriteLine("\n" + obj);
+            if(Debug) Console.WriteLine("--------------\nuserProfile:\n--------------");
+            foreach (var obj in results) if(Debug){Console.WriteLine("\n" + obj);}
 
             responseUser.id = (int) results[0];
             responseUser.username = results[1].ToString().Replace("\"username\": \"", "").Replace("\"", "");
@@ -193,26 +196,17 @@ public class WebManager
             else responseUser.invitedBy = null;
 
             responseUser.lang = results[4].ToString().Replace("\"lang\": \"", "").Replace("\"", "");
-            //Console.WriteLine("TEST: " + results[5] + "\nEND");
-            if (!results[5].ToString().Contains("userTableList\":null"))
+            if (!results[5].ToString().Contains("userTableList\": null"))
             {
-                Console.WriteLine("DEBUG0");
-                Console.WriteLine(results[5]);
-                Console.WriteLine("DEBUG1");
                 var resp = JObject.Parse("{" + results[5] + "}");
-                Console.WriteLine("DEBUG2");
                 IList<JToken> results_UserTableList = resp["userTableList"].Children().ToList();
-                Console.WriteLine("DEBUG3");
-                Console.WriteLine("--------------\nuserProfile->userTableList:\n--------------");
-                foreach (var obj in results_UserTableList) Console.WriteLine("\n" + obj);
+                if(Debug) Console.WriteLine("--------------\nuserProfile->userTableList:\n--------------");
+                foreach (var obj in results_UserTableList) if(Debug){Console.WriteLine("\n" + obj);}
                 //ID
-                Console.WriteLine("ID");
                 responseUser.UserTableList.id = (int) results_UserTableList[0];
                 //USER_ID
-                Console.WriteLine("USER_ID");
                 responseUser.UserTableList.userID = (int) results_UserTableList[1];
                 //COPPER_INFO
-                Console.WriteLine("COPPER_INFO");
                 if (!results_UserTableList[2].ToString().Contains("null"))
                 {
                     responseUser.UserTableList.table_ID_copper = (int) results_UserTableList[2];
@@ -222,9 +216,12 @@ public class WebManager
                                 .Replace("\"", ""), true);
                     else responseUser.UserTableList.copperTableRole = null;
                 }
-                else responseUser.UserTableList.table_ID_copper = null;
+                else
+                {
+                    responseUser.UserTableList.table_ID_copper = null;
+                    responseUser.UserTableList.copperTableRole = null;
+                }
                 //BRONZE_INFO
-                Console.WriteLine("BRONZE_INFO");
                 if (!results_UserTableList[4].ToString().Contains("null"))
                 {
                     responseUser.UserTableList.table_ID_bronze = (int) results_UserTableList[4];
@@ -234,9 +231,12 @@ public class WebManager
                                 .Replace("\"", ""), true);
                     else responseUser.UserTableList.bronzeTableRole = null;
                 }
-                else responseUser.UserTableList.table_ID_bronze = null;
+                else
+                {
+                    responseUser.UserTableList.table_ID_bronze = null;
+                    responseUser.UserTableList.bronzeTableRole = null;
+                }
                 //SILVER_INFO
-                Console.WriteLine("SILVER_INFO");
                 if (!results_UserTableList[6].ToString().Contains("null"))
                 {
                     responseUser.UserTableList.table_ID_silver = (int) results_UserTableList[6];
@@ -246,9 +246,12 @@ public class WebManager
                                 .Replace("\"", ""), true);
                     else responseUser.UserTableList.silverTableRole = null;
                 }
-                else responseUser.UserTableList.table_ID_silver = null;
+                else
+                {
+                    responseUser.UserTableList.table_ID_silver = null;
+                    responseUser.UserTableList.silverTableRole = null;
+                }
                 //GOLD_INFO
-                Console.WriteLine("GOLD_INFO");
                 if (!results_UserTableList[8].ToString().Contains("null"))
                 {
                     responseUser.UserTableList.table_ID_gold = (int) results_UserTableList[8];
@@ -258,9 +261,12 @@ public class WebManager
                                 .Replace("\"", ""), true);
                     else responseUser.UserTableList.goldTableRole = null;
                 }
-                else responseUser.UserTableList.table_ID_gold = null;
+                else
+                {
+                    responseUser.UserTableList.table_ID_gold = null;
+                    responseUser.UserTableList.goldTableRole = null;
+                }
                 //PLATINUM_INFO
-                Console.WriteLine("PLATINUM_INFO");
                 if (!results_UserTableList[10].ToString().Contains("null"))
                 {
                     responseUser.UserTableList.table_ID_platinum = (int) results_UserTableList[10];
@@ -270,9 +276,12 @@ public class WebManager
                                 .Replace("\"", ""), true);
                     else responseUser.UserTableList.platinumTableRole = null;
                 }
-                else responseUser.UserTableList.table_ID_platinum = null;
+                else
+                {
+                    responseUser.UserTableList.table_ID_platinum = null;
+                    responseUser.UserTableList.platinumTableRole = null;
+                }
                 //DIAMOND_INFO
-                Console.WriteLine("DIAMOND_INFO");
                 if (!results_UserTableList[12].ToString().Contains("null"))
                 {
                     responseUser.UserTableList.table_ID_diamond = (int) results_UserTableList[12];
@@ -282,7 +291,13 @@ public class WebManager
                                 .Replace("\"", ""), true);
                     else responseUser.UserTableList.diamondTableRole = null;
                 }
-                else responseUser.UserTableList.table_ID_diamond = null;
+                else
+                {
+                    responseUser.UserTableList.table_ID_diamond = null;
+                    responseUser.UserTableList.diamondTableRole = null;
+                }
+
+                if(Debug) responseUser.UserTableList.PrintUserTableList();
             }
             else responseUser.UserTableList = null;
 
@@ -294,16 +309,15 @@ public class WebManager
             responseUser.invited = (int) results[8];
             responseUser.team = (int) results[9];
             responseUser.giftsReceived = (int) results[10];
-            responseUser.PrintUserProfile();
+            if(Debug) responseUser.PrintUserProfile();
         }
         var tableProfile = new TableProfile();
         if (!response.Contains("tableProfile\":null"))
         {
-            
             var res = JObject.Parse(response);
             IList<JToken> tableProfiles = res["tableProfile"].Children().ToList();
-            Console.WriteLine("--------------\ntableProfile:\n--------------");
-            foreach (var obj in tableProfiles) Console.WriteLine("\n" + obj);
+            if(Debug) Console.WriteLine("--------------\ntableProfile:\n--------------");
+            foreach (var obj in tableProfiles) if(Debug){Console.WriteLine("\n" + obj);}
             tableProfile.tableID = (int) tableProfiles[0];
             var tableType =
                 Enum.Parse<Table.TableType>(
@@ -316,19 +330,19 @@ public class WebManager
             if (!tableProfiles[3].ToString().Contains("null"))
                 tableProfile.managerA_ID = (int) tableProfiles[3];
             else tableProfile.managerA_ID = null;
-
             if (!tableProfiles[4].ToString().Contains("null"))
-                tableProfile.managerB_ID = (int) tableProfiles[4];
-            else tableProfile.managerB_ID = null;
-
-            if (!tableProfiles[5].ToString().Contains("null"))
-                tableProfile.giverA_ID = (int) tableProfiles[5];
+                tableProfile.giverA_ID = (int) tableProfiles[4];
             else tableProfile.giverA_ID = null;
-            tableProfile.verf_A = tableProfiles[6].ToString().Contains("1");
-            if (!tableProfiles[7].ToString().Contains("null"))
-                tableProfile.giverB_ID = (int) tableProfiles[7];
+            tableProfile.verf_A = tableProfiles[5].ToString().Contains("1");
+            if (!tableProfiles[6].ToString().Contains("null"))
+                tableProfile.giverB_ID = (int) tableProfiles[6];
             else tableProfile.giverB_ID = null;
-            tableProfile.verf_B = tableProfiles[8].ToString().Contains("1");
+            tableProfile.verf_B = tableProfiles[7].ToString().Contains("1");
+
+            if (!tableProfiles[8].ToString().Contains("null"))
+                tableProfile.managerB_ID = (int) tableProfiles[8];
+            else tableProfile.managerB_ID = null;
+            
             if (!tableProfiles[9].ToString().Contains("null"))
                 tableProfile.giverC_ID = (int) tableProfiles[9];
             else tableProfile.giverC_ID = null;
@@ -337,7 +351,7 @@ public class WebManager
                 tableProfile.giverD_ID = (int) tableProfiles[11];
             else tableProfile.giverD_ID = null;
             tableProfile.verf_D = tableProfiles[12].ToString().Contains("1");
-            tableProfile.PrintTableProfile();
+            if(Debug) tableProfile.PrintTableProfile();
         }
         var error = new Error();
         if (!response.Contains("empty"))
@@ -346,7 +360,7 @@ public class WebManager
             var res = JObject.Parse(response);
             IList<JToken> errors = res["error"].Children().ToList();
             Console.WriteLine("--------------\nerror:\n--------------");
-            foreach (var obj in errors) Console.WriteLine("\n" + obj);
+            foreach (var obj in errors) if(Debug){Console.WriteLine("\n" + obj);}
 
             error.errorText = errors[0].ToString().Replace("\"errorText\": \"", "").Replace("\"", "");
             error.isError = true;

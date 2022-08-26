@@ -51,6 +51,11 @@ public class TableProfile : Table
         this.tableID = tableID;
     }
 
+    public TableProfile(int? tableID)
+    {
+        this.tableID = (int) tableID;
+    }
+
     private TableType TableType { get; }
     private TableRole TableRole { get; }
 
@@ -181,6 +186,12 @@ public class TableProfile : Table
 
         return result;
     }
+
+    public static TableType GetTableType(string data)
+    {
+        Table.TableType tableType = Enum.Parse<TableType>(data, true);
+        return tableType;
+    }
     public static string GetTableType(UserProfile user, TableType tableType)
     {
         var result = "";
@@ -300,6 +311,9 @@ public class TableProfile : Table
     }
     public void PrintTableProfile()
     {
+        Console.WriteLine("\n-----------------------------------------------------------------------" + 
+                          $"\n--------------------------TableProfile of: {tableID}--------------------------" +
+                          "\n-----------------------------------------------------------------------");
         Console.WriteLine("\ntableID: " + tableID + "\nTableType: " + tableType + "\nBankerID: " + bankerID +
                           "\nManagerA_ID: " + managerA_ID + "\nManagerB_ID: " + managerB_ID +
                           "\nGiverA_ID: " + giverA_ID + "\nVerfA_ID: " + verf_A +
