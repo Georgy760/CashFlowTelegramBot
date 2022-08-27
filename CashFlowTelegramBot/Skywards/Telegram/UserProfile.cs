@@ -33,6 +33,11 @@ public class UserProfile
         this.id = (int) id;
         this.username = username;
     }
+    public UserProfile(long id, Table.TableType tableType)
+    {
+        this.id = (int) id;
+        this.level_tableType = tableType;
+    }
 
     public UserProfile(long id, int refId, string username)
     {

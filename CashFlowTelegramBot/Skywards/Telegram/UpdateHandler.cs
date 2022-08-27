@@ -73,8 +73,8 @@ public static class UpdateHandlers
             Console.WriteLine("Data: " + botClient.GetChatAsync(chatID).Result.FirstName);
             var user = new UserProfile(updateMessage.From.Id, updateMessage.From.Username!);
             var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
-            
         }
+
         /*if (updateMessage.Text.Contains("/start"))
         {
             Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
@@ -99,11 +99,11 @@ public static class UpdateHandlers
                     user.AddLang("de");
                     break;
             }
+
             CallbackQuery callbackQuery = new CallbackQuery();
             callbackQuery.Data = "null";
             if (updateMessage.From.Username != null)
             {
-                
                 var error = await WebManager.SendData(user, WebManager.RequestType.RegisterWithRef);
                 await botClient.DeleteMessageAsync(updateMessage.Chat.Id, updateMessage.MessageId);
                 if (error.error.errorText != "RefLink invalid")
@@ -135,15 +135,14 @@ public static class UpdateHandlers
                           "\nCallBackQuery: " +
                           callbackQuery.Data
                           + "\n---------------------------------------------------");
-        UserData? dataToRemove;
         var chatId = callbackQuery.Message.Chat.Id;
         if (callbackQuery.Data.Contains("Captcha"))
         {
             var data = callbackQuery.Data.Split("|");
-            if (data[data.Length-1].Contains("CaptchaTrue"))
+            if (data[data.Length - 1].Contains("CaptchaTrue"))
             {
-                
-                callbackQuery.Data = data[0].Replace("Captcha", "");;
+                callbackQuery.Data = data[0].Replace("Captcha", "");
+                ;
                 Console.WriteLine(callbackQuery.Data);
             }
             else
@@ -153,6 +152,7 @@ public static class UpdateHandlers
                 return;
             }
         }
+
         if (callbackQuery.Data.Contains("TryToReg"))
         {
             var refIdString = callbackQuery.Data.Split("|");
@@ -173,13 +173,14 @@ public static class UpdateHandlers
                     NewUser.AddLang("de");
                     break;
             }
+
             if (callbackQuery.From.Username == null)
             {
                 Console.WriteLine("Username is still null");
                 Languages.Warning(botClient, chatId, callbackQuery, NewUser, Error.UserWithoutUsername);
                 return;
             }
-            
+
             var error = await WebManager.SendData(NewUser, WebManager.RequestType.RegisterWithRef);
             if (error.error.errorText != "RefLink invalid")
             {
@@ -190,6 +191,7 @@ public static class UpdateHandlers
                 Languages.Warning(botClient, chatId, callbackQuery, NewUser, Error.RefLinkInvalid);
             }
         }
+
         if (callbackQuery.Data.Contains("GetBankerData"))
         {
             Console.WriteLine("\nGetBankerData");
@@ -202,7 +204,9 @@ public static class UpdateHandlers
                 switch (tableType)
                 {
                     case Table.TableType.copper:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.bankerID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
@@ -215,9 +219,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.bronze:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.bankerID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
@@ -230,9 +237,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.silver:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.bankerID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
@@ -245,9 +255,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.gold:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.bankerID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
@@ -260,9 +273,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.platinum:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.bankerID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
@@ -275,9 +291,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.diamond:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.bankerID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
@@ -290,10 +309,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                 }
             }
         }
+
         if (callbackQuery.Data.Contains("GetManagerAData"))
         {
             var tableTypeData = callbackQuery.Data.Split("|");
@@ -305,7 +326,9 @@ public static class UpdateHandlers
                 switch (tableType)
                 {
                     case Table.TableType.copper:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
@@ -318,9 +341,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.bronze:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
@@ -333,9 +359,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.silver:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
@@ -348,9 +377,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.gold:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
@@ -363,9 +395,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.platinum:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
@@ -378,9 +413,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.diamond:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
@@ -393,10 +431,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                 }
             }
         }
+
         if (callbackQuery.Data.Contains("GetManagerBData"))
         {
             var tableTypeData = callbackQuery.Data.Split("|");
@@ -408,7 +448,9 @@ public static class UpdateHandlers
                 switch (tableType)
                 {
                     case Table.TableType.copper:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
@@ -421,9 +463,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.bronze:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
@@ -436,9 +481,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.silver:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
@@ -451,9 +499,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.gold:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
@@ -466,9 +517,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.platinum:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
@@ -481,9 +535,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.diamond:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
@@ -496,10 +553,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                 }
             }
         }
+
         if (callbackQuery.Data.Contains("GetGiverAData"))
         {
             var tableTypeData = callbackQuery.Data.Split("|");
@@ -511,7 +570,9 @@ public static class UpdateHandlers
                 switch (tableType)
                 {
                     case Table.TableType.copper:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
@@ -524,9 +585,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.bronze:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
@@ -539,9 +603,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.silver:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
@@ -554,9 +621,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.gold:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
@@ -569,9 +639,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.platinum:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
@@ -584,9 +657,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.diamond:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverA_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
@@ -599,10 +675,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                 }
             }
         }
+
         if (callbackQuery.Data.Contains("GetGiverBData"))
         {
             var tableTypeData = callbackQuery.Data.Split("|");
@@ -614,7 +692,9 @@ public static class UpdateHandlers
                 switch (tableType)
                 {
                     case Table.TableType.copper:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
@@ -627,9 +707,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.bronze:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
@@ -642,9 +725,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.silver:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
@@ -657,9 +743,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.gold:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
@@ -672,9 +761,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.platinum:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
@@ -687,9 +779,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.diamond:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
@@ -702,10 +797,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                 }
             }
         }
+
         if (callbackQuery.Data.Contains("GetGiverCData"))
         {
             var tableTypeData = callbackQuery.Data.Split("|");
@@ -717,7 +814,9 @@ public static class UpdateHandlers
                 switch (tableType)
                 {
                     case Table.TableType.copper:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverC_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
@@ -730,9 +829,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.bronze:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverC_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
@@ -745,9 +847,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.silver:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverC_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
@@ -760,9 +865,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.gold:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverC_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
@@ -775,9 +883,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.platinum:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverC_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
@@ -790,9 +901,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.diamond:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverC_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
@@ -805,10 +919,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                 }
             }
         }
+
         if (callbackQuery.Data.Contains("GetGiverDData"))
         {
             var tableTypeData = callbackQuery.Data.Split("|");
@@ -820,7 +936,9 @@ public static class UpdateHandlers
                 switch (tableType)
                 {
                     case Table.TableType.copper:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.managerB_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
@@ -833,9 +951,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.bronze:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverD_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
@@ -848,9 +969,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.silver:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverD_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
@@ -863,9 +987,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.gold:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverD_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
@@ -878,9 +1005,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.platinum:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverD_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
@@ -893,9 +1023,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                     case Table.TableType.diamond:
-                        tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        tableData = await WebManager.SendData(
+                            new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                            WebManager.RequestType.GetTableData);
                         if (tableData.tableData.giverD_ID != null)
                         {
                             var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
@@ -908,10 +1041,12 @@ public static class UpdateHandlers
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
                                 Error.UserIsNotExist);
                         }
+
                         break;
                 }
             }
         }
+
         if (callbackQuery.Data.Contains("ShowListTeam"))
         {
             var tableTypeData = callbackQuery.Data.Split("|");
@@ -924,9 +1059,528 @@ public static class UpdateHandlers
         {
             var tableTypeData = callbackQuery.Data.Split("|");
             var tableType = TableProfile.GetTableType(tableTypeData[1]);
-            
+
             Languages.ShowTableAsImage(botClient, chatId, callbackQuery, userData.playerData, tableType);
         }
+
+        if (callbackQuery.Data.Contains("LeaveTable"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.LeaveTable);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmLeaveTable"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            await ConfirmLeaveTable(botClient, callbackQuery, userData, tableType);
+        }
+
+        if (callbackQuery.Data.Contains("RemoveFromTableGiverA"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.RemoveFromTable);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmRemoveFromTableGiverA"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+            UserData? dataToRemove = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverA_ID);
+            if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
+            {
+                await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
+                    WebManager.RequestType.RemoveFromTable);
+                SelectByTableType(botClient, callbackQuery, userData, tableType);
+            }
+        }
+
+        if (callbackQuery.Data.Contains("RemoveFromTableGiverB"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.RemoveFromTable);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmRemoveFromTableGiverB"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+            UserData? dataToRemove = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverB_ID);
+            if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
+            {
+                await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
+                    WebManager.RequestType.RemoveFromTable);
+                SelectByTableType(botClient, callbackQuery, userData, tableType);
+            }
+        }
+
+        if (callbackQuery.Data.Contains("RemoveFromTableGiverC"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.RemoveFromTable);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmRemoveFromTableGiverC"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+
+            UserData? dataToRemove = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverC_ID);
+            //userToRemove.id = (int) dataToRemove.tableData.giverC_ID;
+            if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
+            {
+                await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
+                    WebManager.RequestType.RemoveFromTable);
+                SelectByTableType(botClient, callbackQuery, userData, tableType);
+            }
+        }
+
+        if (callbackQuery.Data.Contains("RemoveFromTableGiverD"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.RemoveFromTable);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmRemoveFromTableGiverD"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+            UserData? dataToRemove = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    dataToRemove = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverD_ID);
+            if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
+            {
+                await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
+                    WebManager.RequestType.RemoveFromTable);
+                SelectByTableType(botClient, callbackQuery, userData, tableType);
+            }
+        }
+
+        if (callbackQuery.Data.Contains("VerfGiverA"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.Confirm);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmVerfGiverA"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+            UserData? dataToConfirm = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            UserProfile userToConfirm = new UserProfile((int) dataToConfirm.tableData.giverA_ID);
+            if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
+            {
+                var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
+                    WebManager.RequestType.Confirm);
+                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                    SelectByTableType(botClient, callbackQuery, userData, tableType);
+                else
+                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
+            }
+            /*var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+            if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
+            {
+                var response = await WebManager.SendData(
+                    new UserProfile((int) dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
+                    WebManager.RequestType.Confirm);
+                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                    SelectByTableType(botClient, callbackQuery, userData);
+                else
+                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
+            }*/
+        }
+
+        if (callbackQuery.Data.Contains("VerfGiverB"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.Confirm);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmVerfGiverB"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+            UserData? dataToConfirm = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            UserProfile userToConfirm = new UserProfile((int) dataToConfirm.tableData.giverB_ID);
+            if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
+            {
+                var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
+                    WebManager.RequestType.Confirm);
+                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                    SelectByTableType(botClient, callbackQuery, userData, tableType);
+                else
+                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
+            }
+            /*var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+            if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
+            {
+                var response = await WebManager.SendData(
+                    new UserProfile((int) dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
+                    WebManager.RequestType.Confirm);
+                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                    SelectByTableType(botClient, callbackQuery, userData);
+                else
+                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
+            }*/
+        }
+
+        if (callbackQuery.Data.Contains("VerfGiverC"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.Confirm);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmVerfGiverC"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+            UserData? dataToConfirm = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            UserProfile userToConfirm = new UserProfile((int) dataToConfirm.tableData.giverC_ID);
+            if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
+            {
+                var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
+                    WebManager.RequestType.Confirm);
+                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                    SelectByTableType(botClient, callbackQuery, userData, tableType);
+                else
+                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
+            }
+            /*var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
+            if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
+            {
+                var response = await WebManager.SendData(
+                    new UserProfile((int) dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
+                    WebManager.RequestType.Confirm);
+                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                    SelectByTableType(botClient, callbackQuery, userData);
+                else
+                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
+            }*/
+        }
+
+        if (callbackQuery.Data.Contains("VerfGiverD"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
+                WebManager.RequestType.Confirm);
+        }
+
+        if (callbackQuery.Data.Contains("ConfirmVerfGiverD"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+            UserData? dataToConfirm = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    dataToConfirm = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            UserProfile userToConfirm = new UserProfile((int) dataToConfirm.tableData.giverD_ID);
+            if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
+            {
+                var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
+                    WebManager.RequestType.Confirm);
+                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
+                    SelectByTableType(botClient, callbackQuery, userData, tableType);
+                else
+                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
+            }
+        }
+
         switch (callbackQuery.Data)
         {
             //--------REG_LANG--------
@@ -978,7 +1632,9 @@ public static class UpdateHandlers
                 }
                 else
                 {
-                    var tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                    var tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
                     if (tableData.tableData.tableType == Table.TableType.copper)
                         Languages.Tables.Copper(botClient, chatId, callbackQuery, userData);
                     else
@@ -1000,7 +1656,9 @@ public static class UpdateHandlers
                 }
                 else
                 {
-                    var tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                    var tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
                     if (tableData.tableData.tableType == Table.TableType.bronze)
                         Languages.Tables.Bronze(botClient, chatId, callbackQuery, userData);
                     else
@@ -1026,7 +1684,9 @@ public static class UpdateHandlers
                     else
                     {
                         var tableData =
-                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                            await WebManager.SendData(
+                                new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                                WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.silver)
                             Languages.Tables.Silver(botClient, chatId, callbackQuery, userData);
                         else
@@ -1058,7 +1718,8 @@ public static class UpdateHandlers
                     else
                     {
                         var tableData =
-                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                                WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.gold)
                             Languages.Tables.Gold(botClient, chatId, callbackQuery, userData);
                         else
@@ -1090,7 +1751,9 @@ public static class UpdateHandlers
                     else
                     {
                         var tableData =
-                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                            await WebManager.SendData(
+                                new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                                WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.platinum)
                             Languages.Tables.Platinum(botClient, chatId, callbackQuery, userData);
                         else
@@ -1122,7 +1785,9 @@ public static class UpdateHandlers
                     else
                     {
                         var tableData =
-                            await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                            await WebManager.SendData(
+                                new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                                WebManager.RequestType.GetTableData);
                         if (tableData.tableData.tableType == Table.TableType.diamond)
                             Languages.Tables.Diamond(botClient, chatId, callbackQuery, userData);
                         else
@@ -1140,120 +1805,14 @@ public static class UpdateHandlers
             case "OpenDiamondTable":
                 Languages.Tables.Diamond(botClient, chatId, callbackQuery, userData);
                 break;
-            //-//-//---LeaveTable---\\-\\-\\
-            case "LeaveTable":
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                    WebManager.RequestType.LeaveTable);
-                break;
-            case "ConfirmLeaveTable":
-                await ConfirmLeaveTable(botClient, callbackQuery, userData);
-                break;
-            //-//-//---RemoveFromTable---\\-\\-\\
-            //-//-//-//RemoveFromTableManagerA\\-\\-\\-\\ //TODO
-            case "RemoveFromTableManagerA":
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                    WebManager.RequestType.RemoveFromTable);
-                break;
-            /*case "ConfirmRemoveFromTableManagerA":
-                 dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.managerA_ID != null)
-                {
-                    await WebManager.SendData(
-                        new UserProfile((int) dataToRemove.tableData.managerA_ID, dataToRemove.tableData.tableID),
-                        WebManager.RequestType.RemoveFromTable);
-
-                    SelectByTableType(botClient, callbackQuery, userData);
-                }
-
-                break;*/
-            //-//-//-//RemoveFromTableManagerB\\-\\-\\-\\ //TODO
-            case "RemoveFromTableManagerB":
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                    WebManager.RequestType.RemoveFromTable);
-                break;
-            /*case "ConfirmRemoveFromTableManagerB":
-                dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.managerB_ID != null)
-                {
-                    await WebManager.SendData(
-                        new UserProfile((int) dataToRemove.tableData.managerB_ID, dataToRemove.tableData.tableID),
-                        WebManager.RequestType.RemoveFromTable);
-                    SelectByTableType(botClient, callbackQuery, userData);
-                }
-
-                break;*/
-            //-//-//-//RemoveFromTableGiverA\\-\\-\\-\\ //TODO
-            case "RemoveFromTableGiverA":
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                    WebManager.RequestType.RemoveFromTable);
-                break;
-            /*case "ConfirmRemoveFromTableGiverA":
-                dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverA_ID != null)
-                {
-                    await WebManager.SendData(
-                        new UserProfile((int) dataToRemove.tableData.giverA_ID, dataToRemove.tableData.tableID),
-                        WebManager.RequestType.RemoveFromTable);
-                    SelectByTableType(botClient, callbackQuery, userData);
-                }
-
-                break;*/
-            //-//-//-//RemoveFromTableGiverB\\-\\-\\-\\ //TODO
-            case "RemoveFromTableGiverB":
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                    WebManager.RequestType.RemoveFromTable);
-                break;
-            /*case "ConfirmRemoveFromTableGiverB":
-                dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverB_ID != null)
-                {
-                    await WebManager.SendData(
-                        new UserProfile((int) dataToRemove.tableData.giverB_ID, dataToRemove.tableData.tableID),
-                        WebManager.RequestType.RemoveFromTable);
-                    SelectByTableType(botClient, callbackQuery, userData);
-                }
-
-                break;*/
-            //-//-//-//RemoveFromTableGiverC\\-\\-\\-\\ //TODO
-            case "RemoveFromTableGiverC":
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                    WebManager.RequestType.RemoveFromTable);
-                break;
-            /*case "ConfirmRemoveFromTableGiverC":
-                dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverC_ID != null)
-                {
-                    await WebManager.SendData(
-                        new UserProfile((int) dataToRemove.tableData.giverC_ID, dataToRemove.tableData.tableID),
-                        WebManager.RequestType.RemoveFromTable);
-                    SelectByTableType(botClient, callbackQuery, userData);
-                }
-
-                break;*/
-            //-//-//-//RemoveFromTableGiverD\\-\\-\\-\\ //TODO
-            case "RemoveFromTableGiverD":
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                    WebManager.RequestType.RemoveFromTable);
-                break;
-            /*case "ConfirmRemoveFromTableGiverD":
-                dataToRemove = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToRemove.tableData.tableID != null && dataToRemove.tableData.giverD_ID != null)
-                {
-                    await WebManager.SendData(
-                        new UserProfile((int) dataToRemove.tableData.giverD_ID, dataToRemove.tableData.tableID),
-                        WebManager.RequestType.RemoveFromTable);
-                    SelectByTableType(botClient, callbackQuery, userData);
-                }
-
-                break;*/
             //-//-//---VerfGiver---\\-\\-\\
             //-//-//-//VerfGiverA\\-\\-\\-\\ //TODO
-            case "VerfGiverA":
+            /*case "VerfGiverA":
             {
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
                     WebManager.RequestType.Confirm);
                 break;
-            }
+            }*/
             /*case "ConfirmVerfGiverA":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
@@ -1271,12 +1830,12 @@ public static class UpdateHandlers
                 break;
             }*/
             //-//-//-//VerfGiverB\\-\\-\\-\\ //TODO
-            case "VerfGiverB":
+            /*case "VerfGiverB":
             {
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
                     WebManager.RequestType.Confirm);
                 break;
-            }
+            }*/
             /*case "ConfirmVerfGiverB":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
@@ -1294,12 +1853,12 @@ public static class UpdateHandlers
                 break;
             }*/
             //-//-//-//VerfGiverC\\-\\-\\-\\ //TODO
-            case "VerfGiverC":
+            /*case "VerfGiverC":
             {
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
                     WebManager.RequestType.Confirm);
                 break;
-            }
+            }*/
             /*case "ConfirmVerfGiverC":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
@@ -1317,12 +1876,12 @@ public static class UpdateHandlers
                 break;
             }*/
             //-//-//-//VerfGiverD\\-\\-\\-\\ //TODO
-            case "VerfGiverD":
+            /*case "VerfGiverD":
             {
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
+                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
                     WebManager.RequestType.Confirm);
                 break;
-            }
+            }*/
             /*case "ConfirmVerfGiverD":
             {
                 var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
@@ -1385,7 +1944,7 @@ public static class UpdateHandlers
                 await ChangeLang(botClient, callbackQuery, user);
                 Console.WriteLine("de");
                 break;
-            
+
 
             default:
                 Console.WriteLine("\nWrong data");
@@ -1403,9 +1962,10 @@ public static class UpdateHandlers
             */
     }
 
-    private static void SelectByTableType(ITelegramBotClient botClient, CallbackQuery callbackQuery, UserData userData)
+    private static void SelectByTableType(ITelegramBotClient botClient, CallbackQuery callbackQuery, UserData userData,
+        Table.TableType tableType)
     {
-        switch (userData.playerData.level_tableType)
+        switch (tableType)
         {
             case Table.TableType.copper:
             {
@@ -1441,9 +2001,10 @@ public static class UpdateHandlers
     }
 
     private static async Task ConfirmLeaveTable(ITelegramBotClient botClient, CallbackQuery callbackQuery,
-        UserData userData)
+        UserData userData, Table.TableType tableType)
     {
-        await WebManager.SendData(userData.playerData, WebManager.RequestType.LeaveTable);
+        await WebManager.SendData(new UserProfile(userData.playerData.id, tableType),
+            WebManager.RequestType.LeaveTable);
         Languages.TableMenu(botClient, callbackQuery.Message.Chat.Id, callbackQuery, userData.playerData);
     }
 

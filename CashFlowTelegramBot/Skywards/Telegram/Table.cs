@@ -46,6 +46,15 @@ public class TableProfile : Table
         TableRole = TableRole;
     }
 
+    public TableProfile(int tableID, int? giverA_ID, int? giverB_ID, int? giverC_ID, int? giverD_ID)
+    {
+        this.giverA_ID = giverA_ID;
+        this.giverB_ID = giverB_ID;
+        this.giverC_ID = giverC_ID;
+        this.giverD_ID = giverD_ID;
+        this.tableID = tableID;
+    }
+
     public TableProfile(int tableID)
     {
         this.tableID = tableID;

@@ -14,50 +14,9 @@ public partial class Languages
     public abstract class Tables
     {
         //------RU------\\
-        public static readonly InlineKeyboardButton InlineKeyboardButtonContactBankerRU =
-            InlineKeyboardButton.WithCallbackData("📨 Связаться с банкиром", "GetBankerData");
 
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableRU =
             InlineKeyboardButton.WithCallbackData("🔙 Назад", "ChooseTable");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonLeaveTableRU =
-            InlineKeyboardButton.WithCallbackData("❌ Выйти со стола", "LeaveTable");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetBankerDataRU =
-            InlineKeyboardButton.WithCallbackData("🏦 Банкир", "GetBankerData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetManagerADataRU =
-            InlineKeyboardButton.WithCallbackData("👤 Менеджер-1", "GetManagerAData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetManagerBDataRU =
-            InlineKeyboardButton.WithCallbackData("👤 Менеджер-2", "GetManagerBData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverADataRU =
-            InlineKeyboardButton.WithCallbackData("🎁 Даритель-1", "GetGiverAData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverBDataRU =
-            InlineKeyboardButton.WithCallbackData("🎁 Даритель-2", "GetGiverBData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverDDataRU =
-            InlineKeyboardButton.WithCallbackData("🎁 Даритель-3", "GetGiverCData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverCDataRU =
-            InlineKeyboardButton.WithCallbackData("🎁 Даритель-4", "GetGiverDData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonShowListTeamRU =
-            InlineKeyboardButton.WithCallbackData("📝 Показать команду списком", "ShowListTeam");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverARU =
-            InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverA");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverBRU =
-            InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverB");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverCRU =
-            InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverC");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverDRU =
-            InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverD");
 
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverARU =
             InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverA");
@@ -75,48 +34,6 @@ public partial class Languages
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableENG =
             InlineKeyboardButton.WithCallbackData("🔙 Back", "ChooseTable");
 
-        public static readonly InlineKeyboardButton InlineKeyboardButtonContactBankerENG =
-            InlineKeyboardButton.WithCallbackData("📨 Contact a banker", "GetBankerData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonLeaveTableENG =
-            InlineKeyboardButton.WithCallbackData("❌ Exit the table", "LeaveTable");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetBankerDataENG =
-            InlineKeyboardButton.WithCallbackData("🏦 Banker", "GetBankerData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetManagerADataENG =
-            InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetManagerBDataENG =
-            InlineKeyboardButton.WithCallbackData("👤Manager-2", "GetManagerBData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverADataENG =
-            InlineKeyboardButton.WithCallbackData("🎁 Giver-1", "GetGiverAData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverBDataENG =
-            InlineKeyboardButton.WithCallbackData("🎁 Giver-2", "GetGiverBData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverDDataENG =
-            InlineKeyboardButton.WithCallbackData("🎁 Giver-3", "GetGiverDData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverCDataENG =
-            InlineKeyboardButton.WithCallbackData("🎁 Giver-4", "GetGiverCData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonShowListTeamENG =
-            InlineKeyboardButton.WithCallbackData("📝 Show command in list", "ShowListTeam");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverAENG =
-            InlineKeyboardButton.WithCallbackData("❌ Delete from the table", "RemoveFromTableGiverA");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverBENG =
-            InlineKeyboardButton.WithCallbackData("❌ Delete from the table", "RemoveFromTableGiverB");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverCENG =
-            InlineKeyboardButton.WithCallbackData("❌ Delete from the table", "RemoveFromTableGiverC");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverDENG =
-            InlineKeyboardButton.WithCallbackData("❌ Delete from the table", "RemoveFromTableGiverD");
-
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverAENG =
             InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverA");
 
@@ -132,49 +49,7 @@ public partial class Languages
         //------FR------\\
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableFR =
             InlineKeyboardButton.WithCallbackData("🔙 Retour", "ChooseTable");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonContactBankerFR =
-            InlineKeyboardButton.WithCallbackData("📨 Contactez un banquier", "GetBankerData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonLeaveTableFR =
-            InlineKeyboardButton.WithCallbackData("❌ Sortir du tableau", "LeaveTable");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetBankerDataFR =
-            InlineKeyboardButton.WithCallbackData("🏦 Banquier", "GetBankerData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetManagerADataFR =
-            InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1", "GetManagerAData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetManagerBDataFR =
-            InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2", "GetManagerBData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverADataFR =
-            InlineKeyboardButton.WithCallbackData("🎁Donateur-1", "GetGiverAData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverBDataFR =
-            InlineKeyboardButton.WithCallbackData("🎁Donateur-2", "GetGiverBData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverDDataFR =
-            InlineKeyboardButton.WithCallbackData("🎁Donateur-3", "GetGiverDData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverCDataFR =
-            InlineKeyboardButton.WithCallbackData("🎁Donateur-4", "GetGiverCData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonShowListTeamFR =
-            InlineKeyboardButton.WithCallbackData("📝Afficher la commande dans la liste", "ShowListTeam");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverAFR =
-            InlineKeyboardButton.WithCallbackData("❌Supprimer du tableau", "RemoveFromTableGiverA");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverBFR =
-            InlineKeyboardButton.WithCallbackData("❌Supprimer du tableau", "RemoveFromTableGiverB");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverCFR =
-            InlineKeyboardButton.WithCallbackData("❌Supprimer du tableau", "RemoveFromTableGiverC");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverDFR =
-            InlineKeyboardButton.WithCallbackData("❌Supprimer du tableau", "RemoveFromTableGiverD");
-
+        
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverAFR =
             InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverA");
 
@@ -190,49 +65,7 @@ public partial class Languages
         //------DE------\\
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableDE =
             InlineKeyboardButton.WithCallbackData("🔙Der Rücken", "ChooseTable");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonContactBankerDE =
-            InlineKeyboardButton.WithCallbackData("📨Sie sich an einen Banker", "GetBankerData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonLeaveTableDE =
-            InlineKeyboardButton.WithCallbackData("❌Der Rücken Verlasse den Tisch", "LeaveTable");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetBankerDataDE =
-            InlineKeyboardButton.WithCallbackData("🏦 Banker", "GetBankerData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetManagerADataDE =
-            InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetManagerBDataDE =
-            InlineKeyboardButton.WithCallbackData("👤 Manager-2", "GetManagerBData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverADataDE =
-            InlineKeyboardButton.WithCallbackData("🎁 Geber-1", "GetGiverAData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverBDataDE =
-            InlineKeyboardButton.WithCallbackData("🎁 Geber-2", "GetGiverBData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverDDataDE =
-            InlineKeyboardButton.WithCallbackData("🎁 Geber-3", "GetGiverDData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonGetGiverCDataDE =
-            InlineKeyboardButton.WithCallbackData("🎁 Geber-4", "GetGiverCData");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonShowListTeamDE =
-            InlineKeyboardButton.WithCallbackData("📝 Befehl in Liste anzeigen", "ShowListTeam");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverADE =
-            InlineKeyboardButton.WithCallbackData("❌ Aus der Tabelle löschen", "RemoveFromTableGiverA");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverBDE =
-            InlineKeyboardButton.WithCallbackData("❌ Aus der Tabelle löschen", "RemoveFromTableGiverB");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverCDE =
-            InlineKeyboardButton.WithCallbackData("❌ Aus der Tabelle löschen", "RemoveFromTableGiverC");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonRemoveFromTableGiverDDE =
-            InlineKeyboardButton.WithCallbackData("❌ Aus der Tabelle löschen", "RemoveFromTableGiverD");
-
+        
         public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverADE =
             InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverA");
 
@@ -257,25 +90,37 @@ public partial class Languages
             switch (tableType)
             {
                 case Table.TableType.copper:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.bronze:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.silver:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.gold:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.platinum:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.diamond:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
                     break;
             }
-            
+
             var bankerData = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
                 WebManager.RequestType.GetUserData);
             string path = null;
@@ -313,26 +158,31 @@ public partial class Languages
                     num = 1;
                     ThisUserIsVerfed = true;
                 }
+
                 giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_A)
                 {
                     if (tableData.tableData.giverA_ID == userData.playerData.id)
                     {
-                        inlineKeyboardButtonGiverAInfo = 
-                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅ 🔘", "GetGiverAData|" + tableType);
+                        inlineKeyboardButtonGiverAInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅ 🔘",
+                                "GetGiverAData|" + tableType);
                     }
                     else
                     {
-                        inlineKeyboardButtonGiverAInfo = 
-                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅", "GetGiverAData|" + tableType);
+                        inlineKeyboardButtonGiverAInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅",
+                                "GetGiverAData|" + tableType);
                     }
                 }
                 else
                 {
-                    inlineKeyboardButtonGiverAInfo = 
-                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌", "GetGiverAData|" + tableType);
+                    inlineKeyboardButtonGiverAInfo =
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌",
+                            "GetGiverAData|" + tableType);
                 }
+
                 giverCount++;
             }
             else
@@ -340,73 +190,89 @@ public partial class Languages
                 switch (userData.playerData.lang)
                 {
                     case "ru":
-                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Даритель-1", "GetGiverAData|" + tableType);
+                        inlineKeyboardButtonGiverAInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Даритель-1", "GetGiverAData|" + tableType);
                         break;
                     case "eng":
-                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-1", "GetGiverAData|" + tableType);
+                        inlineKeyboardButtonGiverAInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Giver-1", "GetGiverAData|" + tableType);
                         break;
                     case "fr":
-                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Donneur-1", "GetGiverAData|" + tableType);
+                        inlineKeyboardButtonGiverAInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Donneur-1", "GetGiverAData|" + tableType);
                         break;
                     case "de":
-                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Geber-1", "GetGiverAData|" + tableType);
+                        inlineKeyboardButtonGiverAInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Geber-1", "GetGiverAData|" + tableType);
                         break;
                     default:
-                        inlineKeyboardButtonGiverAInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-1", "GetGiverAData|" + tableType);
+                        inlineKeyboardButtonGiverAInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Giver-1", "GetGiverAData|" + tableType);
                         break;
                 }
             }
+
             if (tableData.tableData.giverB_ID != null)
             {
-                
                 if (tableData.tableData.giverB_ID == userData.playerData.id && tableData.tableData.verf_B)
                 {
                     num = 2;
                     ThisUserIsVerfed = true;
                 }
+
                 giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_B)
                 {
                     if (tableData.tableData.giverB_ID == userData.playerData.id)
                     {
-                        inlineKeyboardButtonGiverBInfo = 
-                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅ 🔘", "GetGiverBData|" + tableType);
+                        inlineKeyboardButtonGiverBInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅ 🔘",
+                                "GetGiverBData|" + tableType);
                     }
                     else
                     {
-                        inlineKeyboardButtonGiverBInfo = 
-                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅", "GetGiverBData|" + tableType);
+                        inlineKeyboardButtonGiverBInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅",
+                                "GetGiverBData|" + tableType);
                     }
                 }
                 else
                 {
-                    inlineKeyboardButtonGiverBInfo = 
-                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌", "GetGiverBData|" + tableType);
+                    inlineKeyboardButtonGiverBInfo =
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌",
+                            "GetGiverBData|" + tableType);
                 }
+
                 giverCount++;
             }
-            else 
+            else
             {
                 switch (userData.playerData.lang)
                 {
                     case "ru":
-                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Даритель-2", "GetGiverBData|" + tableType);
+                        inlineKeyboardButtonGiverBInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Даритель-2", "GetGiverBData|" + tableType);
                         break;
                     case "eng":
-                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-2", "GetGiverBData|" + tableType);
+                        inlineKeyboardButtonGiverBInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Giver-2", "GetGiverBData|" + tableType);
                         break;
                     case "fr":
-                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Donneur-2", "GetGiverBData|" + tableType);
+                        inlineKeyboardButtonGiverBInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Donneur-2", "GetGiverBData|" + tableType);
                         break;
                     case "de":
-                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Geber-2", "GetGiverBData|" + tableType);
+                        inlineKeyboardButtonGiverBInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Geber-2", "GetGiverBData|" + tableType);
                         break;
                     default:
-                        inlineKeyboardButtonGiverBInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-2", "GetGiverBData|" + tableType);
+                        inlineKeyboardButtonGiverBInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Giver-2", "GetGiverBData|" + tableType);
                         break;
                 }
             }
+
             if (tableData.tableData.giverC_ID != null)
             {
                 giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
@@ -416,47 +282,58 @@ public partial class Languages
                     num = 3;
                     ThisUserIsVerfed = true;
                 }
+
                 if (tableData.tableData.verf_C)
                 {
                     if (tableData.tableData.giverC_ID == userData.playerData.id)
                     {
-                        inlineKeyboardButtonGiverCInfo = 
-                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅ 🔘", "GetGiverCData|" + tableType);
+                        inlineKeyboardButtonGiverCInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅ 🔘",
+                                "GetGiverCData|" + tableType);
                     }
                     else
                     {
-                        inlineKeyboardButtonGiverCInfo = 
-                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅", "GetGiverCData|" + tableType);
+                        inlineKeyboardButtonGiverCInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅",
+                                "GetGiverCData|" + tableType);
                     }
                 }
                 else
                 {
-                    inlineKeyboardButtonGiverCInfo = 
-                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌", "GetGiverCData|" + tableType);
+                    inlineKeyboardButtonGiverCInfo =
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌",
+                            "GetGiverCData|" + tableType);
                 }
+
                 giverCount++;
             }
-            else 
+            else
             {
                 switch (userData.playerData.lang)
                 {
                     case "ru":
-                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Даритель-3", "GetGiverCData|" + tableType);
+                        inlineKeyboardButtonGiverCInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Даритель-3", "GetGiverCData|" + tableType);
                         break;
                     case "eng":
-                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-3", "GetGiverCData|" + tableType);
+                        inlineKeyboardButtonGiverCInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Giver-3", "GetGiverCData|" + tableType);
                         break;
                     case "fr":
-                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Donneur-3", "GetGiverCData|" + tableType);
+                        inlineKeyboardButtonGiverCInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Donneur-3", "GetGiverCData|" + tableType);
                         break;
                     case "de":
-                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Geber-3", "GetGiverCData|" + tableType);
+                        inlineKeyboardButtonGiverCInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Geber-3", "GetGiverCData|" + tableType);
                         break;
                     default:
-                        inlineKeyboardButtonGiverCInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-3", "GetGiverCData|" + tableType);
+                        inlineKeyboardButtonGiverCInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Giver-3", "GetGiverCData|" + tableType);
                         break;
                 }
             }
+
             if (tableData.tableData.giverD_ID != null)
             {
                 giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
@@ -466,52 +343,62 @@ public partial class Languages
                     num = 4;
                     ThisUserIsVerfed = true;
                 }
+
                 if (tableData.tableData.verf_D)
                 {
                     if (tableData.tableData.giverD_ID == userData.playerData.id)
                     {
-                        inlineKeyboardButtonGiverDInfo = 
-                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅ 🔘", "GetGiverDData|" + tableType);
+                        inlineKeyboardButtonGiverDInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅ 🔘",
+                                "GetGiverDData|" + tableType);
                     }
                     else
                     {
-                        inlineKeyboardButtonGiverDInfo = 
-                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅", "GetGiverDData|" + tableType);
+                        inlineKeyboardButtonGiverDInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ✅",
+                                "GetGiverDData|" + tableType);
                     }
                 }
                 else
                 {
-                    inlineKeyboardButtonGiverDInfo = 
-                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌", "GetGiverDData|" + tableType);
+                    inlineKeyboardButtonGiverDInfo =
+                        InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌",
+                            "GetGiverDData|" + tableType);
                 }
+
                 giverCount++;
             }
-            else 
+            else
             {
                 switch (userData.playerData.lang)
                 {
                     case "ru":
-                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Даритель-4", "GetGiverDData|" + tableType);
+                        inlineKeyboardButtonGiverDInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Даритель-4", "GetGiverDData|" + tableType);
                         break;
                     case "eng":
-                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-4", "GetGiverDData|" + tableType);
+                        inlineKeyboardButtonGiverDInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Giver-4", "GetGiverDData|" + tableType);
                         break;
                     case "fr":
-                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Donneur-4", "GetGiverDData|" + tableType);
+                        inlineKeyboardButtonGiverDInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Donneur-4", "GetGiverDData|" + tableType);
                         break;
                     case "de":
-                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Geber-4", "GetGiverDData|" + tableType);
+                        inlineKeyboardButtonGiverDInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Geber-4", "GetGiverDData|" + tableType);
                         break;
                     default:
-                        inlineKeyboardButtonGiverDInfo = InlineKeyboardButton.WithCallbackData($"🎁 Giver-4", "GetGiverDData|" + tableType);
+                        inlineKeyboardButtonGiverDInfo =
+                            InlineKeyboardButton.WithCallbackData($"🎁 Giver-4", "GetGiverDData|" + tableType);
                         break;
                 }
             }
 
-            if (tableData.tableData.verf_A && tableData.tableData.verf_B && 
+            if (tableData.tableData.verf_A && tableData.tableData.verf_B &&
                 tableData.tableData.verf_C && tableData.tableData.verf_D)
                 giversVerfed = true;
-            else 
+            else
                 giversVerfed = false;
 
             switch (tableType)
@@ -549,8 +436,10 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("👤 Менеджер-1", "GetManagerAData|" + tableType),
-                                    InlineKeyboardButton.WithCallbackData("👤 Менеджер-2", "GetManagerBData|" + tableType)
+                                    InlineKeyboardButton.WithCallbackData("👤 Менеджер-1",
+                                        "GetManagerAData|" + tableType),
+                                    InlineKeyboardButton.WithCallbackData("👤 Менеджер-2",
+                                        "GetManagerBData|" + tableType)
                                 },
                                 new[]
                                 {
@@ -564,11 +453,13 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("📝 Показать команду списком", "ShowListTeam|" + tableType),
+                                    InlineKeyboardButton.WithCallbackData("📝 Показать команду списком",
+                                        "ShowListTeam|" + tableType),
                                 },
-                                new []
+                                new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🖼 Показать стол картинкой", "TableImage|" + tableType)
+                                    InlineKeyboardButton.WithCallbackData("🖼 Показать стол картинкой",
+                                        "TableImage|" + tableType)
                                 },
                                 new[]
                                 {
@@ -577,12 +468,12 @@ public partial class Languages
                                 }
                             });
 
-                        
+
                         if (giversVerfed)
                             verf = @"✅ Все дарители подтверждены\!";
                         else verf = @"❌ Не все дарители подтверждены\!";
                         caption = "*Добро пожаловать на*" + "\n" +
-                                  $@"*{TableProfile.GetTableType(userData.playerData,tableType)} стол\!*" + "\n" +
+                                  $@"*{TableProfile.GetTableType(userData.playerData, tableType)} стол\!*" + "\n" +
                                   $"\n*ID стола:* {tableData.tableData.tableID}" +
                                   $"\n\n*{verf}*" +
                                   $"\n\n*Всего дарителей на столе:* {giverCount} из 4" + "\n" +
@@ -600,7 +491,8 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType),
+                                    InlineKeyboardButton.WithCallbackData("👤 Manager-1",
+                                        "GetManagerAData|" + tableType),
                                     InlineKeyboardButton.WithCallbackData("👤Manager-2", "GetManagerBData|" + tableType)
                                 },
                                 new[]
@@ -615,11 +507,13 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("📝 Show command in list", "ShowListTeam|" + tableType),
+                                    InlineKeyboardButton.WithCallbackData("📝 Show command in list",
+                                        "ShowListTeam|" + tableType),
                                 },
-                                new []
+                                new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🖼 Show table image", "TableImage|" + tableType)
+                                    InlineKeyboardButton.WithCallbackData("🖼 Show table image",
+                                        "TableImage|" + tableType)
                                 },
                                 new[]
                                 {
@@ -631,7 +525,7 @@ public partial class Languages
                             verf = @"✅ All Givers are confirmed\!";
                         else verf = @"❌ Not all Givers are verified\!";
                         caption = "*Welcome to*" + "\n" +
-                                  $@"*{TableProfile.GetTableType(userData.playerData,tableType)} table\!*" + "\n" +
+                                  $@"*{TableProfile.GetTableType(userData.playerData, tableType)} table\!*" + "\n" +
                                   $"*Table ID: * {tableData.tableData.tableID}" +
                                   $"\n\n*{verf}*" +
                                   $"\n\n*Total givers on the table:* {giverCount} of 4" + "\n" +
@@ -648,8 +542,10 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1", "GetManagerAData|" + tableType),
-                                    InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2", "GetManagerBData|" + tableType)
+                                    InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1",
+                                        "GetManagerAData|" + tableType),
+                                    InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2",
+                                        "GetManagerBData|" + tableType)
                                 },
                                 new[]
                                 {
@@ -663,11 +559,13 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("📝Afficher la commande dans la liste", "ShowListTeam|" + tableType),
+                                    InlineKeyboardButton.WithCallbackData("📝Afficher la commande dans la liste",
+                                        "ShowListTeam|" + tableType),
                                 },
-                                new []
+                                new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🖼 Afficher l'image du tableau", "TableImage|" + tableType)
+                                    InlineKeyboardButton.WithCallbackData("🖼 Afficher l'image du tableau",
+                                        "TableImage|" + tableType)
                                 },
                                 new[]
                                 {
@@ -679,7 +577,7 @@ public partial class Languages
                             verf = @"✅ Tous les Donneurs sont confirmés\!";
                         else verf = @"❌ Tous les Donneurs ne sont pas vérifiés\!";
                         caption = "*Bienvenue à table*" + "\n" +
-                                  $@"*{TableProfile.GetTableType(userData.playerData,tableType)}\!*" + "\n" +
+                                  $@"*{TableProfile.GetTableType(userData.playerData, tableType)}\!*" + "\n" +
                                   $"\n*ID de table: * {tableData.tableData.tableID}" +
                                   $"\n\n*{verf}*" +
                                   $"\n\n*Total des donateurs sur la table:* {giverCount} sur 4" + "\n" +
@@ -696,8 +594,10 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType),
-                                    InlineKeyboardButton.WithCallbackData("👤 Manager-2", "GetManagerBData|" + tableType)
+                                    InlineKeyboardButton.WithCallbackData("👤 Manager-1",
+                                        "GetManagerAData|" + tableType),
+                                    InlineKeyboardButton.WithCallbackData("👤 Manager-2",
+                                        "GetManagerBData|" + tableType)
                                 },
                                 new[]
                                 {
@@ -711,11 +611,13 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("📝 Befehl in Liste anzeigen", "ShowListTeam|" + tableType),
+                                    InlineKeyboardButton.WithCallbackData("📝 Befehl in Liste anzeigen",
+                                        "ShowListTeam|" + tableType),
                                 },
-                                new []
+                                new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🖼 Tabellenbild anzeigen", "TableImage|" + tableType)
+                                    InlineKeyboardButton.WithCallbackData("🖼 Tabellenbild anzeigen",
+                                        "TableImage|" + tableType)
                                 },
                                 new[]
                                 {
@@ -727,7 +629,7 @@ public partial class Languages
                             verf = @"✅ Alle Geber sind bestätigt\!";
                         else verf = @"❌ Nicht alle Geber sind verifiziert\!";
                         caption = "*Willkommen am*" + "\n" +
-                                  $@"*{TableProfile.GetTableType(userData.playerData,tableType)} tisch\!*" + "\n" +
+                                  $@"*{TableProfile.GetTableType(userData.playerData, tableType)} tisch\!*" + "\n" +
                                   $@"*Tabellen\-ID: * {tableData.tableData.tableID}" +
                                   $"\n\n*{verf}*" +
                                   $"\n\n*Gesamtzahl der Geber auf dem Tisch:* {giverCount} von 4" + "\n" +
@@ -744,15 +646,16 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithUrl("📨 Связаться с Банкиром", "https://t.me/" + bankerData.playerData.username), 
+                                    InlineKeyboardButton.WithUrl("📨 Связаться с Банкиром",
+                                        "https://t.me/" + bankerData.playerData.username),
                                 },
-                                new []
+                                new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("🔔 Оповестить Банкира", "NotifyBanker")
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonLeaveTableRU
+                                    InlineKeyboardButton.WithCallbackData("❌ Выйти со стола", "LeaveTable|" + tableType)
                                 },
                                 new[]
                                 {
@@ -760,10 +663,10 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                 }
                             });
-                        caption = $"*Добро пожаловать на {TableProfile.GetTableType(userData.playerData,tableType)}*" +
+                        caption = $"*Добро пожаловать на {TableProfile.GetTableType(userData.playerData, tableType)}*" +
                                   $"\n\n*ID стола:* {tableData.tableData.tableID}" +
                                   "\n\n*Фиксированный курс:*\n" +
-                                  @"📈  1$ \= 0\.98€ \= 62₽" + 
+                                  @"📈  1$ \= 0\.98€ \= 62₽" +
                                   "\n\n" +
                                   $@"Вы дарите  финансовый подарок в размере {giftSum}$ на игровом столе\! " + "\n" +
                                   @"Узнайте реквизиты и сделайте финансовый подарок игроку\. 🎁 " +
@@ -780,15 +683,16 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithUrl("📨 Contact Banker", "https://t.me/" + bankerData.playerData.username), 
+                                    InlineKeyboardButton.WithUrl("📨 Contact Banker",
+                                        "https://t.me/" + bankerData.playerData.username),
                                 },
-                                new []
+                                new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("🔔 Notify Banker", "NotifyBanker")
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonLeaveTableENG
+                                    InlineKeyboardButton.WithCallbackData("❌ Exit the table", "LeaveTable|" + tableType)
                                 },
                                 new[]
                                 {
@@ -796,12 +700,13 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                 }
                             });
-                        caption = $"*Welcome to {TableProfile.GetTableType(userData.playerData,tableType)}*" +
+                        caption = $"*Welcome to {TableProfile.GetTableType(userData.playerData, tableType)}*" +
                                   $"\n\n*Table ID:* {tableData.tableData.tableID}" +
                                   "\n\n*Fixed exchange rate:*" + "\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" +
                                   "\n\n" +
-                                  $@"You give a cash financial gift in the amount of {giftSum}$ on the gaming table\!" + "\n" +
+                                  $@"You give a cash financial gift in the amount of {giftSum}$ on the gaming table\!" +
+                                  "\n" +
                                   @"Find out the details of the banker and make a financial gift to the player\. 🎁" +
                                   "\n\n" +
                                   @"You can contact the Banker via the Telegram chat by clicking the «*Contact the Banker*» button\. 📨" +
@@ -816,15 +721,17 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithUrl("📨 Contacter le banquier", "https://t.me/" + bankerData.playerData.username), 
+                                    InlineKeyboardButton.WithUrl("📨 Contacter le banquier",
+                                        "https://t.me/" + bankerData.playerData.username),
                                 },
-                                new []
+                                new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("🔔 Avertir le banquier", "NotifyBanker")
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonLeaveTableFR
+                                    InlineKeyboardButton.WithCallbackData("❌ Sortir du tableau",
+                                        "LeaveTable|" + tableType)
                                 },
                                 new[]
                                 {
@@ -832,17 +739,19 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                 }
                             });
-                        caption = $"*Bienvenue à {TableProfile.GetTableType(userData.playerData,tableType)}*" +
+                        caption = $"*Bienvenue à {TableProfile.GetTableType(userData.playerData, tableType)}*" +
                                   $"\n\n*Identifiant du tableau:* {tableData.tableData.tableID}" +
                                   "\n\n*Taux de change fixe:*" + "\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" +
                                   "\n\n" +
-                                  $@"Vous offrez un cadeau financier en espèces d'un montant de {giftSum}$ sur la table de jeu\!" + "\n" +
+                                  $@"Vous offrez un cadeau financier en espèces d'un montant de {giftSum}$ sur la table de jeu\!" +
+                                  "\n" +
                                   @"Découvrez les coordonnées du banquier et faites un don financier au joueur\. 🎁" +
                                   "\n\n" +
                                   @"Vous pouvez contacter le banquier via le chat Telegram en cliquant sur le bouton «*Contacter le banquier*»\. 📨" +
                                   "\n\n" +
-                                  @"👇 Maintenant, cliquez simplement sur le texte ci\-dessous et envoyez\-le au banquier:" + "\n" +
+                                  @"👇 Maintenant, cliquez simplement sur le texte ci\-dessous et envoyez\-le au banquier:" +
+                                  "\n" +
                                   $@"«`Salut\! 👋 Je veux vous offrir ${giftSum} en cadeau 💸`»" +
                                   "\n\n\n" +
                                   @"_Une fois que vous avez rempli les conditions, le banquier vous confirme sur la table, vous activant ainsi en tant que donneur_\.";
@@ -853,15 +762,17 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithUrl("📨 Banker kontaktieren", "https://t.me/" + bankerData.playerData.username), 
+                                    InlineKeyboardButton.WithUrl("📨 Banker kontaktieren",
+                                        "https://t.me/" + bankerData.playerData.username),
                                 },
-                                new []
+                                new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("🔔 Banker benachrichtigen", "NotifyBanker")
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButtonLeaveTableDE
+                                    InlineKeyboardButton.WithCallbackData("❌Der Rücken Verlasse den Tisch",
+                                        "LeaveTable|" + tableType)
                                 },
                                 new[]
                                 {
@@ -869,33 +780,36 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                 }
                             });
-                        
-                        caption = $"*Willkommen bei {TableProfile.GetTableType(userData.playerData,tableType)}*" +
+
+                        caption = $"*Willkommen bei {TableProfile.GetTableType(userData.playerData, tableType)}*" +
                                   "\n\n" +
                                   $@"*Tabellen\-ID:* {tableData.tableData.tableID}" +
                                   "\n\n*Fester Wechselkurs:*" + "\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" +
                                   "\n\n\n" +
-                                  $@"Du verschenkst ein Geldgeschenk in Höhe von {giftSum}$ auf dem Spieltisch\!" + "\n" +
-                                  @"Finden Sie die Details des Bankiers heraus und machen Sie dem Spieler ein finanzielles Geschenk\. 🎁" + 
+                                  $@"Du verschenkst ein Geldgeschenk in Höhe von {giftSum}$ auf dem Spieltisch\!" +
+                                  "\n" +
+                                  @"Finden Sie die Details des Bankiers heraus und machen Sie dem Spieler ein finanzielles Geschenk\. 🎁" +
                                   "\n\n" +
                                   @"Sie können den Banker über den Telegramm\-Chat kontaktieren, indem Sie auf die Schaltfläche «*Banker kontaktieren*» klicken\. 📨" +
-                                  "\n\n👇 Klicken Sie jetzt einfach auf den folgenden Text und senden Sie ihn an den Banker:" + "\n" +
+                                  "\n\n👇 Klicken Sie jetzt einfach auf den folgenden Text und senden Sie ihn an den Banker:" +
+                                  "\n" +
                                   $@"«`Hi\! 👋 Ich möchte dir ${giftSum} schenken 💸`»" +
                                   "\n\n\n" +
                                   @"_Nachdem Sie die Bedingungen erfüllt haben, bestätigt Sie der Banker auf dem Tisch und aktiviert Sie dadurch als Geber_\.";
                         break;
                 }
+
             using (Stream
-                   stream = System.IO.File.OpenRead(path)) 
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
-                    callbackData.Message.MessageId, 
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
                     media: new InputMediaVideo(new InputMedia(stream, "media"))
                 );
             await botClient.EditMessageCaptionAsync(
-                callbackData.Message.Chat.Id, 
-                callbackData.Message.MessageId, 
-                caption, 
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
                 ParseMode.MarkdownV2,
                 null,
                 inlineKeyboard
@@ -907,30 +821,43 @@ public partial class Languages
         /// </summary>
         public static async void Manager(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
             Table.TableType tableType,
-            UserData userData) 
+            UserData userData)
         {
             UserData? tableData = null;
             switch (tableType)
             {
                 case Table.TableType.copper:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.bronze:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.silver:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.gold:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.platinum:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.diamond:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
                     break;
             }
+
             string path = null;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -964,29 +891,34 @@ public partial class Languages
                 switch (userData.playerData.lang)
                 {
                     case "ru":
-                        inlineKeyboardButtonManagerAInfo = 
+                        inlineKeyboardButtonManagerAInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Менеджер-1 🔘", "GetManagerAData");
-                        inlineKeyboardButtonManagerBInfo = InlineKeyboardButton.WithCallbackData("👤 Менеджер-2", "GetManagerBData|" + tableType);
+                        inlineKeyboardButtonManagerBInfo =
+                            InlineKeyboardButton.WithCallbackData("👤 Менеджер-2", "GetManagerBData|" + tableType);
                         break;
                     case "eng":
                         inlineKeyboardButtonManagerAInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Manager-1 🔘", "GetManagerAData");
-                        inlineKeyboardButtonManagerBInfo = InlineKeyboardButton.WithCallbackData("👤Manager-2", "GetManagerBData|" + tableType);
+                        inlineKeyboardButtonManagerBInfo =
+                            InlineKeyboardButton.WithCallbackData("👤Manager-2", "GetManagerBData|" + tableType);
                         break;
                     case "fr":
                         inlineKeyboardButtonManagerAInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Gestionnaire-1 🔘", "GetManagerAData");
-                        inlineKeyboardButtonManagerBInfo = InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2", "GetManagerBData|" + tableType);
+                        inlineKeyboardButtonManagerBInfo =
+                            InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2", "GetManagerBData|" + tableType);
                         break;
                     case "de":
                         inlineKeyboardButtonManagerAInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Manager-1 🔘", "GetManagerAData");
-                        inlineKeyboardButtonManagerBInfo = InlineKeyboardButton.WithCallbackData("👤 Manager-2", "GetManagerBData|" + tableType);
+                        inlineKeyboardButtonManagerBInfo =
+                            InlineKeyboardButton.WithCallbackData("👤 Manager-2", "GetManagerBData|" + tableType);
                         break;
                     default:
                         inlineKeyboardButtonManagerAInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Manager-1 🔘", "GetManagerAData");
-                        inlineKeyboardButtonManagerBInfo = InlineKeyboardButton.WithCallbackData("👤Manager-2", "GetManagerBData|" + tableType);
+                        inlineKeyboardButtonManagerBInfo =
+                            InlineKeyboardButton.WithCallbackData("👤Manager-2", "GetManagerBData|" + tableType);
                         break;
                 }
             }
@@ -995,35 +927,41 @@ public partial class Languages
                 switch (userData.playerData.lang)
                 {
                     case "ru":
-                        inlineKeyboardButtonManagerBInfo = 
+                        inlineKeyboardButtonManagerBInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Менеджер-2 🔘", "GetManagerBData");
-                        inlineKeyboardButtonManagerAInfo = InlineKeyboardButton.WithCallbackData("👤 Менеджер-1", "GetManagerAData|" + tableType);
+                        inlineKeyboardButtonManagerAInfo =
+                            InlineKeyboardButton.WithCallbackData("👤 Менеджер-1", "GetManagerAData|" + tableType);
                         break;
                     case "eng":
                         inlineKeyboardButtonManagerBInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Manager-2 🔘", "GetManagerBData");
-                        inlineKeyboardButtonManagerAInfo = InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType);
+                        inlineKeyboardButtonManagerAInfo =
+                            InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType);
                         break;
                     case "fr":
                         inlineKeyboardButtonManagerBInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Gestionnaire-2 🔘", "GetManagerBData");
-                        inlineKeyboardButtonManagerAInfo = InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1", "GetManagerAData|" + tableType);
+                        inlineKeyboardButtonManagerAInfo =
+                            InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1", "GetManagerAData|" + tableType);
                         break;
                     case "de":
                         inlineKeyboardButtonManagerBInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Manager-2 🔘", "GetManagerBData");
-                        inlineKeyboardButtonManagerAInfo = InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType);
+                        inlineKeyboardButtonManagerAInfo =
+                            InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType);
                         break;
                     default:
                         inlineKeyboardButtonManagerBInfo =
                             InlineKeyboardButton.WithCallbackData($"👤 Manager-2 🔘", "GetManagerBData");
-                        inlineKeyboardButtonManagerAInfo = InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType);
+                        inlineKeyboardButtonManagerAInfo =
+                            InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType);
                         break;
                 }
             }
+
             if (tableData.tableData.giverA_ID != null)
             {
-                giverInfo = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverA_ID),
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_A)
                 {
@@ -1069,7 +1007,7 @@ public partial class Languages
 
             if (tableData.tableData.giverB_ID != null)
             {
-                giverInfo = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverB_ID),
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_B)
                 {
@@ -1115,7 +1053,7 @@ public partial class Languages
 
             if (tableData.tableData.giverC_ID != null)
             {
-                giverInfo = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverC_ID),
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_C)
                 {
@@ -1161,7 +1099,7 @@ public partial class Languages
 
             if (tableData.tableData.giverD_ID != null)
             {
-                giverInfo = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverD_ID),
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_D)
                 {
@@ -1204,7 +1142,7 @@ public partial class Languages
                         break;
                 }
             }
-            
+
             if (tableData.tableData.verf_A && tableData.tableData.verf_B &&
                 tableData.tableData.verf_C && tableData.tableData.verf_D)
                 giversVerfed = true;
@@ -1239,11 +1177,13 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("📝 Показать команду списком", "ShowListTeam|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("📝 Показать команду списком",
+                                    "ShowListTeam|" + tableType),
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("🖼 Показать стол картинкой", "TableImage|" + tableType)
+                                InlineKeyboardButton.WithCallbackData("🖼 Показать стол картинкой",
+                                    "TableImage|" + tableType)
                             },
                             new[]
                             {
@@ -1257,7 +1197,7 @@ public partial class Languages
                         verf = "✅ Все дарители подтверждены!";
                     else verf = "❌ Не все дарители подтверждены!";
                     caption = "*Добро пожаловать на*" +
-                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} стол!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData, tableType)} стол!*" +
                               $"\n*ID стола: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Всего дарителей на столе:* {giverCount} из 4" +
@@ -1290,7 +1230,8 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("📝 Show command in list", "ShowListTeam|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("📝 Show command in list",
+                                    "ShowListTeam|" + tableType),
                             },
                             new[]
                             {
@@ -1306,7 +1247,7 @@ public partial class Languages
                         verf = "✅ All Givers are confirmed!";
                     else verf = "❌ Not all Givers are verified!";
                     caption = "*Welcome to*" +
-                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} table!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData, tableType)} table!*" +
                               $"*Table ID: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Total givers on the table:* {giverCount} of 4" +
@@ -1338,11 +1279,13 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("📝Afficher la commande dans la liste", "ShowListTeam|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("📝Afficher la commande dans la liste",
+                                    "ShowListTeam|" + tableType),
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("🖼 Afficher l'image du tableau", "TableImage|" + tableType)
+                                InlineKeyboardButton.WithCallbackData("🖼 Afficher l'image du tableau",
+                                    "TableImage|" + tableType)
                             },
                             new[]
                             {
@@ -1354,7 +1297,7 @@ public partial class Languages
                         verf = "✅ Tous les Donneurs sont confirmés!";
                     else verf = "❌ Tous les Donneurs ne sont pas vérifiés!";
                     caption = "*Bienvenue à table*" +
-                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)}!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData, tableType)}!*" +
                               $"\n*ID de table: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Total des donateurs sur la table:* {giverCount} sur 4" +
@@ -1386,11 +1329,13 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("📝 Befehl in Liste anzeigen", "ShowListTeam|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("📝 Befehl in Liste anzeigen",
+                                    "ShowListTeam|" + tableType),
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("🖼 Tabellenbild anzeigen", "TableImage|" + tableType)
+                                InlineKeyboardButton.WithCallbackData("🖼 Tabellenbild anzeigen",
+                                    "TableImage|" + tableType)
                             },
                             new[]
                             {
@@ -1402,7 +1347,7 @@ public partial class Languages
                         verf = "✅ Alle Geber sind bestätigt!";
                     else verf = "❌ Nicht alle Geber sind verifiziert!";
                     caption = "*Willkommen am*" +
-                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} tisch!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData, tableType)} tisch!*" +
                               $"*Tabellen-ID: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Gesamtzahl der Geber auf dem Tisch:* {giverCount} von 4" +
@@ -1410,18 +1355,19 @@ public partial class Languages
                               "\n\nWählen Sie einen Spieler aus, um Informationen anzuzeigen:";
                     break;
             }
+
             using (Stream
-                   stream = System.IO.File.OpenRead(path)) 
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
-                    callbackData.Message.MessageId, 
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
                     media: new InputMediaVideo(new InputMedia(stream, "media"))
                 );
             await botClient.EditMessageCaptionAsync(
-                callbackData.Message.Chat.Id, 
-                callbackData.Message.MessageId, 
-                caption, 
-                ParseMode.Markdown, 
-                null, 
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Markdown,
+                null,
                 inlineKeyboard
             );
         }
@@ -1437,24 +1383,37 @@ public partial class Languages
             switch (tableType)
             {
                 case Table.TableType.copper:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.bronze:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.silver:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.gold:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.platinum:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
                     break;
                 case Table.TableType.diamond:
-                    tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                    tableData = await WebManager.SendData(
+                        new TableProfile(userData.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
                     break;
             }
+
             string path = null;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -1487,7 +1446,7 @@ public partial class Languages
                 switch (userData.playerData.lang)
                 {
                     case "ru":
-                        inlineKeyboardButtonBankerInfo = 
+                        inlineKeyboardButtonBankerInfo =
                             InlineKeyboardButton.WithCallbackData($"🏦 Банкир 🔘", "GetBankerData|" + tableType);
                         break;
                     case "eng":
@@ -1508,9 +1467,10 @@ public partial class Languages
                         break;
                 }
             }
+
             if (tableData.tableData.giverA_ID != null)
             {
-                giverInfo = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverA_ID),
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_A)
                 {
@@ -1556,7 +1516,7 @@ public partial class Languages
 
             if (tableData.tableData.giverB_ID != null)
             {
-                giverInfo = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverB_ID),
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_B)
                 {
@@ -1602,7 +1562,7 @@ public partial class Languages
 
             if (tableData.tableData.giverC_ID != null)
             {
-                giverInfo = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverC_ID),
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
                     WebManager.RequestType.GetUserData);
                 if (tableData.tableData.verf_C)
                 {
@@ -1648,7 +1608,7 @@ public partial class Languages
 
             if (tableData.tableData.giverD_ID != null)
             {
-                giverInfo = await WebManager.SendData(new UserProfile((int)tableData.tableData.giverD_ID),
+                giverInfo = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
                     WebManager.RequestType.GetUserData);
 
                 if (tableData.tableData.verf_D)
@@ -1700,7 +1660,6 @@ public partial class Languages
                 giversVerfed = false;
 
 
-
             switch (userData.playerData.lang)
             {
                 case "ru":
@@ -1728,11 +1687,13 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("📝 Показать команду списком", "ShowListTeam|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("📝 Показать команду списком",
+                                    "ShowListTeam|" + tableType),
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("🖼 Показать стол картинкой", "TableImage|" + tableType)
+                                InlineKeyboardButton.WithCallbackData("🖼 Показать стол картинкой",
+                                    "TableImage|" + tableType)
                             },
                             new[]
                             {
@@ -1779,7 +1740,8 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("📝 Show command in list", "ShowListTeam|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("📝 Show command in list",
+                                    "ShowListTeam|" + tableType),
                             },
                             new[]
                             {
@@ -1795,7 +1757,7 @@ public partial class Languages
                         verf = "✅ All Givers are confirmed!";
                     else verf = "❌ Not all Givers are verified!";
                     caption = "*Welcome to*" +
-                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} table!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData, tableType)} table!*" +
                               $"*Table ID: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Total givers on the table:* {giverCount} of 4" +
@@ -1812,8 +1774,10 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1", "GetManagerAData|" + tableType),
-                                InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2", "GetManagerBData|" + tableType)
+                                InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1",
+                                    "GetManagerAData|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2",
+                                    "GetManagerBData|" + tableType)
                             },
                             new[]
                             {
@@ -1827,11 +1791,13 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("📝Afficher la commande dans la liste", "ShowListTeam|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("📝Afficher la commande dans la liste",
+                                    "ShowListTeam|" + tableType),
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("🖼 Afficher l'image du tableau", "TableImage|" + tableType)
+                                InlineKeyboardButton.WithCallbackData("🖼 Afficher l'image du tableau",
+                                    "TableImage|" + tableType)
                             },
                             new[]
                             {
@@ -1843,7 +1809,7 @@ public partial class Languages
                         verf = "✅ Tous les Donneurs sont confirmés!";
                     else verf = "❌ Tous les Donneurs ne sont pas vérifiés!";
                     caption = "*Bienvenue à table*" +
-                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)}!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData, tableType)}!*" +
                               $"\n*ID de table: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Total des donateurs sur la table:* {giverCount} sur 4" +
@@ -1875,11 +1841,13 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("📝 Befehl in Liste anzeigen", "ShowListTeam|" + tableType),
+                                InlineKeyboardButton.WithCallbackData("📝 Befehl in Liste anzeigen",
+                                    "ShowListTeam|" + tableType),
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("🖼 Tabellenbild anzeigen", "TableImage|" + tableType)
+                                InlineKeyboardButton.WithCallbackData("🖼 Tabellenbild anzeigen",
+                                    "TableImage|" + tableType)
                             },
                             new[]
                             {
@@ -1891,7 +1859,7 @@ public partial class Languages
                         verf = "✅ Alle Geber sind bestätigt!";
                     else verf = "❌ Nicht alle Geber sind verifiziert!";
                     caption = "*Willkommen am*" +
-                              $"\n*{TableProfile.GetTableType(userData.playerData,tableType)} tisch!*" +
+                              $"\n*{TableProfile.GetTableType(userData.playerData, tableType)} tisch!*" +
                               $"*Tabellen-ID: * {tableData.tableData.tableID}" +
                               $"\n\n*{verf}*" +
                               $"\n\n*Gesamtzahl der Geber auf dem Tisch:* {giverCount} von 4" +
@@ -1899,18 +1867,19 @@ public partial class Languages
                               "\n\nWählen Sie einen Spieler aus, um Informationen anzuzeigen:";
                     break;
             }
+
             using (Stream
-                   stream = System.IO.File.OpenRead(path)) 
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
-                    callbackData.Message.MessageId, 
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
                     media: new InputMediaVideo(new InputMedia(stream, "media"))
                 );
             await botClient.EditMessageCaptionAsync(
-                callbackData.Message.Chat.Id, 
-                callbackData.Message.MessageId, 
-                caption, 
-                ParseMode.Markdown, 
-                null, 
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Markdown,
+                null,
                 inlineKeyboard
             );
         }
@@ -1935,6 +1904,7 @@ public partial class Languages
                             Banker(botClient, chatId, callbackData, Table.TableType.copper, userData);
                             break;
                     }
+
                     break;
                 case Table.TableType.bronze:
                     switch (userData.playerData.UserTableList.bronzeTableRole)
@@ -1949,6 +1919,7 @@ public partial class Languages
                             Banker(botClient, chatId, callbackData, Table.TableType.bronze, userData);
                             break;
                     }
+
                     break;
                 case Table.TableType.silver:
                     switch (userData.playerData.UserTableList.silverTableRole)
@@ -1963,6 +1934,7 @@ public partial class Languages
                             Banker(botClient, chatId, callbackData, Table.TableType.silver, userData);
                             break;
                     }
+
                     break;
                 case Table.TableType.gold:
                     switch (userData.playerData.UserTableList.goldTableRole)
@@ -1977,6 +1949,7 @@ public partial class Languages
                             Banker(botClient, chatId, callbackData, Table.TableType.gold, userData);
                             break;
                     }
+
                     break;
                 case Table.TableType.platinum:
                     switch (userData.playerData.UserTableList.platinumTableRole)
@@ -1991,6 +1964,7 @@ public partial class Languages
                             Banker(botClient, chatId, callbackData, Table.TableType.platinum, userData);
                             break;
                     }
+
                     break;
                 case Table.TableType.diamond:
                     switch (userData.playerData.UserTableList.diamondTableRole)
@@ -2005,13 +1979,13 @@ public partial class Languages
                             Banker(botClient, chatId, callbackData, Table.TableType.diamond, userData);
                             break;
                     }
+
                     break;
             }
-            
         }
 
         public static async void Copper(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
-            UserData userData) 
+            UserData userData)
         {
             userData.playerData.level_tableType = Table.TableType.copper;
             var tableType = Table.TableType.copper;
@@ -2023,70 +1997,145 @@ public partial class Languages
             else
             {
                 Console.WriteLine("ERROR");
-                InlineKeyboardMarkup inlineKeyboard;
-                Message sentMessage;
-                switch (userData.playerData.lang)
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup inlineKeyboard = null;
+                string? caption = null;
+                if (data.error.errorText.Contains("ThisTableIsBlocked"))
                 {
-                    case "ru":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableRU
-                                }
-                            });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "К сожалению таких столов пока что нет, попробуйте позже",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "eng":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Ожидайте...</b>" +
+                                      "\n\n" +
+                                      "Данный стол заблокирован на 24 часа, так как Вы недавно произвели самостоятельный выход со стола.";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableENG
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Unfortunately, there are no such tables yet, please try again later",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "fr":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Wait...</b>" +
+                                      "\n\n" +
+                                      "This table has been locked for 24 hours because you recently exited the table yourself.";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableFR
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "de":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
+                                    }
+                                });
+                            caption =
+                                "<b>🤷 Attendez...</b>" +
+                                "\n\n" +
+                                "Cette table a été verrouillée pendant 24 heures parce que vous avez récemment quitté la table vous-même.";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableDE
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut",
-                            replyMarkup: inlineKeyboard);
-                        break;
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Warte...</b>" +
+                                      "\n\n" +
+                                      "Dieser Tisch wurde für 24 Stunden gesperrt, weil Sie den Tisch kürzlich selbst verlassen haben.";
+                            break;
+                    }
                 }
+                else
+                {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU
+                                    }
+                                });
+                            caption = "К сожалению таких столов пока что нет, попробуйте позже";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG
+                                    }
+                                });
+                            caption = "Unfortunately, there are no such tables yet, please try again later";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR
+                                    }
+                                });
+                            caption =
+                                "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE
+                                    }
+                                });
+                            caption =
+                                "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut";
+                            break;
+                    }
+                }
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
             }
         }
 

@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using CashFlowTelegramBot.Skywards.ImageEditor;
 using CashFlowTelegramBot.Skywards.Web;
 using Telegram.Bot;
+using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -214,7 +215,8 @@ public partial class Languages
         Table.TableRole? tableRole = Table.TableRole.giver;
         string path = null;
         string? caption = null;
-        
+        /*UserData data = await WebManager.SendData(SearchedUser, WebManager.RequestType.GetUserData);
+        SearchedUser = data.playerData;*/
         InlineKeyboardMarkup? inlineKeyboard = null;
         UserData invitedBy = null;
         if (SearchedUser.refId != null)
@@ -276,8 +278,28 @@ public partial class Languages
             var searchedUserRole = "";
             string? firstName = "";
             string? lastName = "";
-            firstName = botClient.GetChatAsync(SearchedUser.id).Result.FirstName;
-            lastName = botClient.GetChatAsync(SearchedUser.id).Result.LastName;
+            try
+            {
+                firstName = botClient.GetChatAsync(SearchedUser.id).Result.FirstName;
+            }
+            catch(AggregateException aex)
+            {
+                Console.WriteLine("Handle Remaining Exceptions");
+                aex.Handle(ex => HandleException(ex));
+            }
+            try
+            {
+                lastName = botClient.GetChatAsync(SearchedUser.id).Result.LastName;
+            }
+            catch(AggregateException aex)
+            {
+                Console.WriteLine("Handle Remaining Exceptions");
+                aex.Handle(ex => HandleException(ex));
+            }
+            
+           
+            //firstName = botClient.GetChatAsync(SearchedUser.id).Result.FirstName;
+                //lastName = botClient.GetChatAsync(SearchedUser.id).Result.LastName;
             
             var IsSearchedUserVerf =
                 (tableToBack.tableData.giverA_ID == SearchedUser.id && tableToBack.tableData.verf_A) ||
@@ -313,11 +335,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverARU,
+                                            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverA|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverARU  
+                                            InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverA|" + tableType)
                                         },
                                         new[]
                                         {
@@ -359,11 +381,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverBRU,
+                                            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverB|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBRU  
+                                            InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverB|" + tableType)
                                         },
                                         new[]
                                         {
@@ -405,11 +427,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverCRU,
+                                            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverC|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCRU  
+                                            InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverC|" + tableType) 
                                         },
                                         new[]
                                         {
@@ -451,11 +473,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverDRU,
+                                            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverD|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDRU  
+                                            InlineKeyboardButton.WithCallbackData("❌ Удалить со стола", "RemoveFromTableGiverD|" + tableType)
                                         },
                                         new[]
                                         {
@@ -527,11 +549,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverAENG,
+                                            InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverA|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverAENG  
+                                            InlineKeyboardButton.WithCallbackData("❌ Delete from the table", "RemoveFromTableGiverA|" + tableType)
                                         },
                                         new[]
                                         {
@@ -573,11 +595,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverBENG,
+                                            InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverB|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBENG  
+                                            InlineKeyboardButton.WithCallbackData("❌ Delete from the table", "RemoveFromTableGiverB|" + tableType)
                                         },
                                         new[]
                                         {
@@ -619,11 +641,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverCENG,
+                                            InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverC|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCENG  
+                                            InlineKeyboardButton.WithCallbackData("❌ Delete from the table", "RemoveFromTableGiverC|" + tableType)
                                         },
                                         new[]
                                         {
@@ -665,11 +687,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverDENG,
+                                            InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverD|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDENG
+                                            InlineKeyboardButton.WithCallbackData("❌ Delete from the table", "RemoveFromTableGiverD|" + tableType)
                                         },
                                         new[]
                                         {
@@ -742,11 +764,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverAFR,
+                                            InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverA|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverAFR  
+                                            InlineKeyboardButton.WithCallbackData("❌Supprimer du tableau", "RemoveFromTableGiverA|" + tableType)
                                         },
                                         new[]
                                         {
@@ -788,11 +810,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverBFR,
+                                            InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverB|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBFR  
+                                            InlineKeyboardButton.WithCallbackData("❌Supprimer du tableau", "RemoveFromTableGiverB|" + tableType)
                                         },
                                         new[]
                                         {
@@ -834,11 +856,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverCFR,
+                                            InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverC|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCFR  
+                                            InlineKeyboardButton.WithCallbackData("❌Supprimer du tableau", "RemoveFromTableGiverC|" + tableType)
                                         },
                                         new[]
                                         {
@@ -880,11 +902,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverDFR,
+                                            InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverD|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDFR  
+                                            InlineKeyboardButton.WithCallbackData("❌Supprimer du tableau", "RemoveFromTableGiverD|" + tableType)
                                         },
                                         new[]
                                         {
@@ -956,11 +978,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverADE,
+                                            InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverA|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverADE  
+                                            InlineKeyboardButton.WithCallbackData("❌ Aus der Tabelle löschen", "RemoveFromTableGiverA|" + tableType) 
                                         },
                                         new[]
                                         {
@@ -1002,11 +1024,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverBDE,
+                                            InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverB|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverBDE  
+                                            InlineKeyboardButton.WithCallbackData("❌ Aus der Tabelle löschen", "RemoveFromTableGiverB|" + tableType) 
                                         },
                                         new[]
                                         {
@@ -1048,11 +1070,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverCDE,
+                                            InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverC|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverCDE 
+                                            InlineKeyboardButton.WithCallbackData("❌ Aus der Tabelle löschen", "RemoveFromTableGiverC|" + tableType)
                                         },
                                         new[]
                                         {
@@ -1094,11 +1116,11 @@ public partial class Languages
                                         },
                                         new[]
                                         {
-                                            Tables.InlineKeyboardButtonVerfGiverDDE
+                                            InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverD|" + tableType)
                                         },
                                         new []
                                         {
-                                            Tables.InlineKeyboardButtonRemoveFromTableGiverDDE
+                                            InlineKeyboardButton.WithCallbackData("❌ Aus der Tabelle löschen", "RemoveFromTableGiverD|" + tableType)
                                         },
                                         new[]
                                         {
@@ -1244,6 +1266,23 @@ public partial class Languages
             inlineKeyboard
         );
         
+    }
+    public static bool HandleException(Exception ex)
+    {
+        if (ex is AggregateException)
+        {
+            Console.WriteLine("Handling: {0}", ex.Message);
+            return true;
+        }
+
+        if (ex is ApiRequestException)
+        {
+            Console.WriteLine("Handling: {0}", ex.Message);
+            return true;
+        }
+
+        Console.WriteLine("Not handling: {0}", ex.Message);
+        return false;
     }
     private static string GetCallbackAddress(Table.TableType tableType)
     {
@@ -4174,6 +4213,7 @@ public partial class Languages
 
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
         UserProfile userData,
+        Table.TableType tableType,
         WebManager.RequestType requestType)
     {
         switch (requestType)
@@ -4199,7 +4239,7 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("✅Да", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("✅Да", "Confirm" + callbackData.Data + "|" + tableType),
                                     InlineKeyboardButton.WithCallbackData("❌Нет", "ChooseTable"),
                                 }
                             });
@@ -4212,7 +4252,7 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data + "|" + tableType),
                                     InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
@@ -4225,7 +4265,7 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data + "|" + tableType),
                                     InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
@@ -4238,7 +4278,7 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("✅JA", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("✅JA", "Confirm" + callbackData.Data + "|" + tableType),
                                     InlineKeyboardButton.WithCallbackData("❌NEIN", "ChooseTable"),
                                 }
                             });
@@ -4251,7 +4291,7 @@ public partial class Languages
                             {
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data),
+                                    InlineKeyboardButton.WithCallbackData("✅Yes", "Confirm" + callbackData.Data + "|" + tableType),
                                     InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });

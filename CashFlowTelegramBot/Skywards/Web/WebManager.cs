@@ -20,6 +20,13 @@ public class UserData
         tableData = new TableProfile();
         error = new Error();
     }
+
+    public UserData(UserProfile userProfile, TableProfile tableProfile)
+    {
+        playerData = userProfile;
+        tableData = tableProfile;
+        error = new Error();
+    }
 }
 
 [Serializable]
@@ -134,6 +141,44 @@ public class WebManager
         return UserData;
     }
     public static async Task<UserData> SendData(TableProfile data, RequestType requestType)
+    {
+        var Debug = true;
+        var form = new RequsetForm(data, requestType);
+        var json = JsonConvert.SerializeObject(form, Formatting.Indented);
+        if(Debug) Console.WriteLine("\nJSON: " + json);
+
+        var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
+        httpWebRequest.Method = "POST";
+        httpWebRequest.Accept = "application/json";
+        httpWebRequest.ContentType = "application/json";
+
+
+        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+        {
+            streamWriter.Write(json);
+        }
+
+        var httpResponse = (HttpWebResponse) httpWebRequest.GetResponse();
+        UserData = new UserData();
+        var responseUser = new UserProfile();
+        var error = new Error();
+        var tableProfile = new TableProfile();
+        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+        {
+            var result = streamReader.ReadToEnd();
+            if(Debug) Console.WriteLine("\nResponse: " + result);
+            
+            UserData = await SetResponseData(result, Debug);
+        }
+
+        if(Debug) Console.WriteLine(httpResponse.StatusCode);
+        if (httpResponse.StatusCode == HttpStatusCode.OK)
+        {
+        }
+
+        return UserData;
+    }
+    public static async Task<UserData> SendData(UserData data, RequestType requestType)
     {
         var Debug = true;
         var form = new RequsetForm(data, requestType);
