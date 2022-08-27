@@ -1129,8 +1129,12 @@ public static class UpdateHandlers
             UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverA_ID);
             if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
             {
-                await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
+                var response = await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
                     WebManager.RequestType.RemoveFromTable);
+                if (response.notification.isNotify)
+                {
+                    Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                }
                 SelectByTableType(botClient, callbackQuery, userData, tableType);
             }
         }
@@ -1186,8 +1190,12 @@ public static class UpdateHandlers
             UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverB_ID);
             if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
             {
-                await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
+                var response = await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
                     WebManager.RequestType.RemoveFromTable);
+                if (response.notification.isNotify)
+                {
+                    Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                }
                 SelectByTableType(botClient, callbackQuery, userData, tableType);
             }
         }
@@ -1245,8 +1253,12 @@ public static class UpdateHandlers
             //userToRemove.id = (int) dataToRemove.tableData.giverC_ID;
             if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
             {
-                await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
+                var response = await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
                     WebManager.RequestType.RemoveFromTable);
+                if (response.notification.isNotify)
+                {
+                    Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                }
                 SelectByTableType(botClient, callbackQuery, userData, tableType);
             }
         }
@@ -1302,8 +1314,12 @@ public static class UpdateHandlers
             UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverD_ID);
             if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
             {
-                await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
+                var response = await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
                     WebManager.RequestType.RemoveFromTable);
+                if (response.notification.isNotify)
+                {
+                    Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                }
                 SelectByTableType(botClient, callbackQuery, userData, tableType);
             }
         }
@@ -1361,22 +1377,15 @@ public static class UpdateHandlers
             {
                 var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
                     WebManager.RequestType.Confirm);
+                if (response.notification.isNotify)
+                {
+                    Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                }
                 if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                     SelectByTableType(botClient, callbackQuery, userData, tableType);
                 else
                     Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
             }
-            /*var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-            if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
-            {
-                var response = await WebManager.SendData(
-                    new UserProfile((int) dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
-                    WebManager.RequestType.Confirm);
-                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
-                    SelectByTableType(botClient, callbackQuery, userData);
-                else
-                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
-            }*/
         }
 
         if (callbackQuery.Data.Contains("VerfGiverB"))
@@ -1432,22 +1441,15 @@ public static class UpdateHandlers
             {
                 var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
                     WebManager.RequestType.Confirm);
+                if (response.notification.isNotify)
+                {
+                    Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                }
                 if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                     SelectByTableType(botClient, callbackQuery, userData, tableType);
                 else
                     Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
             }
-            /*var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-            if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
-            {
-                var response = await WebManager.SendData(
-                    new UserProfile((int) dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
-                    WebManager.RequestType.Confirm);
-                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
-                    SelectByTableType(botClient, callbackQuery, userData);
-                else
-                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
-            }*/
         }
 
         if (callbackQuery.Data.Contains("VerfGiverC"))
@@ -1503,22 +1505,15 @@ public static class UpdateHandlers
             {
                 var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
                     WebManager.RequestType.Confirm);
+                if (response.notification.isNotify)
+                {
+                    Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                }
                 if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                     SelectByTableType(botClient, callbackQuery, userData, tableType);
                 else
                     Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
             }
-            /*var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-            if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
-            {
-                var response = await WebManager.SendData(
-                    new UserProfile((int) dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
-                    WebManager.RequestType.Confirm);
-                if (!(response.error.isError && response.error.errorText == "TableCompleted"))
-                    SelectByTableType(botClient, callbackQuery, userData);
-                else
-                    Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
-            }*/
         }
 
         if (callbackQuery.Data.Contains("VerfGiverD"))
@@ -1574,6 +1569,10 @@ public static class UpdateHandlers
             {
                 var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
                     WebManager.RequestType.Confirm);
+                if (response.notification.isNotify)
+                {
+                    Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                }
                 if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                     SelectByTableType(botClient, callbackQuery, userData, tableType);
                 else
@@ -1581,9 +1580,59 @@ public static class UpdateHandlers
             }
         }
 
+        if (callbackQuery.Data.Contains("NotifyBanker"))
+        {
+            var tableTypeData = callbackQuery.Data.Split("|");
+            var tableType = TableProfile.GetTableType(tableTypeData[1]);
+            var userTableList = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetUserData);
+            UserData? table = null;
+            switch (tableType)
+            {
+                case Table.TableType.copper:
+                    table = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_copper),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.bronze:
+                    table = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_bronze),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.silver:
+                    table = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_silver),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.gold:
+                    table = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_gold),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.platinum:
+                    table = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_platinum),
+                        WebManager.RequestType.GetTableData);
+                    break;
+                case Table.TableType.diamond:
+                    table = await WebManager.SendData(
+                        new TableProfile(userTableList.playerData.UserTableList.table_ID_diamond),
+                        WebManager.RequestType.GetTableData);
+                    break;
+            }
+
+            var notification = new Notification();
+            notification.notificationText = "NotifyBanker";
+            notification.tableID = table.tableData.tableID;
+            notification.bankerID = table.tableData.bankerID;
+            notification.isNotify = true;
+            Notifications.Notify(botClient, user.id, notification);
+        }
         switch (callbackQuery.Data)
         {
             //--------REG_LANG--------
+            case "Close":
+                await botClient.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
+                break;
             case "Reg_RUCaptcha":
                 await Languages.Captcha(botClient, chatId, callbackQuery);
                 break;
@@ -1805,99 +1854,6 @@ public static class UpdateHandlers
             case "OpenDiamondTable":
                 Languages.Tables.Diamond(botClient, chatId, callbackQuery, userData);
                 break;
-            //-//-//---VerfGiver---\\-\\-\\
-            //-//-//-//VerfGiverA\\-\\-\\-\\ //TODO
-            /*case "VerfGiverA":
-            {
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
-                    WebManager.RequestType.Confirm);
-                break;
-            }*/
-            /*case "ConfirmVerfGiverA":
-            {
-                var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverA_ID != null)
-                {
-                    var response = await WebManager.SendData(
-                        new UserProfile((int) dataToConfirm.tableData.giverA_ID, dataToConfirm.tableData.tableID),
-                        WebManager.RequestType.Confirm);
-                    if (!(response.error.isError && response.error.errorText == "TableCompleted"))
-                        SelectByTableType(botClient, callbackQuery, userData);
-                    else
-                        Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
-                }
-
-                break;
-            }*/
-            //-//-//-//VerfGiverB\\-\\-\\-\\ //TODO
-            /*case "VerfGiverB":
-            {
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
-                    WebManager.RequestType.Confirm);
-                break;
-            }*/
-            /*case "ConfirmVerfGiverB":
-            {
-                var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverB_ID != null)
-                {
-                    var response = await WebManager.SendData(
-                        new UserProfile((int) dataToConfirm.tableData.giverB_ID, dataToConfirm.tableData.tableID),
-                        WebManager.RequestType.Confirm);
-                    if (!(response.error.isError && response.error.errorText == "TableCompleted"))
-                        SelectByTableType(botClient, callbackQuery, userData);
-                    else
-                        Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
-                }
-
-                break;
-            }*/
-            //-//-//-//VerfGiverC\\-\\-\\-\\ //TODO
-            /*case "VerfGiverC":
-            {
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
-                    WebManager.RequestType.Confirm);
-                break;
-            }*/
-            /*case "ConfirmVerfGiverC":
-            {
-                var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverC_ID != null)
-                {
-                    var response = await WebManager.SendData(
-                        new UserProfile((int) dataToConfirm.tableData.giverC_ID, dataToConfirm.tableData.tableID),
-                        WebManager.RequestType.Confirm);
-                    if (!(response.error.isError && response.error.errorText == "TableCompleted"))
-                        SelectByTableType(botClient, callbackQuery, userData);
-                    else
-                        Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
-                }
-
-                break;
-            }*/
-            //-//-//-//VerfGiverD\\-\\-\\-\\ //TODO
-            /*case "VerfGiverD":
-            {
-                Languages.Warning(botClient, chatId, callbackQuery, userData.playerData, tableType,
-                    WebManager.RequestType.Confirm);
-                break;
-            }*/
-            /*case "ConfirmVerfGiverD":
-            {
-                var dataToConfirm = await WebManager.SendData(userData.playerData, WebManager.RequestType.GetTableData);
-                if (dataToConfirm.tableData.tableID != null && dataToConfirm.tableData.giverD_ID != null)
-                {
-                    var response = await WebManager.SendData(
-                        new UserProfile((int) dataToConfirm.tableData.giverD_ID, dataToConfirm.tableData.tableID),
-                        WebManager.RequestType.Confirm);
-                    if (!(response.error.isError && response.error.errorText == "TableCompleted"))
-                        SelectByTableType(botClient, callbackQuery, userData);
-                    else
-                        Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
-                }
-
-                break;
-            }*/
             //--------STATUS--------\\
             case "Status":
                 Console.WriteLine("Status");

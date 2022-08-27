@@ -210,7 +210,7 @@ public partial class Languages
     }
     public static async void GetUserData(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
         UserProfile userData, UserProfile SearchedUser, Table.TableType tableType)
-    { //TODO
+    {
         var lang = userData.lang;
         Table.TableRole? tableRole = Table.TableRole.giver;
         string path = null;
@@ -285,7 +285,7 @@ public partial class Languages
             catch(AggregateException aex)
             {
                 Console.WriteLine("Handle Remaining Exceptions");
-                aex.Handle(ex => HandleException(ex));
+                aex.Handle(ex => Exceptions.HandleException(ex));
             }
             try
             {
@@ -294,7 +294,7 @@ public partial class Languages
             catch(AggregateException aex)
             {
                 Console.WriteLine("Handle Remaining Exceptions");
-                aex.Handle(ex => HandleException(ex));
+                aex.Handle(ex => Exceptions.HandleException(ex));
             }
             
            
@@ -1267,23 +1267,7 @@ public partial class Languages
         );
         
     }
-    public static bool HandleException(Exception ex)
-    {
-        if (ex is AggregateException)
-        {
-            Console.WriteLine("Handling: {0}", ex.Message);
-            return true;
-        }
-
-        if (ex is ApiRequestException)
-        {
-            Console.WriteLine("Handling: {0}", ex.Message);
-            return true;
-        }
-
-        Console.WriteLine("Not handling: {0}", ex.Message);
-        return false;
-    }
+    
     private static string GetCallbackAddress(Table.TableType tableType)
     {
         var callbackAddress = "";
@@ -1372,7 +1356,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.bankerID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.bankerID == user.id);
+                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData, table.tableData.bankerID == user.id);
                 //if (table.tableData.bankerID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🏦Банкир: @{userData.playerData.username}\n";
             }
@@ -1385,7 +1369,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerA_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.managerA_ID == user.id);
+                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData, table.tableData.managerA_ID == user.id);
                 //if (table.tableData.managerA_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"👤Менеджер-1: @{userData.playerData.username}\n";
             }
@@ -1398,7 +1382,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverA_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.giverA_ID == user.id, table.tableData.verf_A, 1);
+                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData, table.tableData.giverA_ID == user.id, table.tableData.verf_A, 1);
                 //if (table.tableData.giverA_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-1: @{userData.playerData.username}\n";
             }
@@ -1411,7 +1395,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverB_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.giverB_ID == user.id, table.tableData.verf_B, 2);
+                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData, table.tableData.giverB_ID == user.id, table.tableData.verf_B, 2);
                 //if (table.tableData.giverB_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-2: @{userData.playerData.username}\n";
             }
@@ -1424,7 +1408,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerB_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.managerB_ID == user.id);
+                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData, table.tableData.managerB_ID == user.id);
                 //if (table.tableData.managerB_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"👤Менеджер-2: @{userData.playerData.username}\n";
             }
@@ -1437,7 +1421,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverC_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.giverC_ID == user.id, table.tableData.verf_C, 3);
+                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData, table.tableData.giverC_ID == user.id, table.tableData.verf_C, 3);
                 //if (table.tableData.giverC_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-3: @{userData.playerData.username}\n";
             }
@@ -1450,7 +1434,7 @@ public partial class Languages
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverD_ID),
                     WebManager.RequestType.GetUserData);
-                caption += userData.playerData.UserInfo(user.lang, table.tableData, table.tableData.giverD_ID == user.id, table.tableData.verf_D, 4);
+                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData, table.tableData.giverD_ID == user.id, table.tableData.verf_D, 4);
                 //if (table.tableData.giverD_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"🎁Даритель-4: @{userData.playerData.username}\n";
             }
@@ -3526,7 +3510,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("🌐 Идеология",
-                                "https://telegra.ph/Opta-07-21")
+                                "https://telegra.ph/IDEOLOGIYA-08-09")
                         },
                         new[]
                         {
@@ -3540,7 +3524,7 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("📘 Столы и условия", "https://telegra.ph/Stoly-07-21")
+                            InlineKeyboardButton.WithUrl("📘 Столы и условия", "https://telegra.ph/USLOVIYA-STOLOV-08-07")
                         },
                         new[]
                         {
@@ -3560,7 +3544,7 @@ public partial class Languages
                     {
                         new []
                         {
-                            InlineKeyboardButton.WithUrl("🌐 Ideology", "https://telegra.ph/User-Agreement-07-21")
+                            InlineKeyboardButton.WithUrl("🌐 Ideology", "https://telegra.ph/Ideology-08-27")
                         },
                         new[]
                         {
@@ -3574,7 +3558,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("📘 Tables and conditions",
-                                "https://telegra.ph/Cash-Flow-tables-07-21")
+                                "https://telegra.ph/TABLES-AND-CONDITIONS-08-27")
                         },
                         new[]
                         {
@@ -3594,7 +3578,7 @@ public partial class Languages
                     {
                         new []
                         {
-                            InlineKeyboardButton.WithUrl("🌐 Idéologie", "https://telegra.ph/User-Agreement-07-21")
+                            InlineKeyboardButton.WithUrl("🌐 Idéologie", "https://telegra.ph/Idéologie-08-27")
                         },
                         new[]
                         {
@@ -3609,7 +3593,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("📘 Tableaux et conditions",
-                                "https://telegra.ph/Cash-Flow-tables-07-21")
+                                "https://telegra.ph/TABLEAUX-ET-CONDITIONS-08-27")
                         },
                         new[]
                         {
@@ -3629,7 +3613,7 @@ public partial class Languages
                     {
                         new []
                         {
-                            InlineKeyboardButton.WithUrl("🌐 Ideologie", "https://telegra.ph/User-Agreement-07-21")
+                            InlineKeyboardButton.WithUrl("🌐 Ideologie", "https://telegra.ph/Ideologie-08-27")
                         },
                         new[]
                         {
@@ -3644,7 +3628,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("📘 Tabellen und Bedingungen",
-                                "https://telegra.ph/Cash-Flow-tables-07-21")
+                                "https://google.com")
                         },
                         new[]
                         {
@@ -3664,7 +3648,7 @@ public partial class Languages
                     {
                         new []
                         {
-                            InlineKeyboardButton.WithUrl("🌐 Ideology", "https://telegra.ph/User-Agreement-07-21")
+                            InlineKeyboardButton.WithUrl("🌐 Ideology", "https://telegra.ph/Ideology-08-27")
                         },
                         new[]
                         {
@@ -3678,7 +3662,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("📘 Tables and conditions",
-                                "https://telegra.ph/Cash-Flow-tables-07-21")
+                                "https://telegra.ph/TABLES-AND-CONDITIONS-08-27")
                         },
                         new[]
                         {

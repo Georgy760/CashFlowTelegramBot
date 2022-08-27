@@ -1,4 +1,6 @@
-﻿namespace CashFlowTelegramBot.Skywards.Telegram;
+﻿using Telegram.Bot;
+
+namespace CashFlowTelegramBot.Skywards.Telegram;
 
 public class UserProfile
 {
@@ -327,16 +329,36 @@ public class UserProfile
         return result;
     }
 
-    public string UserInfo(string lang, TableProfile tableData, bool IsItYou)
+    public string UserInfo(ITelegramBotClient botClient, string lang, TableProfile tableData, bool IsItYou)
     {
         var result = "";
+        string? firstName = "";
+        string? lastName = "";
+        try
+        {
+            firstName = botClient.GetChatAsync(id).Result.FirstName;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+        try
+        {
+            lastName = botClient.GetChatAsync(id).Result.LastName;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
         switch (lang)
         {
             case "ru":
                 result = $"<b>Роль: {GetTableRole(lang, Table.TableType.copper)}</b>";
                 if (IsItYou) result += " 🔘";
                 result += $"\n<b>Ник:</b> @{username}" +
-                          $"\n<b>Имя пользователя:</b> " + //TODO Add to db field with first & last names
+                          $"\n<b>Имя пользователя:</b> {firstName + lastName}" + 
                           $"\n<b>Лично приглашённых:</b> {invited}" +
                           $"\n<b>Пригласил:</b> @{invitedBy}\n\n";
                 break;
@@ -344,7 +366,7 @@ public class UserProfile
                 result = $"<b>Role: {GetTableRole(lang, Table.TableType.copper)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Nickname:</b> @{username}" +
-                          $"\n<b>Username:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Username:</b> {firstName + lastName}" + 
                           $"\n<b>Personally invited:</b> {invited}" +
                           $"\n<b>Invited:</b> @{invitedBy}\n\n";
                 break;
@@ -352,7 +374,7 @@ public class UserProfile
                 result = $"<b>Rôle: {GetTableRole(lang, Table.TableType.copper)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Pseudonyme: @{username}</b>" +
-                          $"\n<b>Nom d'utilisateur:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Nom d'utilisateur:</b> {firstName + lastName}" + 
                           $"\n<b>Personnellement invité:</b> {invited}" +
                           $"\n<b>Invité:</b> @{invitedBy}\n\n";
                 break;
@@ -360,7 +382,7 @@ public class UserProfile
                 result = $"<b>Rolle: {GetTableRole(lang, Table.TableType.copper)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Spitzname:</b> @{username}" +
-                          $"\n<b>Benutzername:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Benutzername:</b> {firstName + lastName}" + 
                           $"\n<b>Persönlich eingeladen:</b> {invited}" +
                           $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
                 break;
@@ -372,9 +394,30 @@ public class UserProfile
         return result;
     }
 
-    public string UserInfo(string lang, TableProfile tableData, bool IsItYou, bool Verf, int num)
+    public string UserInfo(ITelegramBotClient botClient, string lang, TableProfile tableData, bool IsItYou, bool Verf,
+        int num)
     {
         var result = "";
+        string? firstName = "";
+        string? lastName = "";
+        try
+        {
+            firstName = botClient.GetChatAsync(id).Result.FirstName;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+        try
+        {
+            lastName = botClient.GetChatAsync(id).Result.LastName;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
         switch (lang)
         {
             case "ru":
@@ -383,7 +426,7 @@ public class UserProfile
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Ник:</b> @{username}" +
-                          $"\n<b>Имя пользователя:</b> " + //TODO Add to db field with first & last names
+                          $"\n<b>Имя пользователя:</b> {firstName + lastName}" +
                           $"\n<b>Лично приглашённых:</b> {invited}" +
                           $"\n<b>Пригласил:</b> @{invitedBy}\n\n";
 
@@ -394,7 +437,7 @@ public class UserProfile
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Nickname:</b> @{username}" +
-                          $"\n<b>Username:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Username:</b> {firstName + lastName}" + 
                           $"\n<b>Personally invited:</b> {invited}" +
                           $"\n<b>Invited:</b> @{invitedBy}\n\n";
                 break;
@@ -404,7 +447,7 @@ public class UserProfile
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Pseudonyme: @{username}</b>" +
-                          $"\n<b>Nom d'utilisateur:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Nom d'utilisateur:</b> {firstName + lastName}" + 
                           $"\n<b>Personnellement invité:</b> {invited}" +
                           $"\n<b>Invité:</b> @{invitedBy}\n\n";
                 break;
@@ -414,7 +457,7 @@ public class UserProfile
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Spitzname:</b> @{username}" +
-                          $"\n<b>Benutzername:</b> " + //{callbackData.From.FirstName + callbackData.From.LastName} //TODO Add to db field with first & last names
+                          $"\n<b>Benutzername:</b> {firstName + lastName}" + 
                           $"\n<b>Persönlich eingeladen:</b> {invited}" +
                           $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
                 break;

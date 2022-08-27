@@ -23,7 +23,7 @@ public class UserTableList
     public void PrintUserTableList()
     {
         Console.WriteLine("\n-----------------------------------------------------------------" + 
-                          "\n--------------------------UserTableList--------------------------" + //TODO Данные сука пропадают, найти их надо
+                          "\n--------------------------UserTableList--------------------------" +
                           "\n-----------------------------------------------------------------");
         Console.WriteLine("\nID: " + id + "\nuserID: " + userID + "\ntable_ID_copper: " + table_ID_copper + "\ncopperTableRole: " +
                           copperTableRole + "\ntable_ID_bronze: " + table_ID_bronze + "\nbronzeTableRole: " + bronzeTableRole + "\ntable_ID_silver: " + table_ID_silver +

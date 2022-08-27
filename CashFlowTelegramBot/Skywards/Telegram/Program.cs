@@ -3,7 +3,7 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 
-var bot = new TelegramBotClient(TelegramToken.BotToken);
+TelegramBotClient bot = new TelegramBotClient(TelegramToken.BotToken);
 
 var me = await bot.GetMeAsync();
 Console.Title = me.Username ?? "CashFlow";

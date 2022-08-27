@@ -13,12 +13,14 @@ public class UserData
     public Error error;
     public UserProfile playerData;
     public TableProfile tableData;
+    public Notification notification;
 
     public UserData()
     {
         playerData = new UserProfile();
         tableData = new TableProfile();
         error = new Error();
+        notification = new Notification();
     }
 
     public UserData(UserProfile userProfile, TableProfile tableProfile)
@@ -26,6 +28,7 @@ public class UserData
         playerData = userProfile;
         tableData = tableProfile;
         error = new Error();
+        notification = new Notification();
     }
 }
 
@@ -42,6 +45,35 @@ public class Error
     }
 }
 
+public class Notification
+{
+    public string notificationText;
+    public int? tableID;
+    public int? bankerID;
+    public int? managerA_ID;
+    public int? managerB_ID;
+    public int? giverA_ID;
+    public int? giverB_ID;
+    public int? giverC_ID;
+    public int? giverD_ID;
+    public bool isNotify;
+
+    public Notification()
+    {
+        notificationText = "";
+        tableID = null;
+        bankerID = null;
+        managerA_ID = null;
+        managerB_ID = null;
+        giverA_ID = null;
+        giverB_ID = null;
+        giverC_ID = null;
+        giverD_ID = null;
+        isNotify = false;
+    }
+    
+}
+
 [Serializable]
 public class RequsetForm
 {
@@ -49,7 +81,6 @@ public class RequsetForm
     public UserProfile? User;
     public TableProfile? Table = null;
     public UserTableList? UserTableList = null;
-
     public RequsetForm(UserData user, WebManager.RequestType requestType)
     {
         Type = requestType.ToString();
@@ -410,10 +441,51 @@ public class WebManager
             error.errorText = errors[0].ToString().Replace("\"errorText\": \"", "").Replace("\"", "");
             error.isError = true;
         }
+        var notification = new Notification();
+        if (!response.Contains("notification\":null"))
+        {
+            var res = JObject.Parse(response);
+            IList<JToken> notifys = res["notification"].Children().ToList();
+            Console.WriteLine("--------------\nnotification:\n--------------");
+            foreach (var obj in notifys) if(Debug){Console.WriteLine("\n" + obj);}
+            
+            notification.notificationText = notifys[0].ToString().Replace("\"notificationText\": \"", "").Replace("\"", "");
+            
+            if (!notifys[1].ToString().Contains("null"))
+                notification.tableID = (int) notifys[1];
+            else notification.tableID = null;
+            
+            if (!notifys[2].ToString().Contains("null"))
+                notification.bankerID = (int) notifys[2];
+            else notification.bankerID = null;
+            
+            if (!notifys[3].ToString().Contains("null"))
+                notification.managerA_ID = (int) notifys[3];
+            else notification.managerA_ID = null;
+            if (!notifys[4].ToString().Contains("null"))
+                notification.managerB_ID = (int) notifys[4];
+            else notification.managerB_ID = null;
+            
+            if (!notifys[5].ToString().Contains("null"))
+                notification.giverA_ID = (int) notifys[5];
+            else notification.giverA_ID = null;
+            if (!notifys[6].ToString().Contains("null"))
+                notification.giverB_ID = (int) notifys[6];
+            else notification.giverB_ID = null;
+            if (!notifys[7].ToString().Contains("null"))
+                notification.giverC_ID = (int) notifys[7];
+            else notification.giverC_ID = null;
+            if (!notifys[8].ToString().Contains("null"))
+                notification.giverD_ID = (int) notifys[8];
+            else notification.giverD_ID = null;
+            
+            notification.isNotify = true;
+        }
 
         userData.playerData = responseUser;
-        userData.error = error;
         userData.tableData = tableProfile;
+        userData.error = error;
+        userData.notification = notification;
         return userData;
     }
 }

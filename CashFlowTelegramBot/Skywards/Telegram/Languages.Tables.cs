@@ -651,7 +651,7 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🔔 Оповестить Банкира", "NotifyBanker")
+                                    InlineKeyboardButton.WithCallbackData("🔔 Оповестить Банкира", "NotifyBanker|" + tableType)
                                 },
                                 new[]
                                 {
@@ -688,7 +688,7 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🔔 Notify Banker", "NotifyBanker")
+                                    InlineKeyboardButton.WithCallbackData("🔔 Notify Banker", "NotifyBanker|" + tableType)
                                 },
                                 new[]
                                 {
@@ -726,7 +726,7 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🔔 Avertir le banquier", "NotifyBanker")
+                                    InlineKeyboardButton.WithCallbackData("🔔 Avertir le banquier", "NotifyBanker|" + tableType)
                                 },
                                 new[]
                                 {
@@ -767,7 +767,7 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("🔔 Banker benachrichtigen", "NotifyBanker")
+                                    InlineKeyboardButton.WithCallbackData("🔔 Banker benachrichtigen", "NotifyBanker|" + tableType)
                                 },
                                 new[]
                                 {
@@ -1990,6 +1990,11 @@ public partial class Languages
             userData.playerData.level_tableType = Table.TableType.copper;
             var tableType = Table.TableType.copper;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
+            if (data.notification.isNotify)
+            {
+                //Console.WriteLine("Notify");
+                Notifications.Notify(botClient, userData.playerData.id, data.notification);
+            }
             if (!data.error.isError)
             {
                 RoleSelection(botClient, chatId, callbackData, userData, tableType);
