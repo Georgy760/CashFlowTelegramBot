@@ -1722,7 +1722,7 @@ public static class UpdateHandlers
             //-//------SilverTable------\\-\\
             case "SilverTable":
                 Console.WriteLine("TableSelected: Silver");
-                if (userData.playerData.invited >= 2 ||
+                if (userData.playerData.invited >= 2 &&
                     userData.playerData.level_tableType.CompareTo(Table.TableType.silver) >= 0)
                 {
                     if (userData.playerData.UserTableList.table_ID_silver == null)

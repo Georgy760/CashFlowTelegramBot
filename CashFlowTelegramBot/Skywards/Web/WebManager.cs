@@ -57,6 +57,7 @@ public class Notification
     public int? giverC_ID;
     public int? giverD_ID;
     public bool isNotify;
+    public Table.TableType tableType;
 
     public Notification()
     {
@@ -70,6 +71,7 @@ public class Notification
         giverC_ID = null;
         giverD_ID = null;
         isNotify = false;
+        tableType = Table.TableType.copper;
     }
     
 }
@@ -478,8 +480,9 @@ public class WebManager
             if (!notifys[8].ToString().Contains("null"))
                 notification.giverD_ID = (int) notifys[8];
             else notification.giverD_ID = null;
-            
             notification.isNotify = true;
+            notification.tableType = Enum.Parse<Table.TableType>(
+                notifys[10].ToString().Replace("\"tableType\": \"", "").Replace("\"", ""), true);
         }
 
         userData.playerData = responseUser;

@@ -70,24 +70,736 @@ public class Notifications
                 }
                 break;
             case TypeOfNotifications.TableCompleted:
-                
+                if (notification.isNotify && notification.tableID != null)
+                {
+                    if(notification.bankerID != null)TableCompletedBanker(botClient, executorID, notification);
+                    if(notification.managerA_ID != null)TableCompletedManager(botClient,(int) notification.managerA_ID, notification);
+                    if(notification.managerB_ID != null)TableCompletedManager(botClient,(int) notification.managerB_ID, notification);
+                    if(notification.giverA_ID != null)TableCompletedGiver(botClient,(int) notification.giverA_ID, notification);
+                    if(notification.giverB_ID != null)TableCompletedGiver(botClient,(int) notification.giverB_ID, notification);
+                    if(notification.giverC_ID != null)TableCompletedGiver(botClient,(int) notification.giverC_ID, notification);
+                    if(notification.giverD_ID != null)TableCompletedGiver(botClient,(int) notification.giverD_ID, notification);
+                }
                 break;
         }
     }
-    
+    private static async void TableCompletedBanker(ITelegramBotClient botClient, int? executorID, Notification notification)
+    {
+        //var userData = await WebManager.SendData(new UserProfile((int) notification.giverA_ID), WebManager.RequestType.GetUserData);
+        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData);
+        UserData? tableData = null;
+        /*switch (notification.tableType)
+        {
+            case Table.TableType.copper:
+                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.bronze:
+                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.silver:
+                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.gold:
+                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.platinum:
+                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                break;
+            case Table.TableType.diamond:
+                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                break;
+        }*/
+        var tableType = notification.tableType;
+        
+        InlineKeyboardMarkup? inlineKeyboardExecutor = null;
+        
+        string captionExecutor = "";
+        long? chatIdExecutor = null;
+        if (userDataExecutor.playerData.invited >= 2)
+        {
+            switch (userDataExecutor.playerData.lang)
+            {
+                case "ru":
+                    inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                            }
+                        });
+                    captionExecutor = $"<b>👏 Поздравляем!</b>\n" +
+                                      $"<b>Ваш {TableProfile.GetTableType(userDataExecutor.playerData, tableType)} стол успешно пройден!</b>\n\n" +
+                                      $"Теперь Вы можете пойти на вышестоящий стол или пройти повторно этот же стол. 🚀";
+                    break;
+                case "eng":
+                    inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                            }
+                        });
+                    captionExecutor = $"<b>👏 Congratulations!</b>\n" +
+                                      $"<b>Your {TableProfile.GetTableType(userDataExecutor.playerData, tableType)} table passed successfully!</b>\n\n" +
+                                      $"Now you can go to the higher table or go through the same table again. 🚀";
+                    break;
+                case "fr":
+                    inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                            }
+                        });
+                    captionExecutor = $"<b>👏 Félicitations !</b>\n" +
+                                      $"<b>Votre table {TableProfile.GetTableType(userDataExecutor.playerData, tableType)} a été transmise avec succès !</b>\n\n" +
+                                      $"Vous pouvez maintenant passer à la table supérieure ou repasser par la même table. 🚀" ;
+                    break;
+                case "de":
+                    inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                            }
+                        });
+                    captionExecutor = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
+                                      $"<b>Ihre Tabelle {TableProfile.GetTableType(userDataExecutor.playerData, tableType)} erfolgreich bestanden!</b>\n\n" +
+                                      $"Jetzt können Sie zum höheren Tisch gehen oder denselben Tisch noch einmal durchgehen. 🚀";
+                    break;
+            }
+        }
+        else
+        {
+            switch (userDataExecutor.playerData.lang)
+            {
+                case "ru":
+                    inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                            }
+                        });
+                    captionExecutor = $"<b>👏 Поздравляем!</b>\n" +
+                                      $"<b>Ваш {TableProfile.GetTableType(userDataExecutor.playerData, tableType)} стол успешно пройден!</b>\n\n" +
+                                      $"Теперь Вы можете повторно пройти данный стол.\n" +
+                                      $"Для того, чтобы перейти на вышестоящий стол, выполните условия по приглашениям. 👥\n\n" +
+                                      $"Лично приглашенных участников: {userDataExecutor.playerData.invited}";
+                    break;
+                case "eng":
+                    inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                            }
+                        });
+                    captionExecutor = $"<b>👏 Congratulations!</b>\n" +
+                                      $"<b>Your {TableProfile.GetTableType(userDataExecutor.playerData, tableType)} table passed successfully!</b>\n\n" +
+                                      $"You can now replay this table.\n" +
+                                      $"To move to a higher table, follow the conditions on the invitations. 👥\n\n" +
+                                      $"Personally invited participants: {userDataExecutor.playerData.invited}";
+                    break;
+                case "fr":
+                    inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                            }
+                        });
+                    captionExecutor = $"<b>👏 Félicitations !</b>\n" +
+                                      $"<b>Votre table {TableProfile.GetTableType(userDataExecutor.playerData, tableType)} a été transmise avec succès !</b>\n\n" +
+                                      $"Vous pouvez maintenant rejouer cette table.\n" +
+                                      $"Pour passer à une table supérieure, suivez les conditions sur les invitations. 👥\n\n" +
+                                      $"Participants personnellement invités : {userDataExecutor.playerData.invited}" ;
+                    break;
+                case "de":
+                    inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                            }
+                        });
+                    captionExecutor = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
+                                      $"<b>Ihre Tabelle {TableProfile.GetTableType(userDataExecutor.playerData, tableType)} erfolgreich bestanden!</b>\n\n" +
+                                      $"Sie können diesen Tisch jetzt erneut spielen.\n" +
+                                      $"Um an einen höheren Tisch zu wechseln, folgen Sie den Bedingungen auf den Einladungen. 👥\n\n" +
+                                      $"Persönlich eingeladene Teilnehmer: {userDataExecutor.playerData.invited}";
+                    break;
+            }
+        }
+        
+        try
+        {
+            chatIdExecutor = botClient.GetChatAsync(executorID).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+        
+        if (chatIdExecutor != null)
+        {
+            var sentMessageToExecutor = await botClient.SendTextMessageAsync(
+                chatIdExecutor,
+                captionExecutor,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboardExecutor);
+        }
+    }
+    private static async void TableCompletedManager(ITelegramBotClient botClient, int? managerID, Notification notification)
+    {
+        var manager = await WebManager.SendData(new UserProfile((int) managerID), WebManager.RequestType.GetUserData);
+        var tableType = notification.tableType;
+        
+        var giftSum = "";
+        switch (tableType)
+        {
+            case Table.TableType.copper:
+                giftSum = "400";
+                break;
+            case Table.TableType.bronze:
+                giftSum = "1 600";
+                break;
+            case Table.TableType.silver:
+                giftSum = "4 000";
+                break;
+            case Table.TableType.gold:
+                giftSum = "10 000";
+                break;
+            case Table.TableType.platinum:
+                giftSum = "20 000";
+                break;
+            case Table.TableType.diamond:
+                giftSum = "40 000";
+                break;
+        }
+        
+        InlineKeyboardMarkup? inlineKeyboardManager = null;
+
+        
+
+        string captionManager = "";
+
+        long? chatIdManager = null;
+
+        switch (manager.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboardManager = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                captionManager = $"<b>👏 Поздравляем!</b>\n" +
+                                  $"<b>Вы перешли на следующий уровень! </b>\n\n" +
+                                  $"<b>Теперь Ваша роль:</b> 🏦 Банкир\n" +
+                                  $"На этом уровне Вы получите 4 подарка на общую сумму {giftSum}$ 💸";
+                break;
+            case "eng":
+                inlineKeyboardManager = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                captionManager = $"<b>👏 Congratulations!</b>\n" +
+                                  $"<b>You have reached the next level! </b>\n\n" +
+                                  $"<b>Your role is now:</b> 🏦 Banker\n" +
+                                  $"At this level, you will receive 4 gifts for a total of {giftSum}$ 💸";
+                break;
+            case "fr":
+                inlineKeyboardManager = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                captionManager = $"<b>👏 Félicitations !</b>\n" +
+                                  $"<b>Vous avez atteint le niveau suivant ! </b>\n\n" +
+                                  $"<b>Votre rôle est maintenant:</b> 🏦 Banquier\n" +
+                                  $"A ce niveau, vous recevrez 4 cadeaux pour un total de {giftSum}$ 💸" ;
+                break;
+            case "de":
+                inlineKeyboardManager = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                captionManager = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
+                                  $"<b>Sie haben das nächste Level erreicht! </b>\n\n" +
+                                  $"<b>Ihre Rolle ist jetzt:</b> 🏦 Bankier\n" +
+                                  $"Auf dieser Stufe erhalten Sie 4 Geschenke im Gesamtwert von {giftSum}$ 💸";
+                break;
+        }
+
+        try
+        {
+            chatIdManager = botClient.GetChatAsync(manager.playerData.id).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+
+        if (chatIdManager != null)
+        {
+            var sentMessageToManager = await botClient.SendTextMessageAsync(
+                chatIdManager,
+                captionManager,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboardManager);
+        }
+    }
+    private static async void TableCompletedGiver(ITelegramBotClient botClient, int? giverID, Notification notification)
+    {
+
+        InlineKeyboardMarkup? inlineKeyboardGiver = null;
+
+        var giver = await WebManager.SendData(new UserProfile((int) giverID), WebManager.RequestType.GetUserData);
+        var managerNum = 0;
+        if (notification.giverA_ID == giverID) managerNum = 1;
+        if (notification.giverB_ID == giverID) managerNum = 2;
+        if (notification.giverC_ID == giverID) managerNum = 1;
+        if (notification.giverD_ID == giverID) managerNum = 2;
+        string captionGiver = "";
+
+        long? chatIdGiver = null;
+
+        switch (giver.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                captionGiver = $"<b>👏 Поздравляем!</b>\n" +
+                                  $"<b>Вы перешли на следующий уровень! </b>\n\n" +
+                                  $"<b>Теперь Ваша роль:</b> 👤 Менеджер-{managerNum}\n" +
+                                  $"На этом уровне Ваша задача пригласить 2-ух игроков в игру по своей реферальной ссылке. 👥";
+                break;
+            case "eng":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                captionGiver = $"<b>👏 Congratulations!</b>\n" +
+                                  $"<b>You have reached the next level! </b>\n\n" +
+                                  $"<b>Your role is now:</b> 👤 Manager-{managerNum}\n" +
+                                  $"At this level, your task is to invite 2 players to the game using your referral link. 👥";
+                break;
+            case "fr":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                captionGiver = $"<b>👏 Félicitations !</b>\n" +
+                                  $"<b>Vous avez atteint le niveau suivant ! </b>\n\n" +
+                                  $"<b>Votre rôle est maintenant:</b> 👤 Gestionnaire-{managerNum}\n" +
+                                  $"A ce niveau, votre tâche est d'inviter 2 joueurs au jeu en utilisant votre lien de parrainage. 👥";
+                break;
+            case "de":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                captionGiver = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
+                                  $"<b>Sie haben das nächste Level erreicht! </b>\n\n" +
+                                  $"<b>Ihre Rolle ist jetzt:</b> 👤 Manager-{managerNum}\n" +
+                                  $"Auf diesem Level besteht Ihre Aufgabe darin, 2 Spieler mit Ihrem Empfehlungslink zum Spiel einzuladen. 👥";
+                break;
+        }
+
+        try
+        {
+            chatIdGiver = botClient.GetChatAsync(giver.playerData.id).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+
+        if (chatIdGiver != null)
+        {
+            var sentMessageToGiver= await botClient.SendTextMessageAsync(
+                chatIdGiver,
+                captionGiver,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboardGiver);
+        }
+    }
+    private static async void GiverIsConfirmed(ITelegramBotClient botClient, int? executorID, int userToNotify, int tableID)
+    {
+        var tableData = await WebManager.SendData(new TableProfile(tableID), WebManager.RequestType.GetTableData);
+        var tableType = tableData.tableData.tableType;
+
+        InlineKeyboardMarkup? inlineKeyboardGiver = null;
+        var giver = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
+        string captionGiver = "";
+        long? chatIdGiver = null;
+        switch (giver.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                captionGiver = $"<b>✅ Вы были успешно активированы на\n {GetTableTypeConfirm(giver.playerData, tableType)}</b>";
+                break;
+            case "eng":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                captionGiver = $"<b>✅ You have been successfully activated on the\n {GetTableTypeConfirm(giver.playerData, tableType)}</b>";
+                break;
+            case "fr":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                captionGiver = $"<b>Vous avez été activé avec succès sur le\n {GetTableTypeConfirm(giver.playerData, tableType)}</b>";
+                break;
+            case "de":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                captionGiver = $"<b>Sie wurden erfolgreich auf der aktiviert\n {GetTableTypeConfirm(giver.playerData, tableType)}</b>";
+                break;
+        }
+        try
+        {
+            chatIdGiver = botClient.GetChatAsync(userToNotify).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+        if (chatIdGiver != null)
+        {
+            var sentMessageToGiver = await botClient.SendTextMessageAsync(
+                chatIdGiver,
+                captionGiver,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboardGiver);
+        }
+        
+        InlineKeyboardMarkup? inlineKeyboardExecutor = null;
+        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData);
+        string captionExecutor = "";
+        long? chatIdExecutor = null;
+        switch (userDataExecutor.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                captionExecutor = $"✅ Даритель @{giver.playerData.username} был успешно активирован.";
+                break;
+            case "eng":
+                inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                captionExecutor = $"✅ The @{giver.playerData.username} giver has been successfully activated.";
+                break;
+            case "fr":
+                inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                captionExecutor = $"✅ Le donneur @{giver.playerData.username} a été activé avec succès.";
+                break;
+            case "de":
+                inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                captionExecutor = $"✅ Der Spender @{giver.playerData.username} wurde erfolgreich aktiviert.";
+                break;
+        }
+        try
+        {
+            chatIdExecutor = botClient.GetChatAsync(executorID).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+        if (chatIdExecutor != null)
+        {
+            var sentMessageToExecutor = await botClient.SendTextMessageAsync(
+                chatIdExecutor,
+                captionExecutor,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboardExecutor);
+        }
+    }
+    private static async void GiverIsDeleted(ITelegramBotClient botClient, int? executorID, int userToNotify, int tableID)
+    {
+        InlineKeyboardMarkup? inlineKeyboardGiver = null;
+        InlineKeyboardMarkup? inlineKeyboardExecutor = null;
+        
+        
+        string captionGiver = "";
+        string captionExecutor = "";
+        
+        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData);
+        var giver = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
+        
+        var tableData = await WebManager.SendData(new TableProfile(tableID), WebManager.RequestType.GetTableData);
+        
+        var tableType = tableData.tableData.tableType;
+        long? chatIdGiver = null;
+        long? chatIdExecutor = null;
+        
+        switch (giver.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                captionGiver = $"<b>Вы были удалены Банкиром (@{giver.playerData.username}) с {GetTableTypeRemove(giver.playerData, tableType)} стола.</b>" +
+                               $"\n\n" +
+                               $"Теперь Вы не сможете зайти на данный стол в течение 24 часов." +
+                               $"\n\n" +
+                               $"Если это произошло по ошибке, то сообщите об этом в тех. поддержку:\n\n" +
+                               $"<b>🗂 Главное меню - 📲 Тех. поддержка - 🌐 Выберите нужный язык</b>";
+                break;
+            case "eng":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                captionGiver = $"<b>You have been removed by the Banker (@{giver.playerData.username}) from the {GetTableTypeRemove(giver.playerData, tableType)} table.</b>" +
+                               $"\n\n" +
+                               $"You will now be unable to access this table for 24 hours." +
+                               $"\n\n" +
+                               $"If this happened by mistake, please report it to tech support:\n\n" +
+                               $"<b>🗂 Main menu - 📲 Tech Support - 🌐 Choose your preferred language</b>";
+                break;
+            case "fr":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                captionGiver = $"<b>Vous avez été supprimé par le banquier (@{giver.playerData.username}) de la table {GetTableTypeRemove(giver.playerData, tableType)}.</b>" +
+                               $"\n\n" +
+                               $"Vous ne pourrez plus accéder à cette table pendant 24 heures." +
+                               $"\n\n" +
+                               $"Si cela s'est produit par erreur, veuillez le signaler au support technique :\n\n" +
+                               $"<b>🗂 Menu principal - 📲 Soutien technique - 🌐 Choisissez votre langue préférée</b>";
+                break;
+            case "de":
+                inlineKeyboardGiver = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                captionGiver = $"<b>Sie wurden vom Bankier (@{giver.playerData.username}) aus der Tabelle {GetTableTypeRemove(giver.playerData, tableType)} entfernt.</b>" +
+                               $"\n\n" +
+                               $"Sie können nun 24 Stunden lang nicht auf diese Tabelle zugreifen." +
+                               $"\n\n" +
+                               $"Falls dies versehentlich passiert ist, melden Sie es bitte dem technischen Support:\n\n" +
+                               $"<b>🗂 Hauptmenü - 📲 Technischer Support - 🌐 Wählen Sie Ihre bevorzugte Sprache</b>";
+                break;
+        }
+        
+        switch (userDataExecutor.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new []
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                captionExecutor = $"<b>Вы удалили Дарителя (@{giver.playerData.username}) со стола.</b>" +
+                                  $"\n\n" +
+                                  $"Если это произошло по ошибке, то сообщите об этом в тех. поддержку:\n\n" +
+                                  $"<b>🗂 Главное меню - 📲 Тех. поддержка - 🌐 Выберите нужный язык</b>";
+                break;
+            case "eng":
+                inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                captionExecutor = $"<b>You have removed the Giver (@{giver.playerData.username}) from the table.</b>" +
+                                  $"\n\n" +
+                                  $"If this happened by mistake, please report it to tech support:\n\n" +
+                                  $"<b>🗂 Main menu - 📲 Tech Support - 🌐 Choose your preferred language</b>";
+                break;
+            case "fr":
+                inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                captionExecutor = $"<b>Vous avez supprimé le Donneur (@{giver.playerData.username}) du tableau.</b>" +
+                                  $"\n\n" +
+                                  $"Si cela s'est produit par erreur, veuillez le signaler au support technique:\n\n" +
+                                  $"<b>🗂 Menu principal - 📲 Soutien technique - 🌐 Choisissez votre langue préférée</b>";
+                break;
+            case "de":
+                inlineKeyboardExecutor = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                captionExecutor = $"<b>Du hast den Geber (@{giver.playerData.username}) vom Tisch entfernt.</b>" +
+                                  $"\n\n" +
+                                  $"Falls dies versehentlich passiert ist, melden Sie es bitte dem technischen Support:\n\n" +
+                                  $"<b>🗂 Hauptmenü - 📲 Technischer Support - 🌐 Wählen Sie Ihre bevorzugte Sprache</b>";
+                break;
+        }
+        
+        try
+        {
+            chatIdExecutor = botClient.GetChatAsync(executorID).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+        
+        if (chatIdExecutor != null)
+        {
+            var sentMessageToExecutor = await botClient.SendTextMessageAsync(
+                chatIdExecutor,
+                captionExecutor,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboardExecutor);
+        }
+        
+        try
+        {
+            chatIdGiver = botClient.GetChatAsync(userToNotify).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+
+        if (chatIdGiver != null)
+        {
+            var sentMessageToGiver = await botClient.SendTextMessageAsync(
+                chatIdGiver,
+                captionGiver,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboardGiver);
+        }
+    }
     private static async void NewGiver(ITelegramBotClient botClient, int? executorID, int userToNotify, int tableID)
     {
         //Console.WriteLine("\nNewGiver Method");
-        string path = null;
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/mainMenu.png");
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\mainMenu.png");
         string caption = "";
         var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData);
         var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
@@ -171,7 +883,6 @@ public class Notifications
     }
     private static async void NotifyBanker(ITelegramBotClient botClient, int? executorID, int userToNotify, int tableID)
     {
-        //Console.WriteLine("\nNewGiver Method");
         string path = null;
         
         InlineKeyboardMarkup? inlineKeyboardBanker = null;
@@ -451,402 +1162,6 @@ public class Notifications
                 captionBanker,
                 ParseMode.Html,
                 replyMarkup: inlineKeyboardBanker);
-        }
-    }
-    private static async void GiverIsConfirmed(ITelegramBotClient botClient, int? executorID, int userToNotify, int tableID)
-    {
-        string path = null;
-        
-        InlineKeyboardMarkup? inlineKeyboardGiver = null;
-        InlineKeyboardMarkup? inlineKeyboardExecutor = null;
-        
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/mainMenu.png");
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\mainMenu.png");
-        
-        string captionGiver = "";
-        string captionExecutor = "";
-        
-        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData);
-        var giver = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
-        
-        var tableData = await WebManager.SendData(new TableProfile(tableID), WebManager.RequestType.GetTableData);
-        
-        var tableType = tableData.tableData.tableType;
-        long? chatIdGiver = null;
-        long? chatIdExecutor = null;
-        
-        switch (giver.playerData.lang)
-        {
-            case "ru":
-                inlineKeyboardGiver = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
-                        }
-                    });
-                captionGiver = $"<b>✅ Вы были успешно активированы на\n {GetTableTypeConfirm(giver.playerData, tableType)}</b>";
-                break;
-            case "eng":
-                inlineKeyboardGiver = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
-                        }
-                    });
-                captionGiver = $"<b>✅ You have been successfully activated on the\n {GetTableTypeConfirm(giver.playerData, tableType)}</b>";
-                break;
-            case "fr":
-                inlineKeyboardGiver = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
-                        }
-                    });
-                captionGiver = $"<b>Vous avez été activé avec succès sur le\n {GetTableTypeConfirm(giver.playerData, tableType)}</b>";
-                break;
-            case "de":
-                inlineKeyboardGiver = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
-                        }
-                    });
-                captionGiver = $"<b>Sie wurden erfolgreich auf der aktiviert\n {GetTableTypeConfirm(giver.playerData, tableType)}</b>";
-                break;
-        }
-        
-        switch (userDataExecutor.playerData.lang)
-        {
-            case "ru":
-                inlineKeyboardExecutor = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
-                        }
-                    });
-                captionExecutor = $"✅ Даритель @{giver.playerData.username} был успешно активирован.";
-                break;
-            case "eng":
-                inlineKeyboardExecutor = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
-                        }
-                    });
-                captionExecutor = $"✅ The @{giver.playerData.username} giver has been successfully activated.";
-                break;
-            case "fr":
-                inlineKeyboardExecutor = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
-                        }
-                    });
-                captionExecutor = $"✅ Le donneur @{giver.playerData.username} a été activé avec succès.";
-                break;
-            case "de":
-                inlineKeyboardExecutor = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
-                        }
-                    });
-                captionExecutor = $"✅ Der Spender @{giver.playerData.username} wurde erfolgreich aktiviert.";
-                break;
-        }
-        
-        try
-        {
-            chatIdExecutor = botClient.GetChatAsync(executorID).Result.Id;
-        }
-        catch(AggregateException aex)
-        {
-            Console.WriteLine("Handle Remaining Exceptions");
-            aex.Handle(ex => Exceptions.HandleException(ex));
-        }
-        
-        if (chatIdExecutor != null)
-        {
-            var sentMessageToExecutor = await botClient.SendTextMessageAsync(
-                chatIdExecutor,
-                captionExecutor,
-                ParseMode.Html,
-                replyMarkup: inlineKeyboardExecutor);
-        }
-        
-        try
-        {
-            chatIdGiver = botClient.GetChatAsync(userToNotify).Result.Id;
-        }
-        catch(AggregateException aex)
-        {
-            Console.WriteLine("Handle Remaining Exceptions");
-            aex.Handle(ex => Exceptions.HandleException(ex));
-        }
-
-        if (chatIdGiver != null)
-        {
-            var sentMessageToGiver = await botClient.SendTextMessageAsync(
-                chatIdGiver,
-                captionGiver,
-                ParseMode.Html,
-                replyMarkup: inlineKeyboardGiver);
-        }
-    }
-    private static async void GiverIsDeleted(ITelegramBotClient botClient, int? executorID, int userToNotify, int tableID)
-    {
-        string path = null;
-        
-        InlineKeyboardMarkup? inlineKeyboardGiver = null;
-        InlineKeyboardMarkup? inlineKeyboardExecutor = null;
-        
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/mainMenu.png");
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\mainMenu.png");
-        
-        string captionGiver = "";
-        string captionExecutor = "";
-        
-        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData);
-        var giver = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
-        
-        var tableData = await WebManager.SendData(new TableProfile(tableID), WebManager.RequestType.GetTableData);
-        
-        var tableType = tableData.tableData.tableType;
-        long? chatIdGiver = null;
-        long? chatIdExecutor = null;
-        
-        switch (giver.playerData.lang)
-        {
-            case "ru":
-                inlineKeyboardGiver = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu"),
-                            InlineKeyboardButton.WithCallbackData("📲 Тех. поддержка", "TechSupport"),
-                            InlineKeyboardButton.WithCallbackData("🌐 Выберите нужный язык", "ChangeLang")
-                        },
-                        new []
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
-                        }
-                    });
-                captionGiver = $"<b>Вы были удалены Банкиром (@{giver.playerData.username}) с {GetTableTypeRemove(giver.playerData, tableType)} стола.</b>" +
-                               $"\n\n" +
-                               $"Теперь Вы не сможете зайти на данный стол в течение 24 часов." +
-                               $"\n\n" +
-                               $"Если это произошло по ошибке, то сообщите об этом в тех. поддержку:";
-                break;
-            case "eng":
-                inlineKeyboardGiver = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu"),
-                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
-                            InlineKeyboardButton.WithCallbackData("🌐 Choose your preferred language", "ChangeLang")
-                        },
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
-                        }
-                    });
-                captionGiver = $"<b>You have been removed by the Banker (@{giver.playerData.username}) from the {GetTableTypeRemove(giver.playerData, tableType)} table.</b>" +
-                               $"\n\n" +
-                               $"You will now be unable to access this table for 24 hours." +
-                               $"\n\n" +
-                               $"If this happened by mistake, please report it to tech support:";
-                break;
-            case "fr":
-                inlineKeyboardGiver = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu"),
-                            InlineKeyboardButton.WithCallbackData("📲 Soutien technique", "TechSupport"),
-                            InlineKeyboardButton.WithCallbackData("🌐 Choisissez votre langue préférée", "ChangeLang")
-                        },
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
-                        }
-                    });
-                captionGiver = $"<b>Vous avez été supprimé par le banquier (@{giver.playerData.username}) de la table {GetTableTypeRemove(giver.playerData, tableType)}.</b>" +
-                               $"\n\n" +
-                               $"Vous ne pourrez plus accéder à cette table pendant 24 heures." +
-                               $"\n\n" +
-                               $"Si cela s'est produit par erreur, veuillez le signaler au support technique :";
-                break;
-            case "de":
-                inlineKeyboardGiver = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu"),
-                            InlineKeyboardButton.WithCallbackData("📲 Technischer Support", "TechSupport"),
-                            InlineKeyboardButton.WithCallbackData("🌐 Wählen Sie Ihre bevorzugte Sprache", "ChangeLang")
-                        },
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
-                        }
-                    });
-                captionGiver = $"<b>Sie wurden vom Bankier (@{giver.playerData.username}) aus der Tabelle {GetTableTypeRemove(giver.playerData, tableType)} entfernt.</b>" +
-                               $"\n\n" +
-                               $"Sie können nun 24 Stunden lang nicht auf diese Tabelle zugreifen." +
-                               $"\n\n" +
-                               $"Falls dies versehentlich passiert ist, melden Sie es bitte dem technischen Support:";
-                break;
-        }
-        
-        switch (userDataExecutor.playerData.lang)
-        {
-            case "ru":
-                inlineKeyboardExecutor = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu"),
-                            InlineKeyboardButton.WithCallbackData("📲 Тех. поддержка", "TechSupport"),
-                            InlineKeyboardButton.WithCallbackData("🌐 Выберите нужный язык", "ChangeLang")
-                        },
-                        new []
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
-                        }
-                    });
-                captionExecutor = $"<b>Вы удалили Дарителя (@{giver.playerData.username}) со стола.</b>" +
-                                  $"\n\n" +
-                                  $"Если это произошло по ошибке, то сообщите об этом в тех. поддержку:";
-                break;
-            case "eng":
-                inlineKeyboardExecutor = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu"),
-                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
-                            InlineKeyboardButton.WithCallbackData("🌐 Choose your preferred language", "ChangeLang")
-                        },
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
-                        }
-                    });
-                captionExecutor = $"<b>You have removed the Giver (@{giver.playerData.username}) from the table.</b>" +
-                                  $"\n\n" +
-                                  $"If this happened by mistake, please report it to tech support:";
-                break;
-            case "fr":
-                inlineKeyboardExecutor = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu"),
-                            InlineKeyboardButton.WithCallbackData("📲 Soutien technique", "TechSupport"),
-                            InlineKeyboardButton.WithCallbackData("🌐 Choisissez votre langue préférée", "ChangeLang")
-                        },
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
-                        }
-                    });
-                captionExecutor = $"<b>Vous avez supprimé le Donneur (@{giver.playerData.username}) du tableau.</b>" +
-                                  $"\n\n" +
-                                  $"Si cela s'est produit par erreur, veuillez le signaler au support technique:" ;
-                break;
-            case "de":
-                inlineKeyboardExecutor = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu"),
-                            InlineKeyboardButton.WithCallbackData("📲 Technischer Support", "TechSupport"),
-                            InlineKeyboardButton.WithCallbackData("🌐 Wählen Sie Ihre bevorzugte Sprache", "ChangeLang")
-                        },
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
-                        }
-                    });
-                captionExecutor = $"<b>Du hast den Geber (@{giver.playerData.username}) vom Tisch entfernt.</b>" +
-                                  $"\n\n" +
-                                  $"Falls dies versehentlich passiert ist, melden Sie es bitte dem technischen Support:";
-                break;
-        }
-        
-        try
-        {
-            chatIdExecutor = botClient.GetChatAsync(executorID).Result.Id;
-        }
-        catch(AggregateException aex)
-        {
-            Console.WriteLine("Handle Remaining Exceptions");
-            aex.Handle(ex => Exceptions.HandleException(ex));
-        }
-        
-        if (chatIdExecutor != null)
-        {
-            var sentMessageToExecutor = await botClient.SendPhotoAsync(
-                chatIdExecutor,
-                File.OpenRead(path),
-                captionExecutor,
-                ParseMode.Html,
-                replyMarkup: inlineKeyboardExecutor);
-        }
-        
-        try
-        {
-            chatIdGiver = botClient.GetChatAsync(userToNotify).Result.Id;
-        }
-        catch(AggregateException aex)
-        {
-            Console.WriteLine("Handle Remaining Exceptions");
-            aex.Handle(ex => Exceptions.HandleException(ex));
-        }
-
-        if (chatIdGiver != null)
-        {
-            var sentMessageToGiver = await botClient.SendPhotoAsync(
-                chatIdGiver,
-                File.OpenRead(path),
-                captionGiver,
-                ParseMode.Html,
-                replyMarkup: inlineKeyboardGiver);
         }
     }
     private static string GetTableTypeConfirm(UserProfile user, Table.TableType tableType)
