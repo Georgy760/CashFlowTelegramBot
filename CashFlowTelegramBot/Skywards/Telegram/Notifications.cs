@@ -81,6 +81,19 @@ public class Notifications
                     if(notification.giverD_ID != null)TableCompletedGiver(botClient,(int) notification.giverD_ID, notification);
                 }
                 break;
+            case TypeOfNotifications.Congrats2Invited:
+                if(notification.bankerID != null)Congrats2Givers(botClient, (int) notification.bankerID);
+                break;
+            case TypeOfNotifications.Congrats4Invited:
+                if(notification.bankerID != null)Congrats4Givers(botClient, (int) notification.bankerID);
+                break;
+            case TypeOfNotifications.Congrats6Invited:
+                if(notification.bankerID != null)Congrats6Givers(botClient, (int) notification.bankerID);
+                break;
+            case TypeOfNotifications.Congrats12Invited:
+                if(notification.bankerID != null)Congrats12Givers(botClient, (int) notification.bankerID);
+                break;
+
         }
     }
     private static async void TableCompletedBanker(ITelegramBotClient botClient, int? executorID, Notification notification)
@@ -1162,6 +1175,330 @@ public class Notifications
                 captionBanker,
                 ParseMode.Html,
                 replyMarkup: inlineKeyboardBanker);
+        }
+    }
+    private static async void Congrats2Givers(ITelegramBotClient botClient, int userToNotify)
+    {
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        Message? sentMessage;
+        string caption = "";
+        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
+        long? chatId = null;
+        switch (user.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Поздравляем!</b>\n" +
+                          "У Вас 2 лично приглашенных игроков\n" +
+                          $"<b>Теперь Вам доступен 🥈 Серебряный стол!</b>";
+                break;
+            case "eng":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Congratulations!</b>\n" +
+                          "You have 2 personally invited players\n" +
+                          $"<b>Now you have access to the 🥈 Silver Table!</b>";
+                break;
+            case "fr":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Félicitations!</b>\n" +
+                          "Vous avez 2 joueurs personnellement invités\n" +
+                          $"<b>Vous avez maintenant accès à la 🥈 table d'argent!</b>" ;
+                break;
+            case "de":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
+                          "Du hast 2 persönlich eingeladene Spieler\n" +
+                          $"<b>Jetzt haben Sie Zugang zum 🥈 Silbertisch!</b>";
+                break;
+        }
+        try
+        {
+            chatId = botClient.GetChatAsync(userToNotify).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+
+        if (chatId != null)
+        {
+            sentMessage = await botClient.SendTextMessageAsync(
+                chatId,
+                caption,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboard);
+        }
+    }
+    private static async void Congrats4Givers(ITelegramBotClient botClient, int userToNotify)
+    {
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        Message? sentMessage;
+        string caption = "";
+        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
+        long? chatId = null;
+        switch (user.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Поздравляем!</b>\n" +
+                          "У Вас 4 лично приглашенных игроков\n" +
+                          $"<b>Теперь Вам доступен 🥇 Золотой стол!</b>";
+                break;
+            case "eng":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Congratulations!</b>\n" +
+                          "You have 4 personally invited players\n" +
+                          $"<b>Now you have access to the 🥇 Golden Table!</b>";
+                break;
+            case "fr":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Félicitations!</b>\n" +
+                          "Vous avez 4 joueurs personnellement invités\n" +
+                          $"<b>Vous avez maintenant accès à la 🥇 Table Dorée !</b>" ;
+                break;
+            case "de":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
+                          "Du hast 4 persönlich eingeladene Spieler\n" +
+                          $"<b>Jetzt haben Sie Zugang zum 🥇 Golden Table!</b>";
+                break;
+        }
+        try
+        {
+            chatId = botClient.GetChatAsync(userToNotify).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+
+        if (chatId != null)
+        {
+            sentMessage = await botClient.SendTextMessageAsync(
+                chatId,
+                caption,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboard);
+        }
+    }
+    private static async void Congrats6Givers(ITelegramBotClient botClient, int userToNotify)
+    {
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        Message? sentMessage;
+        string caption = "";
+        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
+        long? chatId = null;
+        switch (user.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Поздравляем!</b>\n" +
+                          "У Вас 6 лично приглашенных игроков\n" +
+                          $"<b>Теперь Вам доступен 🎖 Платиновый стол!</b>";
+                break;
+            case "eng":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Congratulations!</b>\n" +
+                          "You have 6 personally invited players\n" +
+                          $"<b>Now you have access to the 🎖 Platinum Table!</b>";
+                break;
+            case "fr":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Félicitations!</b>\n" +
+                          "Vous avez 6 joueurs personnellement invités\n" +
+                          $"<b>Vous avez maintenant accès à la 🎖 Table Platine!</b>" ;
+                break;
+            case "de":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
+                          "Du hast 6 persönlich eingeladene Spieler\n" +
+                          $"<b>Jetzt haben Sie Zugang zum 🎖 Platinum Table!</b>";
+                break;
+        }
+        try
+        {
+            chatId = botClient.GetChatAsync(userToNotify).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+
+        if (chatId != null)
+        {
+            sentMessage = await botClient.SendTextMessageAsync(
+                chatId,
+                caption,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboard);
+        }
+    }
+    private static async void Congrats12Givers(ITelegramBotClient botClient, int userToNotify)
+    {
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        Message? sentMessage;
+        string caption = "";
+        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData);
+        long? chatId = null;
+        switch (user.playerData.lang)
+        {
+            case "ru":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Поздравляем!</b>\n" +
+                          "У Вас 12 лично приглашенных игроков\n" +
+                          $"<b>Теперь Вам доступен 💎 Алмазный стол!</b>";
+                break;
+            case "eng":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Congratulations!</b>\n" +
+                          "You have 6 personally invited players\n" +
+                          $"<b>Now you have access to the 🥈 Platinum Table!</b>";
+                break;
+            case "fr":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Félicitations!</b>\n" +
+                          "Vous avez 6 joueurs personnellement invités\n" +
+                          $"<b>Vous avez maintenant accès à la 💎 Table Platine!</b>" ;
+                break;
+            case "de":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
+                        }
+                    });
+                caption = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
+                          "Du hast 6 persönlich eingeladene Spieler\n" +
+                          $"<b>Jetzt haben Sie Zugang zum 💎 Platinum Table!</b>";
+                break;
+        }
+        try
+        {
+            chatId = botClient.GetChatAsync(userToNotify).Result.Id;
+        }
+        catch(AggregateException aex)
+        {
+            Console.WriteLine("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+
+        if (chatId != null)
+        {
+            sentMessage = await botClient.SendTextMessageAsync(
+                chatId,
+                caption,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboard);
         }
     }
     private static string GetTableTypeConfirm(UserProfile user, Table.TableType tableType)

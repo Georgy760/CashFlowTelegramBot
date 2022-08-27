@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using System.Diagnostics;
+using Telegram.Bot;
 
 namespace CashFlowTelegramBot.Skywards.Telegram;
 
@@ -340,7 +341,7 @@ public class UserProfile
         }
         catch(AggregateException aex)
         {
-            Console.WriteLine("Handle Remaining Exceptions");
+            Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
         try
@@ -349,7 +350,7 @@ public class UserProfile
         }
         catch(AggregateException aex)
         {
-            Console.WriteLine("Handle Remaining Exceptions");
+            Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
         switch (lang)
@@ -406,7 +407,7 @@ public class UserProfile
         }
         catch(AggregateException aex)
         {
-            Console.WriteLine("Handle Remaining Exceptions");
+            Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
         try
@@ -415,7 +416,7 @@ public class UserProfile
         }
         catch(AggregateException aex)
         {
-            Console.WriteLine("Handle Remaining Exceptions");
+            Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
         switch (lang)
@@ -500,10 +501,10 @@ public class UserProfile
 
     public void PrintUserProfile()
     {
-        Console.WriteLine("\n---------------------------------------------------------------" +
+        Trace.Write("\n---------------------------------------------------------------" +
                           "\n--------------------------UserProfile--------------------------" +
                           "\n---------------------------------------------------------------");
-        Console.WriteLine("\nID: " + id + "\nUsername: " + username + "\nRefId: " + refId + "\nInvitedBy: " +
+        Trace.Write("\nID: " + id + "\nUsername: " + username + "\nRefId: " + refId + "\nInvitedBy: " +
                           invitedBy + "\nLang: " + lang + "\nlevel_tableType: " + level_tableType + "\ntableRole: " +
                           "\nInvited: " + invited);
     }

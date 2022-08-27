@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using CashFlowTelegramBot.Skywards.Telegram;
 using Newtonsoft.Json;
@@ -140,7 +141,7 @@ public class WebManager
         var Debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
-        if(Debug) Console.WriteLine("\nJSON: " + json);
+        if(Debug) Trace.Write("\nJSON: " + json);
 
         var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
         httpWebRequest.Method = "POST";
@@ -161,12 +162,12 @@ public class WebManager
         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
             var result = streamReader.ReadToEnd();
-            if(Debug) Console.WriteLine("\nResponse: " + result);
+            if(Debug) Trace.Write("\nResponse: " + result);
             
             UserData = await SetResponseData(result, Debug);
         }
 
-        if(Debug) Console.WriteLine(httpResponse.StatusCode);
+        if(Debug) Trace.Write(httpResponse.StatusCode);
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }
@@ -178,7 +179,7 @@ public class WebManager
         var Debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
-        if(Debug) Console.WriteLine("\nJSON: " + json);
+        if(Debug) Trace.Write("\nJSON: " + json);
 
         var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
         httpWebRequest.Method = "POST";
@@ -199,12 +200,12 @@ public class WebManager
         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
             var result = streamReader.ReadToEnd();
-            if(Debug) Console.WriteLine("\nResponse: " + result);
+            if(Debug) Trace.Write("\nResponse: " + result);
             
             UserData = await SetResponseData(result, Debug);
         }
 
-        if(Debug) Console.WriteLine(httpResponse.StatusCode);
+        if(Debug) Trace.Write(httpResponse.StatusCode);
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }
@@ -216,7 +217,7 @@ public class WebManager
         var Debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
-        if(Debug) Console.WriteLine("\nJSON: " + json);
+        if(Debug) Trace.Write("\nJSON: " + json);
 
         var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
         httpWebRequest.Method = "POST";
@@ -237,12 +238,12 @@ public class WebManager
         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
             var result = streamReader.ReadToEnd();
-            if(Debug) Console.WriteLine("\nResponse: " + result);
+            if(Debug) Trace.Write("\nResponse: " + result);
             
             UserData = await SetResponseData(result, Debug);
         }
 
-        if(Debug) Console.WriteLine(httpResponse.StatusCode);
+        if(Debug) Trace.Write(httpResponse.StatusCode);
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }
@@ -260,8 +261,8 @@ public class WebManager
             var res = JObject.Parse(response);
             //userProfileJSON_DESERIALIZE 
             IList<JToken> results = res["userProfile"].Children().ToList();
-            if(Debug) Console.WriteLine("--------------\nuserProfile:\n--------------");
-            foreach (var obj in results) if(Debug){Console.WriteLine("\n" + obj);}
+            if(Debug) Trace.Write("--------------\nuserProfile:\n--------------");
+            foreach (var obj in results) if(Debug){Trace.Write("\n" + obj);}
 
             responseUser.id = (int) results[0];
             responseUser.username = results[1].ToString().Replace("\"username\": \"", "").Replace("\"", "");
@@ -278,8 +279,8 @@ public class WebManager
             {
                 var resp = JObject.Parse("{" + results[5] + "}");
                 IList<JToken> results_UserTableList = resp["userTableList"].Children().ToList();
-                if(Debug) Console.WriteLine("--------------\nuserProfile->userTableList:\n--------------");
-                foreach (var obj in results_UserTableList) if(Debug){Console.WriteLine("\n" + obj);}
+                if(Debug) Trace.Write("--------------\nuserProfile->userTableList:\n--------------");
+                foreach (var obj in results_UserTableList) if(Debug){Trace.Write("\n" + obj);}
                 //ID
                 responseUser.UserTableList.id = (int) results_UserTableList[0];
                 //USER_ID
@@ -394,8 +395,8 @@ public class WebManager
         {
             var res = JObject.Parse(response);
             IList<JToken> tableProfiles = res["tableProfile"].Children().ToList();
-            if(Debug) Console.WriteLine("--------------\ntableProfile:\n--------------");
-            foreach (var obj in tableProfiles) if(Debug){Console.WriteLine("\n" + obj);}
+            if(Debug) Trace.Write("--------------\ntableProfile:\n--------------");
+            foreach (var obj in tableProfiles) if(Debug){Trace.Write("\n" + obj);}
             tableProfile.tableID = (int) tableProfiles[0];
             var tableType =
                 Enum.Parse<Table.TableType>(
@@ -437,8 +438,8 @@ public class WebManager
             
             var res = JObject.Parse(response);
             IList<JToken> errors = res["error"].Children().ToList();
-            Console.WriteLine("--------------\nerror:\n--------------");
-            foreach (var obj in errors) if(Debug){Console.WriteLine("\n" + obj);}
+            Trace.Write("--------------\nerror:\n--------------");
+            foreach (var obj in errors) if(Debug){Trace.Write("\n" + obj);}
 
             error.errorText = errors[0].ToString().Replace("\"errorText\": \"", "").Replace("\"", "");
             error.isError = true;
@@ -448,8 +449,8 @@ public class WebManager
         {
             var res = JObject.Parse(response);
             IList<JToken> notifys = res["notification"].Children().ToList();
-            Console.WriteLine("--------------\nnotification:\n--------------");
-            foreach (var obj in notifys) if(Debug){Console.WriteLine("\n" + obj);}
+            Trace.Write("--------------\nnotification:\n--------------");
+            foreach (var obj in notifys) if(Debug){Trace.Write("\n" + obj);}
             
             notification.notificationText = notifys[0].ToString().Replace("\"notificationText\": \"", "").Replace("\"", "");
             

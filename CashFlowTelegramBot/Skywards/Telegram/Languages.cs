@@ -284,7 +284,7 @@ public partial class Languages
             }
             catch(AggregateException aex)
             {
-                Console.WriteLine("Handle Remaining Exceptions");
+                Trace.Write("Handle Remaining Exceptions");
                 aex.Handle(ex => Exceptions.HandleException(ex));
             }
             try
@@ -293,7 +293,7 @@ public partial class Languages
             }
             catch(AggregateException aex)
             {
-                Console.WriteLine("Handle Remaining Exceptions");
+                Trace.Write("Handle Remaining Exceptions");
                 aex.Handle(ex => Exceptions.HandleException(ex));
             }
             
@@ -1642,7 +1642,7 @@ public partial class Languages
         stream.Dispose();
     }
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
-        UserProfile user, Error error)
+        UserProfile user, Error error, Table.TableType? tableType)
     {
         string path = null;
         Message? sentMessage;
@@ -1659,7 +1659,30 @@ public partial class Languages
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                         @"Images\MainMenu\status.png");
-                var tableToBack = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
+
+                UserData? tableToBack = null;
+                switch (tableType)
+                {
+                    case Table.TableType.copper:
+                        tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                        break;
+                    case Table.TableType.bronze:
+                        tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                        break;
+                    case Table.TableType.silver:
+                        tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                        break;
+                    case Table.TableType.gold:
+                        tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
+                        break;
+                    case Table.TableType.platinum:
+                        tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                        break;
+                    case Table.TableType.diamond:
+                        tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                        break;
+                }
+                
                 var callbackAddress = GetCallbackAddress(tableToBack.tableData.tableType);
                 switch (user.lang)
                 {
@@ -1950,7 +1973,7 @@ public partial class Languages
                     path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                         @"Images\MainMenu\mainMenu.png");
                 var tableData = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
-                Console.WriteLine(tableData.tableData.tableType);
+                Trace.Write(tableData.tableData.tableType);
                 switch (user.lang)
                 {
                     case "ru":
@@ -2283,6 +2306,146 @@ public partial class Languages
             ParseMode.Html, 
             null, 
             inlineKeyboard
+        );
+    }
+    public static async void MainMenu(ITelegramBotClient botClient, long chatId, string lang)
+    {
+        string path = null;
+        InlineKeyboardMarkup? inlineKeyboard = null;
+        Message? sentMessage;
+        string? caption;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images/MainMenu/mainMenu.png");
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                @"Images\MainMenu\mainMenu.png");
+        Message? sentPhoto;
+        switch (lang)
+        {
+            case "ru":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("⚜ Выбрать стол", "ChooseTable"),
+                            InlineKeyboardButton.WithCallbackData("🔖 Мой статус", "Status")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📄 Инфо", "Info"),
+                            InlineKeyboardButton.WithCallbackData("🔗 Реф. ссылка", "RefLink")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Тех. поддержка", "TechSupport"),
+                            InlineKeyboardButton.WithCallbackData("🌐 Сменить язык", "ChangeLang")
+                        }
+                    });
+                caption = $"🗂 <b>Главное меню</b>" +
+                          "\n\nВыберите нужный раздел:";
+                break;
+            case "eng":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("⚜ Choose the table", "ChooseTable"),
+                            InlineKeyboardButton.WithCallbackData("🔖 My status", "Status")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📄 Info", "Info"),
+                            InlineKeyboardButton.WithCallbackData("🔗 Refferal link", "RefLink")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                            InlineKeyboardButton.WithCallbackData("🌐 Change language", "ChangeLang")
+                        }
+                    });
+                caption = $"<b>🗂 Main Menu</b>" +
+                          $"\n\nSelect the desired section:";
+                break;
+            case "fr":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("⚜ Choisissez le tableau", "ChooseTable"),
+                            InlineKeyboardButton.WithCallbackData("🔖 Mon statut", "Status")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📄 Info", "Info"),
+                            InlineKeyboardButton.WithCallbackData("🔗 Lien de référence", "RefLink")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Soutien technique", "TechSupport"),
+                            InlineKeyboardButton.WithCallbackData("🌐 Changer de langue", "ChangeLang")
+                        }
+                    }); 
+                caption = $"<b>🗂 Menu</b>" + 
+                          $"\n\nSélectionnez la rubrique souhaitée:";
+                break;
+            case "de":
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("⚜ Tisch auswählen", "ChooseTable"),
+                            InlineKeyboardButton.WithCallbackData("🔖 Mein status", "Status")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📄 Die Info", "Info"),
+                            InlineKeyboardButton.WithCallbackData("🔗 Empfehlungslink", "RefLink")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Technischer Support", "TechSupport"),
+                            InlineKeyboardButton.WithCallbackData("🌐 Sprache ändern", "ChangeLang")
+                        }
+                    });
+                caption = $"<b>🗂 Das Menu</b>" +
+                          $"\n\nWählen Sie den gewünschten Abschnitt aus:";
+                break;
+            default:
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("⚜ Choose the table", "ChooseTable"),
+                            InlineKeyboardButton.WithCallbackData("🔖 My status", "Status")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📄 Info", "Info"),
+                            InlineKeyboardButton.WithCallbackData("🔗 Refferal link", "RefLink")
+                        },
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                            InlineKeyboardButton.WithCallbackData("🌐 Change language", "ChangeLang")
+                        }
+                    });
+                caption = $"<b>🗂 Main Menu</b>" +
+                          $"\n\nSelect the desired section:";
+                break;
+        }
+        sentMessage = await botClient.SendPhotoAsync(
+            chatId, 
+            File.OpenRead(path),
+            caption,
+            ParseMode.Html,
+            replyMarkup: inlineKeyboard
         );
     }
     public static async void Status(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -3147,7 +3310,7 @@ public partial class Languages
         InlineKeyboardMarkup inlineKeyboard = null;
         Message? sentMessage;
         string? caption;
-        Console.WriteLine("https://t.me/originalCashFlowbot?start=R" + userData.id);
+        Trace.Write("https://t.me/originalCashFlowbot?start=R" + userData.id);
         Message sentPhoto;
         switch (userData.lang)
         {

@@ -1,4 +1,6 @@
-﻿using CashFlowTelegramBot.Skywards.Telegram;
+﻿using System.Diagnostics;
+using CashFlowTelegramBot.Skywards;
+using CashFlowTelegramBot.Skywards.Telegram;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
@@ -22,6 +24,20 @@ bot.StartReceiving(UpdateHandlers.HandleUpdateAsync,
     UpdateHandlers.PollingErrorHandler,
     receiverOptions,
     cts.Token);
+Trace.Listeners.Clear();
+
+TextWriterTraceListener twtl = new TextWriterTraceListener("logs.txt");
+twtl.Name = "TextLogger";
+twtl.TraceOutputOptions = TraceOptions.ThreadId | TraceOptions.DateTime;
+
+ConsoleTraceListener ctl = new ConsoleTraceListener(false);
+ctl.TraceOutputOptions = TraceOptions.DateTime;
+
+Trace.Listeners.Add(twtl);
+Trace.Listeners.Add(ctl);
+Trace.AutoFlush = true;
+
+Trace.WriteLine("The first line to be in the logfile and on the console.");
 /*
 FileStream filestream = null;
 if (File.Exists("logs.txt"))

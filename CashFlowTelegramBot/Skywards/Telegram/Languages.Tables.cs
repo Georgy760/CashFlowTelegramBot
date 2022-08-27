@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CashFlowTelegramBot.Skywards.Web;
@@ -395,8 +396,47 @@ public partial class Languages
                 }
             }
 
-            if (tableData.tableData.verf_A && tableData.tableData.verf_B &&
-                tableData.tableData.verf_C && tableData.tableData.verf_D)
+            var verfA = false;
+            var verfB = false;
+            var verfC = false;
+            var verfD = false;
+            if (tableData.tableData.giverA_ID != null)
+            {
+                if (tableData.tableData.verf_A)
+                {
+                    verfA = true;
+                }
+                else verfA = false;
+            }
+            else verfA = true;
+            if (tableData.tableData.giverB_ID != null)
+            {
+                if (tableData.tableData.verf_B)
+                {
+                    verfB = true;
+                }
+                else verfB = false;
+            }
+            else verfB = true;
+            if (tableData.tableData.giverC_ID != null)
+            {
+                if (tableData.tableData.verf_C)
+                {
+                    verfC = true;
+                }
+                else verfC = false;
+            }
+            else verfC = true;
+            if (tableData.tableData.giverD_ID != null)
+            {
+                if (tableData.tableData.verf_D)
+                {
+                    verfD = true;
+                }
+                else verfD = false;
+            }
+            else verfC = true;
+            if (verfA && verfB && verfC && verfD)
                 giversVerfed = true;
             else
                 giversVerfed = false;
@@ -444,11 +484,11 @@ public partial class Languages
                                 new[]
                                 {
                                     inlineKeyboardButtonGiverAInfo,
-                                    inlineKeyboardButtonGiverBInfo
+                                    inlineKeyboardButtonGiverCInfo,
                                 },
                                 new[]
                                 {
-                                    inlineKeyboardButtonGiverCInfo,
+                                    inlineKeyboardButtonGiverBInfo,
                                     inlineKeyboardButtonGiverDInfo
                                 },
                                 new[]
@@ -498,11 +538,11 @@ public partial class Languages
                                 new[]
                                 {
                                     inlineKeyboardButtonGiverAInfo,
-                                    inlineKeyboardButtonGiverBInfo
+                                    inlineKeyboardButtonGiverCInfo,
                                 },
                                 new[]
                                 {
-                                    inlineKeyboardButtonGiverCInfo,
+                                    inlineKeyboardButtonGiverBInfo,
                                     inlineKeyboardButtonGiverDInfo
                                 },
                                 new[]
@@ -550,11 +590,11 @@ public partial class Languages
                                 new[]
                                 {
                                     inlineKeyboardButtonGiverAInfo,
-                                    inlineKeyboardButtonGiverBInfo
+                                    inlineKeyboardButtonGiverCInfo,
                                 },
                                 new[]
                                 {
-                                    inlineKeyboardButtonGiverCInfo,
+                                    inlineKeyboardButtonGiverBInfo,
                                     inlineKeyboardButtonGiverDInfo
                                 },
                                 new[]
@@ -602,11 +642,11 @@ public partial class Languages
                                 new[]
                                 {
                                     inlineKeyboardButtonGiverAInfo,
-                                    inlineKeyboardButtonGiverBInfo
+                                    inlineKeyboardButtonGiverCInfo,
                                 },
                                 new[]
                                 {
-                                    inlineKeyboardButtonGiverCInfo,
+                                    inlineKeyboardButtonGiverBInfo,
                                     inlineKeyboardButtonGiverDInfo
                                 },
                                 new[]
@@ -1143,8 +1183,47 @@ public partial class Languages
                 }
             }
 
-            if (tableData.tableData.verf_A && tableData.tableData.verf_B &&
-                tableData.tableData.verf_C && tableData.tableData.verf_D)
+            var verfA = false;
+            var verfB = false;
+            var verfC = false;
+            var verfD = false;
+            if (tableData.tableData.giverA_ID != null)
+            {
+                if (tableData.tableData.verf_A)
+                {
+                    verfA = true;
+                }
+                else verfA = false;
+            }
+            else verfA = true;
+            if (tableData.tableData.giverB_ID != null)
+            {
+                if (tableData.tableData.verf_B)
+                {
+                    verfB = true;
+                }
+                else verfB = false;
+            }
+            else verfB = true;
+            if (tableData.tableData.giverC_ID != null)
+            {
+                if (tableData.tableData.verf_C)
+                {
+                    verfC = true;
+                }
+                else verfC = false;
+            }
+            else verfC = true;
+            if (tableData.tableData.giverD_ID != null)
+            {
+                if (tableData.tableData.verf_D)
+                {
+                    verfD = true;
+                }
+                else verfD = false;
+            }
+            else verfC = true;
+            if (verfA && verfB && verfC && verfD)
                 giversVerfed = true;
             else
                 giversVerfed = false;
@@ -1168,11 +1247,11 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonGiverAInfo,
-                                inlineKeyboardButtonGiverBInfo
+                                inlineKeyboardButtonGiverCInfo,
                             },
                             new[]
                             {
-                                inlineKeyboardButtonGiverCInfo,
+                                inlineKeyboardButtonGiverBInfo,
                                 inlineKeyboardButtonGiverDInfo
                             },
                             new[]
@@ -1221,11 +1300,11 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonGiverAInfo,
-                                inlineKeyboardButtonGiverBInfo
+                                inlineKeyboardButtonGiverCInfo,
                             },
                             new[]
                             {
-                                inlineKeyboardButtonGiverCInfo,
+                                inlineKeyboardButtonGiverBInfo,
                                 inlineKeyboardButtonGiverDInfo
                             },
                             new[]
@@ -1270,11 +1349,11 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonGiverAInfo,
-                                inlineKeyboardButtonGiverBInfo
+                                inlineKeyboardButtonGiverCInfo,
                             },
                             new[]
                             {
-                                inlineKeyboardButtonGiverCInfo,
+                                inlineKeyboardButtonGiverBInfo,
                                 inlineKeyboardButtonGiverDInfo
                             },
                             new[]
@@ -1320,11 +1399,11 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonGiverAInfo,
-                                inlineKeyboardButtonGiverBInfo
+                                inlineKeyboardButtonGiverCInfo,
                             },
                             new[]
                             {
-                                inlineKeyboardButtonGiverCInfo,
+                                inlineKeyboardButtonGiverBInfo,
                                 inlineKeyboardButtonGiverDInfo
                             },
                             new[]
@@ -1653,8 +1732,47 @@ public partial class Languages
                 }
             }
 
-            if (tableData.tableData.verf_A && tableData.tableData.verf_B &&
-                tableData.tableData.verf_C && tableData.tableData.verf_D)
+            var verfA = false;
+            var verfB = false;
+            var verfC = false;
+            var verfD = false;
+            if (tableData.tableData.giverA_ID != null)
+            {
+                if (tableData.tableData.verf_A)
+                {
+                    verfA = true;
+                }
+                else verfA = false;
+            }
+            else verfA = true;
+            if (tableData.tableData.giverB_ID != null)
+            {
+                if (tableData.tableData.verf_B)
+                {
+                    verfB = true;
+                }
+                else verfB = false;
+            }
+            else verfB = true;
+            if (tableData.tableData.giverC_ID != null)
+            {
+                if (tableData.tableData.verf_C)
+                {
+                    verfC = true;
+                }
+                else verfC = false;
+            }
+            else verfC = true;
+            if (tableData.tableData.giverD_ID != null)
+            {
+                if (tableData.tableData.verf_D)
+                {
+                    verfD = true;
+                }
+                else verfD = false;
+            }
+            else verfC = true;
+            if (verfA && verfB && verfC && verfD)
                 giversVerfed = true;
             else
                 giversVerfed = false;
@@ -1678,11 +1796,11 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonGiverAInfo,
-                                inlineKeyboardButtonGiverBInfo
+                                inlineKeyboardButtonGiverCInfo,
                             },
                             new[]
                             {
-                                inlineKeyboardButtonGiverCInfo,
+                                inlineKeyboardButtonGiverBInfo,
                                 inlineKeyboardButtonGiverDInfo
                             },
                             new[]
@@ -1731,11 +1849,11 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonGiverAInfo,
-                                inlineKeyboardButtonGiverBInfo
+                                inlineKeyboardButtonGiverCInfo,
                             },
                             new[]
                             {
-                                inlineKeyboardButtonGiverCInfo,
+                                inlineKeyboardButtonGiverBInfo,
                                 inlineKeyboardButtonGiverDInfo
                             },
                             new[]
@@ -1782,11 +1900,11 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonGiverAInfo,
-                                inlineKeyboardButtonGiverBInfo
+                                inlineKeyboardButtonGiverCInfo,
                             },
                             new[]
                             {
-                                inlineKeyboardButtonGiverCInfo,
+                                inlineKeyboardButtonGiverBInfo,
                                 inlineKeyboardButtonGiverDInfo
                             },
                             new[]
@@ -1832,11 +1950,11 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonGiverAInfo,
-                                inlineKeyboardButtonGiverBInfo
+                                inlineKeyboardButtonGiverCInfo,
                             },
                             new[]
                             {
-                                inlineKeyboardButtonGiverCInfo,
+                                inlineKeyboardButtonGiverBInfo,
                                 inlineKeyboardButtonGiverDInfo
                             },
                             new[]
@@ -1992,7 +2110,7 @@ public partial class Languages
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
             if (data.notification.isNotify)
             {
-                //Console.WriteLine("Notify");
+                //Trace.Write("Notify");
                 Notifications.Notify(botClient, userData.playerData.id, data.notification);
             }
             if (!data.error.isError)
@@ -2001,7 +2119,7 @@ public partial class Languages
             }
             else
             {
-                Console.WriteLine("ERROR");
+                Trace.Write("ERROR");
                 string path = null;
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                     path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
@@ -2156,7 +2274,7 @@ public partial class Languages
             }
             else
             {
-                Console.WriteLine("ERROR");
+                Trace.Write("ERROR");
                 InlineKeyboardMarkup inlineKeyboard;
                 Message sentMessage;
                 switch (userData.playerData.lang)
@@ -2236,7 +2354,7 @@ public partial class Languages
             }
             else
             {
-                Console.WriteLine("ERROR");
+                Trace.Write("ERROR");
                 InlineKeyboardMarkup inlineKeyboard;
                 Message sentMessage;
                 switch (userData.playerData.lang)
@@ -2316,7 +2434,7 @@ public partial class Languages
             }
             else
             {
-                Console.WriteLine("ERROR");
+                Trace.Write("ERROR");
                 InlineKeyboardMarkup inlineKeyboard;
                 Message sentMessage;
                 switch (userData.playerData.lang)
@@ -2396,7 +2514,7 @@ public partial class Languages
             }
             else
             {
-                Console.WriteLine("ERROR");
+                Trace.Write("ERROR");
                 InlineKeyboardMarkup inlineKeyboard;
                 Message sentMessage;
                 switch (userData.playerData.lang)
@@ -2476,7 +2594,7 @@ public partial class Languages
             }
             else
             {
-                Console.WriteLine("ERROR");
+                Trace.Write("ERROR");
                 InlineKeyboardMarkup inlineKeyboard;
                 Message sentMessage;
                 switch (userData.playerData.lang)

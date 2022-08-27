@@ -1,0 +1,99 @@
+The first line to be in the logfile and on the console.
+
+CallbackQuery.from.Username : GeorgyK1
+CallbackQuery.from.Id : 237487193
+CallbackQuery.Data : MainMenu
+JSON: {
+  "Type": "GetUserData",
+  "User": {
+    "invited": 0,
+    "team": 0,
+    "giftsReceived": 0,
+    "id": 237487193,
+    "username": "GeorgyK1",
+    "refId": null,
+    "invitedBy": null,
+    "lang": null,
+    "verf": false,
+    "UserTableList": null,
+    "level_tableType": 0
+  },
+  "Table": null,
+  "UserTableList": null
+}
+Response: {"userProfile":{"id":"237487193","username":"GeorgyK1","refId":"0","invitedBy":"BotFather","lang":"ru","userTableList":{"id":"6","userID":"237487193","table_ID_copper":null,"copperTableRole":null,"table_ID_bronze":null,"bronzeTableRole":null,"table_ID_silver":null,"silverTableRole":null,"table_ID_gold":null,"goldTableRole":null,"table_ID_platinum":null,"platinumTableRole":null,"table_ID_diamond":null,"diamondTableRole":null},"verf":0,"level_tableType":"silver","invited":4,"team":7,"giftsReceived":"0"},"tableProfile":null,"notification":null,"error":{"errorText":"empty","isError":false}}--------------
+userProfile:
+--------------
+"id": "237487193"
+"username": "GeorgyK1"
+"refId": "0"
+"invitedBy": "BotFather"
+"lang": "ru"
+"userTableList": {
+  "id": "6",
+  "userID": "237487193",
+  "table_ID_copper": null,
+  "copperTableRole": null,
+  "table_ID_bronze": null,
+  "bronzeTableRole": null,
+  "table_ID_silver": null,
+  "silverTableRole": null,
+  "table_ID_gold": null,
+  "goldTableRole": null,
+  "table_ID_platinum": null,
+  "platinumTableRole": null,
+  "table_ID_diamond": null,
+  "diamondTableRole": null
+}
+"verf": 0
+"level_tableType": "silver"
+"invited": 4
+"team": 7
+"giftsReceived": "0"--------------
+userProfile->userTableList:
+--------------
+"id": "6"
+"userID": "237487193"
+"table_ID_copper": null
+"copperTableRole": null
+"table_ID_bronze": null
+"bronzeTableRole": null
+"table_ID_silver": null
+"silverTableRole": null
+"table_ID_gold": null
+"goldTableRole": null
+"table_ID_platinum": null
+"platinumTableRole": null
+"table_ID_diamond": null
+"diamondTableRole": null
+-----------------------------------------------------------------
+--------------------------UserTableList--------------------------
+-----------------------------------------------------------------
+ID: 6
+userID: 237487193
+table_ID_copper: 
+copperTableRole: 
+table_ID_bronze: 
+bronzeTableRole: 
+table_ID_silver: 
+silverTableRole: 
+table_ID_gold: 
+goldTableRole: 
+table_ID_platinum: 
+platinumTableRole: 
+table_ID_diamond: 
+---------------------------------------------------------------
+--------------------------UserProfile--------------------------
+---------------------------------------------------------------
+ID: 237487193
+Username: GeorgyK1
+RefId: 0
+InvitedBy: BotFather
+Lang: ru
+level_tableType: silver
+tableRole: 
+Invited: 4OK
+---------------------------------------------------
+Triggered by: GeorgyK1 at 8/27/2022 6:54:08 PM
+CallBackQuery: MainMenu
+---------------------------------------------------

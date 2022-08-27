@@ -1,4 +1,5 @@
-﻿using CashFlowTelegramBot.Skywards.ImageEditor;
+﻿using System.Diagnostics;
+using CashFlowTelegramBot.Skywards.ImageEditor;
 using CashFlowTelegramBot.Skywards.Web;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -21,7 +22,7 @@ public static class UpdateHandlers
             _ => exception.ToString()
         };
 
-        Console.WriteLine(ErrorMessage);
+        Trace.Write(ErrorMessage);
         return Task.CompletedTask;
     }
 
@@ -65,12 +66,12 @@ public static class UpdateHandlers
 
     private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message updateMessage)
     {
-        Console.WriteLine("MessageReceived: " + updateMessage.Text);
+        Trace.Write("MessageReceived: " + updateMessage.Text);
         if (updateMessage.Text.Contains("/chat"))
         {
-            Console.WriteLine("ChatID: " + updateMessage.Chat.Id);
+            Trace.Write("ChatID: " + updateMessage.Chat.Id);
             var chatID = 237487193;
-            Console.WriteLine("Data: " + botClient.GetChatAsync(chatID).Result.FirstName);
+            Trace.Write("Data: " + botClient.GetChatAsync(chatID).Result.FirstName);
             var user = new UserProfile(updateMessage.From.Id, updateMessage.From.Username!);
             var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
         }
@@ -79,6 +80,14 @@ public static class UpdateHandlers
         {
             Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
         }*/
+        if (updateMessage.Text.Contains("/menu"))
+        {
+            var user = await WebManager.SendData(new UserProfile(updateMessage.From.Id), WebManager.RequestType.GetUserData);
+            if (!user.error.isError)
+            {
+                Languages.MainMenu(botClient, updateMessage.Chat.Id, user.playerData.lang);
+            }
+        }
         if (updateMessage.Text.Contains("/start R"))
         {
             var splitMessage = updateMessage.Text.Split("R");
@@ -112,12 +121,12 @@ public static class UpdateHandlers
                 }
                 else
                 {
-                    Languages.Warning(botClient, updateMessage.Chat.Id, callbackQuery, user, Error.RefLinkInvalid);
+                    Languages.Warning(botClient, updateMessage.Chat.Id, callbackQuery, user, Error.RefLinkInvalid, null);
                 }
             }
             else
             {
-                Languages.Warning(botClient, updateMessage.Chat.Id, callbackQuery, user, Error.UserWithoutUsername);
+                Languages.Warning(botClient, updateMessage.Chat.Id, callbackQuery, user, Error.UserWithoutUsername, null);
             }
         }
     }
@@ -125,12 +134,12 @@ public static class UpdateHandlers
     // Process Inline Keyboard callback data
     private static async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
     {
-        Console.WriteLine("\nCallbackQuery.from.Username : " + callbackQuery.From.Username);
-        Console.WriteLine("\nCallbackQuery.from.Id : " + callbackQuery.From.Id);
-        Console.WriteLine("\nCallbackQuery.Data : " + callbackQuery.Data);
+        Trace.Write("\nCallbackQuery.from.Username : " + callbackQuery.From.Username);
+        Trace.Write("\nCallbackQuery.from.Id : " + callbackQuery.From.Id);
+        Trace.Write("\nCallbackQuery.Data : " + callbackQuery.Data);
         var user = new UserProfile(callbackQuery.From.Id, callbackQuery.From.Username!);
         var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData);
-        Console.WriteLine("\n---------------------------------------------------"
+        Trace.Write("\n---------------------------------------------------"
                           + "\nTriggered by: " + userData.playerData.username + " at " + DateTime.Now +
                           "\nCallBackQuery: " +
                           callbackQuery.Data
@@ -143,7 +152,7 @@ public static class UpdateHandlers
             {
                 callbackQuery.Data = data[0].Replace("Captcha", "");
                 ;
-                Console.WriteLine(callbackQuery.Data);
+                Trace.Write(callbackQuery.Data);
             }
             else
             {
@@ -176,8 +185,8 @@ public static class UpdateHandlers
 
             if (callbackQuery.From.Username == null)
             {
-                Console.WriteLine("Username is still null");
-                Languages.Warning(botClient, chatId, callbackQuery, NewUser, Error.UserWithoutUsername);
+                Trace.Write("Username is still null");
+                Languages.Warning(botClient, chatId, callbackQuery, NewUser, Error.UserWithoutUsername, null);
                 return;
             }
 
@@ -188,13 +197,13 @@ public static class UpdateHandlers
             }
             else
             {
-                Languages.Warning(botClient, chatId, callbackQuery, NewUser, Error.RefLinkInvalid);
+                Languages.Warning(botClient, chatId, callbackQuery, NewUser, Error.RefLinkInvalid, null);
             }
         }
 
         if (callbackQuery.Data.Contains("GetBankerData"))
         {
-            Console.WriteLine("\nGetBankerData");
+            Trace.Write("\nGetBankerData");
             var tableTypeData = callbackQuery.Data.Split("|");
             var tableType = TableProfile.GetTableType(tableTypeData[1]);
             var tableRole = Table.TableRole.banker;
@@ -217,7 +226,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -235,7 +244,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -253,7 +262,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -271,7 +280,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -289,7 +298,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -307,7 +316,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -339,7 +348,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -357,7 +366,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -375,7 +384,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -393,7 +402,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -411,7 +420,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -429,7 +438,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -461,7 +470,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -479,7 +488,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -497,7 +506,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -515,7 +524,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -533,7 +542,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -551,7 +560,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -583,7 +592,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -601,7 +610,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -619,7 +628,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -637,7 +646,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -655,7 +664,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -673,7 +682,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -705,7 +714,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -723,7 +732,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -741,7 +750,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -759,7 +768,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -777,7 +786,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -795,7 +804,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -827,7 +836,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -845,7 +854,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -863,7 +872,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -881,7 +890,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -899,7 +908,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -917,7 +926,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -949,7 +958,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -967,7 +976,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -985,7 +994,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -1003,7 +1012,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -1021,7 +1030,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -1039,7 +1048,7 @@ public static class UpdateHandlers
                         else
                         {
                             Languages.Warning(botClient, chatId, callbackQuery, userData.playerData,
-                                Error.UserIsNotExist);
+                                Error.UserIsNotExist, tableType);
                         }
 
                         break;
@@ -1667,13 +1676,13 @@ public static class UpdateHandlers
                 break;
             //--------CHOOSE_TABLE--------\\
             case "ChooseTable":
-                Console.WriteLine("ChooseTable");
+                Trace.Write("ChooseTable");
                 Languages.TableMenu(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //--------Table_Selection--------\\
             //-//------CopperTable------\\-\\
             case "CopperTable":
-                Console.WriteLine("TableSelected: Copper");
+                Trace.Write("TableSelected: Copper");
                 if (userData.playerData.UserTableList.table_ID_copper == null)
                 {
                     Languages.Warning(botClient, chatId, callbackQuery, userData,
@@ -1697,7 +1706,7 @@ public static class UpdateHandlers
                 break;
             //-//------BronzeTable------\\-\\
             case "BronzeTable":
-                Console.WriteLine("TableSelected: Bronze");
+                Trace.Write("TableSelected: Bronze");
                 if (userData.playerData.UserTableList.table_ID_bronze == null)
                 {
                     Languages.Warning(botClient, chatId, callbackQuery, userData,
@@ -1721,9 +1730,8 @@ public static class UpdateHandlers
                 break;
             //-//------SilverTable------\\-\\
             case "SilverTable":
-                Console.WriteLine("TableSelected: Silver");
-                if (userData.playerData.invited >= 2 &&
-                    userData.playerData.level_tableType.CompareTo(Table.TableType.silver) >= 0)
+                Trace.Write("TableSelected: Silver");
+                if (userData.playerData.invited >= 2)
                 {
                     if (userData.playerData.UserTableList.table_ID_silver == null)
                     {
@@ -1755,7 +1763,7 @@ public static class UpdateHandlers
                 break;
             //-//------GoldTable------\\-\\
             case "GoldTable":
-                Console.WriteLine("TableSelected: Gold");
+                Trace.Write("TableSelected: Gold");
                 if (userData.playerData.invited >= 4 ||
                     userData.playerData.level_tableType.CompareTo(Table.TableType.gold) >= 0)
                 {
@@ -1788,7 +1796,7 @@ public static class UpdateHandlers
                 break;
             //-//------PlatinumTable------\\-\\
             case "PlatinumTable":
-                Console.WriteLine("TableSelected: Platinum");
+                Trace.Write("TableSelected: Platinum");
                 if (userData.playerData.invited >= 6 ||
                     userData.playerData.level_tableType.CompareTo(Table.TableType.platinum) >= 0)
                 {
@@ -1822,7 +1830,7 @@ public static class UpdateHandlers
                 break;
             //-//-//-----DiamondTable-----\\-\\-\\
             case "DiamondTable":
-                Console.WriteLine("TableSelected: Diamond");
+                Trace.Write("TableSelected: Diamond");
                 if (userData.playerData.invited >= 12 ||
                     userData.playerData.level_tableType.CompareTo(Table.TableType.diamond) >= 0)
                 {
@@ -1856,54 +1864,54 @@ public static class UpdateHandlers
                 break;
             //--------STATUS--------\\
             case "Status":
-                Console.WriteLine("Status");
+                Trace.Write("Status");
                 Languages.Status(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //--------Info--------\\
             case "Info":
-                Console.WriteLine("Info");
+                Trace.Write("Info");
                 Languages.Info(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //--------REF_LINK--------\\
             case "RefLink":
-                Console.WriteLine("RefLink");
+                Trace.Write("RefLink");
                 Languages.RefLink(botClient, chatId, userData.playerData, callbackQuery);
                 break;
             //--------TECH_SUPPORT--------\\
             case "TechSupport":
-                Console.WriteLine("TechSupport");
+                Trace.Write("TechSupport");
                 Languages.TechSupport(botClient, chatId, callbackQuery, userData.playerData);
                 break;
             //--------CHANGE_LANG--------\\
             case "ChangeLang":
                 Languages.LanguageMenu(botClient, chatId, callbackQuery, userData.playerData);
-                Console.WriteLine("ChangeLang");
+                Trace.Write("ChangeLang");
                 break;
             //--------LANG_SELECTION--------\\
             case "ChangeToRU":
                 user.AddLang("ru");
                 await ChangeLang(botClient, callbackQuery, user);
-                Console.WriteLine("ru");
+                Trace.Write("ru");
                 break;
             case "ChangeToENG":
                 user.AddLang("eng");
                 await ChangeLang(botClient, callbackQuery, user);
-                Console.WriteLine("eng");
+                Trace.Write("eng");
                 break;
             case "ChangeToFR":
                 user.AddLang("fr");
                 await ChangeLang(botClient, callbackQuery, user);
-                Console.WriteLine("fr");
+                Trace.Write("fr");
                 break;
             case "ChangeToDE":
                 user.AddLang("de");
                 await ChangeLang(botClient, callbackQuery, user);
-                Console.WriteLine("de");
+                Trace.Write("de");
                 break;
 
 
             default:
-                Console.WriteLine("\nWrong data");
+                Trace.Write("\nWrong data");
                 break;
         }
 
@@ -1978,7 +1986,7 @@ public static class UpdateHandlers
 
     private static async Task BotOnInlineQueryReceived(ITelegramBotClient botClient, InlineQuery inlineQuery)
     {
-        Console.WriteLine($"Received inline query from: {inlineQuery.From.Id}");
+        Trace.Write($"Received inline query from: {inlineQuery.From.Id}");
 
         InlineQueryResult[] results =
         {
@@ -2001,13 +2009,13 @@ public static class UpdateHandlers
     private static Task BotOnChosenInlineResultReceived(ITelegramBotClient botClient,
         ChosenInlineResult chosenInlineResult)
     {
-        Console.WriteLine($"Received inline result: {chosenInlineResult.ResultId}");
+        Trace.Write($"Received inline result: {chosenInlineResult.ResultId}");
         return Task.CompletedTask;
     }
 
     private static Task UnknownUpdateHandlerAsync(ITelegramBotClient botClient, Update update)
     {
-        Console.WriteLine($"Unknown update type: {update.Type}");
+        Trace.Write($"Unknown update type: {update.Type}");
         return Task.CompletedTask;
     }
 }

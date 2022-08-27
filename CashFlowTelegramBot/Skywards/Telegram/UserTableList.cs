@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using CashFlowTelegramBot.Skywards.Web;
 
 namespace CashFlowTelegramBot.Skywards.Telegram;
@@ -22,10 +23,10 @@ public class UserTableList
 
     public void PrintUserTableList()
     {
-        Console.WriteLine("\n-----------------------------------------------------------------" + 
+        Trace.Write("\n-----------------------------------------------------------------" + 
                           "\n--------------------------UserTableList--------------------------" +
                           "\n-----------------------------------------------------------------");
-        Console.WriteLine("\nID: " + id + "\nuserID: " + userID + "\ntable_ID_copper: " + table_ID_copper + "\ncopperTableRole: " +
+        Trace.Write("\nID: " + id + "\nuserID: " + userID + "\ntable_ID_copper: " + table_ID_copper + "\ncopperTableRole: " +
                           copperTableRole + "\ntable_ID_bronze: " + table_ID_bronze + "\nbronzeTableRole: " + bronzeTableRole + "\ntable_ID_silver: " + table_ID_silver +
                           "\nsilverTableRole: " + silverTableRole + "\ntable_ID_gold: " + table_ID_gold + "\ngoldTableRole: " + goldTableRole + "\ntable_ID_platinum: " + table_ID_platinum
                           + "\nplatinumTableRole: " + platinumTableRole + "\ntable_ID_diamond: " + table_ID_diamond);
