@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using CashFlowTelegramBot.Skywards;
 using CashFlowTelegramBot.Skywards.Telegram;
 using Telegram.Bot;
@@ -26,7 +28,21 @@ bot.StartReceiving(UpdateHandlers.HandleUpdateAsync,
     cts.Token);
 Trace.Listeners.Clear();
 
-TextWriterTraceListener twtl = new TextWriterTraceListener("logs.txt");
+string path = null;
+if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+{
+    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+        @"logs.txt");
+}
+
+if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+{
+    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+        @"logs.txt");
+}
+
+
+TextWriterTraceListener twtl = new TextWriterTraceListener(path);
 twtl.Name = "TextLogger";
 twtl.TraceOutputOptions = TraceOptions.ThreadId | TraceOptions.DateTime;
 
@@ -38,17 +54,10 @@ Trace.Listeners.Add(ctl);
 Trace.AutoFlush = true;
 
 Trace.WriteLine("The first line to be in the logfile and on the console.");
-/*
-FileStream filestream = null;
-if (File.Exists("logs.txt"))
-{
-    filestream = new FileStream("logs.txt", FileMode.Open);
-}
-else
-{
-    filestream = new FileStream("logs.txt", FileMode.Create);
-}
 
+
+
+/*
 if (filestream != null)
 {
     var streamwriter = new StreamWriter(filestream);
@@ -57,6 +66,7 @@ if (filestream != null)
     Console.SetError(streamwriter);
 }
 */
+
 Console.WriteLine($"Start listening for @{me.Username}");
 Console.ReadLine();
 

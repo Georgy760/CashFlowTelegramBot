@@ -356,34 +356,34 @@ public class UserProfile
         switch (lang)
         {
             case "ru":
-                result = $"<b>Роль: {GetTableRole(lang, Table.TableType.copper)}</b>";
+                result = $"<b>Роль: {GetTableRole(lang, tableData.tableType)}</b>";
                 if (IsItYou) result += " 🔘";
                 result += $"\n<b>Ник:</b> @{username}" +
-                          $"\n<b>Имя пользователя:</b> {firstName + lastName}" + 
+                          $"\n<b>Имя пользователя:</b> {firstName} {lastName}" + 
                           $"\n<b>Лично приглашённых:</b> {invited}" +
                           $"\n<b>Пригласил:</b> @{invitedBy}\n\n";
                 break;
             case "eng":
-                result = $"<b>Role: {GetTableRole(lang, Table.TableType.copper)}</b>";
+                result = $"<b>Role: {GetTableRole(lang, tableData.tableType)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Nickname:</b> @{username}" +
-                          $"\n<b>Username:</b> {firstName + lastName}" + 
+                          $"\n<b>Username:</b> {firstName} {lastName}" + 
                           $"\n<b>Personally invited:</b> {invited}" +
                           $"\n<b>Invited:</b> @{invitedBy}\n\n";
                 break;
             case "fr":
-                result = $"<b>Rôle: {GetTableRole(lang, Table.TableType.copper)}</b>";
+                result = $"<b>Rôle: {GetTableRole(lang, tableData.tableType)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Pseudonyme: @{username}</b>" +
-                          $"\n<b>Nom d'utilisateur:</b> {firstName + lastName}" + 
+                          $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" + 
                           $"\n<b>Personnellement invité:</b> {invited}" +
                           $"\n<b>Invité:</b> @{invitedBy}\n\n";
                 break;
             case "de":
-                result = $"<b>Rolle: {GetTableRole(lang, Table.TableType.copper)}</b>";
+                result = $"<b>Rolle: {GetTableRole(lang, tableData.tableType)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Spitzname:</b> @{username}" +
-                          $"\n<b>Benutzername:</b> {firstName + lastName}" + 
+                          $"\n<b>Benutzername:</b> {firstName} {lastName}" + 
                           $"\n<b>Persönlich eingeladen:</b> {invited}" +
                           $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
                 break;
@@ -422,43 +422,43 @@ public class UserProfile
         switch (lang)
         {
             case "ru":
-                result = $"<b>Роль: {GetTableRole(lang, Table.TableType.copper)}-{num}</b>";
+                result = $"<b>Роль: {GetTableRole(lang, tableData.tableType)}-{num}</b>";
                 if (Verf) result += " ✅";
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Ник:</b> @{username}" +
-                          $"\n<b>Имя пользователя:</b> {firstName + lastName}" +
+                          $"\n<b>Имя пользователя:</b> {firstName} {lastName}" +
                           $"\n<b>Лично приглашённых:</b> {invited}" +
                           $"\n<b>Пригласил:</b> @{invitedBy}\n\n";
 
                 break;
             case "eng":
-                result = $"<b>Role: {GetTableRole(lang, Table.TableType.copper)}-{num}</b>";
+                result = $"<b>Role: {GetTableRole(lang, tableData.tableType)}-{num}</b>";
                 if (Verf) result += " ✅";
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Nickname:</b> @{username}" +
-                          $"\n<b>Username:</b> {firstName + lastName}" + 
+                          $"\n<b>Username:</b> {firstName} {lastName}" + 
                           $"\n<b>Personally invited:</b> {invited}" +
                           $"\n<b>Invited:</b> @{invitedBy}\n\n";
                 break;
             case "fr":
-                result = $"<b>Rôle: {GetTableRole(lang, Table.TableType.copper)}-{num}</b>";
+                result = $"<b>Rôle: {GetTableRole(lang, tableData.tableType)}-{num}</b>";
                 if (Verf) result += " ✅";
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Pseudonyme: @{username}</b>" +
-                          $"\n<b>Nom d'utilisateur:</b> {firstName + lastName}" + 
+                          $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" + 
                           $"\n<b>Personnellement invité:</b> {invited}" +
                           $"\n<b>Invité:</b> @{invitedBy}\n\n";
                 break;
             case "de":
-                result = $"<b>Rolle: {GetTableRole(lang, Table.TableType.copper)}-{num}</b>";
+                result = $"<b>Rolle: {GetTableRole(lang, tableData.tableType)}-{num}</b>";
                 if (Verf) result += " ✅";
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Spitzname:</b> @{username}" +
-                          $"\n<b>Benutzername:</b> {firstName + lastName}" + 
+                          $"\n<b>Benutzername:</b> {firstName} {lastName}" + 
                           $"\n<b>Persönlich eingeladen:</b> {invited}" +
                           $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
                 break;

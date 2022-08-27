@@ -2268,6 +2268,11 @@ public partial class Languages
             userData.playerData.level_tableType = Table.TableType.bronze;
             var tableType = Table.TableType.bronze;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
+            if (data.notification.isNotify)
+            {
+                //Trace.Write("Notify");
+                Notifications.Notify(botClient, userData.playerData.id, data.notification);
+            }
             if (!data.error.isError)
             {
                 RoleSelection(botClient, chatId, callbackData, userData, tableType);
@@ -2275,70 +2280,145 @@ public partial class Languages
             else
             {
                 Trace.Write("ERROR");
-                InlineKeyboardMarkup inlineKeyboard;
-                Message sentMessage;
-                switch (userData.playerData.lang)
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup inlineKeyboard = null;
+                string? caption = null;
+                if (data.error.errorText.Contains("ThisTableIsBlocked"))
                 {
-                    case "ru":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableRU
-                                }
-                            });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "К сожалению таких столов пока что нет, попробуйте позже",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "eng":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Ожидайте...</b>" +
+                                      "\n\n" +
+                                      "Данный стол заблокирован на 24 часа, так как Вы недавно произвели самостоятельный выход со стола.";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableENG
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Unfortunately, there are no such tables yet, please try again later",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "fr":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Wait...</b>" +
+                                      "\n\n" +
+                                      "This table has been locked for 24 hours because you recently exited the table yourself.";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableFR
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "de":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
+                                    }
+                                });
+                            caption =
+                                "<b>🤷 Attendez...</b>" +
+                                "\n\n" +
+                                "Cette table a été verrouillée pendant 24 heures parce que vous avez récemment quitté la table vous-même.";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableDE
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut",
-                            replyMarkup: inlineKeyboard);
-                        break;
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Warte...</b>" +
+                                      "\n\n" +
+                                      "Dieser Tisch wurde für 24 Stunden gesperrt, weil Sie den Tisch kürzlich selbst verlassen haben.";
+                            break;
+                    }
                 }
+                else
+                {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU
+                                    }
+                                });
+                            caption = "К сожалению таких столов пока что нет, попробуйте позже";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG
+                                    }
+                                });
+                            caption = "Unfortunately, there are no such tables yet, please try again later";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR
+                                    }
+                                });
+                            caption =
+                                "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE
+                                    }
+                                });
+                            caption =
+                                "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut";
+                            break;
+                    }
+                }
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
             }
         }
 
@@ -2348,6 +2428,11 @@ public partial class Languages
             userData.playerData.level_tableType = Table.TableType.silver;
             var tableType = Table.TableType.silver;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
+            if (data.notification.isNotify)
+            {
+                //Trace.Write("Notify");
+                Notifications.Notify(botClient, userData.playerData.id, data.notification);
+            }
             if (!data.error.isError)
             {
                 RoleSelection(botClient, chatId, callbackData, userData, tableType);
@@ -2355,70 +2440,145 @@ public partial class Languages
             else
             {
                 Trace.Write("ERROR");
-                InlineKeyboardMarkup inlineKeyboard;
-                Message sentMessage;
-                switch (userData.playerData.lang)
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup inlineKeyboard = null;
+                string? caption = null;
+                if (data.error.errorText.Contains("ThisTableIsBlocked"))
                 {
-                    case "ru":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableRU
-                                }
-                            });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "К сожалению таких столов пока что нет, попробуйте позже",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "eng":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Ожидайте...</b>" +
+                                      "\n\n" +
+                                      "Данный стол заблокирован на 24 часа, так как Вы недавно произвели самостоятельный выход со стола.";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableENG
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Unfortunately, there are no such tables yet, please try again later",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "fr":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Wait...</b>" +
+                                      "\n\n" +
+                                      "This table has been locked for 24 hours because you recently exited the table yourself.";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableFR
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "de":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
+                                    }
+                                });
+                            caption =
+                                "<b>🤷 Attendez...</b>" +
+                                "\n\n" +
+                                "Cette table a été verrouillée pendant 24 heures parce que vous avez récemment quitté la table vous-même.";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableDE
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut",
-                            replyMarkup: inlineKeyboard);
-                        break;
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Warte...</b>" +
+                                      "\n\n" +
+                                      "Dieser Tisch wurde für 24 Stunden gesperrt, weil Sie den Tisch kürzlich selbst verlassen haben.";
+                            break;
+                    }
                 }
+                else
+                {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU
+                                    }
+                                });
+                            caption = "К сожалению таких столов пока что нет, попробуйте позже";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG
+                                    }
+                                });
+                            caption = "Unfortunately, there are no such tables yet, please try again later";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR
+                                    }
+                                });
+                            caption =
+                                "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE
+                                    }
+                                });
+                            caption =
+                                "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut";
+                            break;
+                    }
+                }
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
             }
         }
 
@@ -2428,6 +2588,11 @@ public partial class Languages
             userData.playerData.level_tableType = Table.TableType.gold;
             var tableType = Table.TableType.gold;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
+            if (data.notification.isNotify)
+            {
+                //Trace.Write("Notify");
+                Notifications.Notify(botClient, userData.playerData.id, data.notification);
+            }
             if (!data.error.isError)
             {
                 RoleSelection(botClient, chatId, callbackData, userData, tableType);
@@ -2435,70 +2600,145 @@ public partial class Languages
             else
             {
                 Trace.Write("ERROR");
-                InlineKeyboardMarkup inlineKeyboard;
-                Message sentMessage;
-                switch (userData.playerData.lang)
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup inlineKeyboard = null;
+                string? caption = null;
+                if (data.error.errorText.Contains("ThisTableIsBlocked"))
                 {
-                    case "ru":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableRU
-                                }
-                            });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "К сожалению таких столов пока что нет, попробуйте позже",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "eng":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Ожидайте...</b>" +
+                                      "\n\n" +
+                                      "Данный стол заблокирован на 24 часа, так как Вы недавно произвели самостоятельный выход со стола.";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableENG
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Unfortunately, there are no such tables yet, please try again later",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "fr":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Wait...</b>" +
+                                      "\n\n" +
+                                      "This table has been locked for 24 hours because you recently exited the table yourself.";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableFR
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "de":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
+                                    }
+                                });
+                            caption =
+                                "<b>🤷 Attendez...</b>" +
+                                "\n\n" +
+                                "Cette table a été verrouillée pendant 24 heures parce que vous avez récemment quitté la table vous-même.";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableDE
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut",
-                            replyMarkup: inlineKeyboard);
-                        break;
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Warte...</b>" +
+                                      "\n\n" +
+                                      "Dieser Tisch wurde für 24 Stunden gesperrt, weil Sie den Tisch kürzlich selbst verlassen haben.";
+                            break;
+                    }
                 }
+                else
+                {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU
+                                    }
+                                });
+                            caption = "К сожалению таких столов пока что нет, попробуйте позже";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG
+                                    }
+                                });
+                            caption = "Unfortunately, there are no such tables yet, please try again later";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR
+                                    }
+                                });
+                            caption =
+                                "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE
+                                    }
+                                });
+                            caption =
+                                "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut";
+                            break;
+                    }
+                }
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
             }
         }
 
@@ -2508,6 +2748,11 @@ public partial class Languages
             userData.playerData.level_tableType = Table.TableType.platinum;
             var tableType = Table.TableType.platinum;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
+            if (data.notification.isNotify)
+            {
+                //Trace.Write("Notify");
+                Notifications.Notify(botClient, userData.playerData.id, data.notification);
+            }
             if (!data.error.isError)
             {
                 RoleSelection(botClient, chatId, callbackData, userData, tableType);
@@ -2515,70 +2760,145 @@ public partial class Languages
             else
             {
                 Trace.Write("ERROR");
-                InlineKeyboardMarkup inlineKeyboard;
-                Message sentMessage;
-                switch (userData.playerData.lang)
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup inlineKeyboard = null;
+                string? caption = null;
+                if (data.error.errorText.Contains("ThisTableIsBlocked"))
                 {
-                    case "ru":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableRU
-                                }
-                            });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "К сожалению таких столов пока что нет, попробуйте позже",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "eng":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Ожидайте...</b>" +
+                                      "\n\n" +
+                                      "Данный стол заблокирован на 24 часа, так как Вы недавно произвели самостоятельный выход со стола.";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableENG
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Unfortunately, there are no such tables yet, please try again later",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "fr":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Wait...</b>" +
+                                      "\n\n" +
+                                      "This table has been locked for 24 hours because you recently exited the table yourself.";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableFR
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "de":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
+                                    }
+                                });
+                            caption =
+                                "<b>🤷 Attendez...</b>" +
+                                "\n\n" +
+                                "Cette table a été verrouillée pendant 24 heures parce que vous avez récemment quitté la table vous-même.";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableDE
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut",
-                            replyMarkup: inlineKeyboard);
-                        break;
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Warte...</b>" +
+                                      "\n\n" +
+                                      "Dieser Tisch wurde für 24 Stunden gesperrt, weil Sie den Tisch kürzlich selbst verlassen haben.";
+                            break;
+                    }
                 }
+                else
+                {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU
+                                    }
+                                });
+                            caption = "К сожалению таких столов пока что нет, попробуйте позже";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG
+                                    }
+                                });
+                            caption = "Unfortunately, there are no such tables yet, please try again later";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR
+                                    }
+                                });
+                            caption =
+                                "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE
+                                    }
+                                });
+                            caption =
+                                "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut";
+                            break;
+                    }
+                }
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
             }
         }
 
@@ -2588,6 +2908,11 @@ public partial class Languages
             userData.playerData.level_tableType = Table.TableType.diamond;
             var tableType = Table.TableType.diamond;
             var data = await WebManager.SendData(userData.playerData, WebManager.RequestType.RegisterIntoTable);
+            if (data.notification.isNotify)
+            {
+                //Trace.Write("Notify");
+                Notifications.Notify(botClient, userData.playerData.id, data.notification);
+            }
             if (!data.error.isError)
             {
                 RoleSelection(botClient, chatId, callbackData, userData, tableType);
@@ -2595,70 +2920,145 @@ public partial class Languages
             else
             {
                 Trace.Write("ERROR");
-                InlineKeyboardMarkup inlineKeyboard;
-                Message sentMessage;
-                switch (userData.playerData.lang)
+                string path = null;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images/MainMenu/mainMenu.png");
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                    path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        @"Images\MainMenu\mainMenu.png");
+                InlineKeyboardMarkup inlineKeyboard = null;
+                string? caption = null;
+                if (data.error.errorText.Contains("ThisTableIsBlocked"))
                 {
-                    case "ru":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableRU
-                                }
-                            });
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "К сожалению таких столов пока что нет, попробуйте позже",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "eng":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Ожидайте...</b>" +
+                                      "\n\n" +
+                                      "Данный стол заблокирован на 24 часа, так как Вы недавно произвели самостоятельный выход со стола.";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableENG
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Unfortunately, there are no such tables yet, please try again later",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "fr":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Wait...</b>" +
+                                      "\n\n" +
+                                      "This table has been locked for 24 hours because you recently exited the table yourself.";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableFR
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard",
-                            replyMarkup: inlineKeyboard);
-                        break;
-                    case "de":
-                        inlineKeyboard = new InlineKeyboardMarkup(
-                            new[]
-                            {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
+                                    }
+                                });
+                            caption =
+                                "<b>🤷 Attendez...</b>" +
+                                "\n\n" +
+                                "Cette table a été verrouillée pendant 24 heures parce que vous avez récemment quitté la table vous-même.";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
-                                    InlineKeyboardButtonChooseTableDE
-                                }
-                            });
-
-                        sentMessage = await botClient.SendTextMessageAsync(
-                            chatId,
-                            "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut",
-                            replyMarkup: inlineKeyboard);
-                        break;
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE,
+                                        InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
+                                    }
+                                });
+                            caption = "<b>🤷 Warte...</b>" +
+                                      "\n\n" +
+                                      "Dieser Tisch wurde für 24 Stunden gesperrt, weil Sie den Tisch kürzlich selbst verlassen haben.";
+                            break;
+                    }
                 }
+                else
+                {
+                    switch (userData.playerData.lang)
+                    {
+                        case "ru":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableRU
+                                    }
+                                });
+                            caption = "К сожалению таких столов пока что нет, попробуйте позже";
+                            break;
+                        case "eng":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableENG
+                                    }
+                                });
+                            caption = "Unfortunately, there are no such tables yet, please try again later";
+                            break;
+                        case "fr":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableFR
+                                    }
+                                });
+                            caption =
+                                "Malheureusement, il n'y a pas encore de telles tables, veuillez réessayer plus tard";
+                            break;
+                        case "de":
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButtonChooseTableDE
+                                    }
+                                });
+                            caption =
+                                "Leider gibt es noch keine solchen Tabellen, bitte versuchen Sie es später erneut";
+                            break;
+                    }
+                }
+                using (Stream
+                       stream = System.IO.File.OpenRead(path)) 
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id, 
+                        callbackData.Message.MessageId, 
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    );
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id, 
+                    callbackData.Message.MessageId, 
+                    caption, 
+                    ParseMode.Html, 
+                    null, 
+                    inlineKeyboard
+                );
             }
         }
     }
