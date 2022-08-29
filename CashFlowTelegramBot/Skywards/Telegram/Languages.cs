@@ -1778,16 +1778,65 @@ public partial class Languages
         if (tableData.tableData.tableID != 0)
         {
             var callbackAddress = GetCallbackAddress(tableData.tableData.tableType);
-            inlineKeyboard = new InlineKeyboardMarkup(
-                new[]
-                {
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("🔙", callbackAddress),
-                    }
-                });
-            caption = $"<b>Table ID: {tableData.tableData.tableID}</b>";
-            Stream stream = TableImage.CreateTableImage(tableData.tableData).Result;
+            switch (userData.lang)
+            {
+                case "ru":
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("🔙 Назад", callbackAddress),
+                            }
+                        });
+                    caption = $"<b>ID стола: {tableData.tableData.tableID}</b>";
+                    break;
+                case "eng":
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                            }
+                        });
+                    caption = $"<b>Table ID: {tableData.tableData.tableID}</b>";
+                    break;
+                case "fr":
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("🔙 Retour", callbackAddress),
+                            }
+                        });
+                    caption = $"<b>ID de table: {tableData.tableData.tableID}</b>";
+                    break;
+                case "de":
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("🔙 Der Rücken", callbackAddress),
+                            }
+                        });
+                    caption = $"<b>Tabellen-ID: {tableData.tableData.tableID}</b>";
+                    break;
+                default:
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("🔙 Back", callbackAddress),
+                            }
+                        });
+                    caption = $"<b>Table ID: {tableData.tableData.tableID}</b>";
+                    break;
+            }
+            Stream stream = TableImage.CreateTableImage(tableData.tableData, userData).Result;
 
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
@@ -2887,6 +2936,7 @@ public partial class Languages
         
         if (userData.UserTableList.table_ID_copper != null)
         {
+            num = 0;
             var tableDataCopper = await WebManager.SendData(
                 new TableProfile((int) userData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData, true);
 
@@ -3040,6 +3090,7 @@ public partial class Languages
 
         if (userData.UserTableList.table_ID_bronze != null)
         {
+            num = 0;
             var tableDataBronze = await WebManager.SendData(
                 new TableProfile((int) userData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData, true);
 
@@ -3192,6 +3243,7 @@ public partial class Languages
 
         if (userData.UserTableList.table_ID_silver != null)
         {
+            num = 0;
             var tableDataSilver = await WebManager.SendData(
                 new TableProfile((int) userData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData, true);
 
@@ -3345,6 +3397,7 @@ public partial class Languages
 
         if (userData.UserTableList.table_ID_gold != null)
         {
+            num = 0;
             var tableDataGold = await WebManager.SendData(new TableProfile((int) userData.UserTableList.table_ID_gold),
                 WebManager.RequestType.GetTableData, true);
 
@@ -3502,6 +3555,7 @@ public partial class Languages
 
         if (userData.UserTableList.table_ID_platinum != null)
         {
+            num = 0;
             var tableDataPlatinum = await WebManager.SendData(
                 new TableProfile((int) userData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData, true);
 
@@ -3656,6 +3710,7 @@ public partial class Languages
 
         if (userData.UserTableList.table_ID_diamond != null)
         {
+            num = 0;
             var tableDataDiamond = await WebManager.SendData(
                 new TableProfile((int) userData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData, true);
 

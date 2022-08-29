@@ -6,10 +6,16 @@ using SkiaSharp;
 
 namespace CashFlowTelegramBot.Skywards.ImageEditor;
 
-public class TableImage
+public static class TableImage
 {
-    
-    public static async Task<Stream> CreateTableImage(TableProfile TableProfile)
+    public static string TruncateLongString(this string str, int maxLength)
+    {
+        if (string.IsNullOrEmpty(str)) return str;
+        var end = "";
+        if (str.Length > maxLength) end = "...";
+        return str.Substring(0, Math.Min(str.Length, maxLength)) + end;
+    }
+    public static async Task<Stream> CreateTableImage(TableProfile TableProfile, UserProfile userData)
     {
         string? imageFilePath  = null;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -39,53 +45,71 @@ public class TableImage
             var giverDPoint = new SKPoint(x:1740, y:245);
             var paint = new SKPaint
             {
-                TextSize = 40,
+                TextSize = 30,
                 IsAntialias = true,
+                FakeBoldText = true,
                 Color = SKColors.Black,
                 IsStroke = false
             };
+            var paintForUser = new SKPaint
+            {
+                TextSize = 30,
+                IsAntialias = true,
+                FakeBoldText = true,
+                Color = SKColors.Red,
+                IsStroke = false
+            };
             paint.TextAlign = SKTextAlign.Center;
+            paintForUser.TextAlign = SKTextAlign.Center;
             if (TableProfile.bankerID != null)
             {
                 var bankerName = await WebManager.SendData(new UserProfile((int) TableProfile.bankerID),
                     WebManager.RequestType.GetUserData, true);
-                canvas.DrawText("@" + bankerName.playerData.username, bankerPoint, paint);
+                
+                if (TableProfile.bankerID == userData.id) canvas.DrawText("@" + bankerName.playerData.username.TruncateLongString(8), bankerPoint, paintForUser);
+                else canvas.DrawText("@" + bankerName.playerData.username.TruncateLongString(8), bankerPoint, paint);
             }
             if (TableProfile.managerA_ID != null)
             {
                 var managerAUsername = await WebManager.SendData(new UserProfile((int) TableProfile.managerA_ID),
                     WebManager.RequestType.GetUserData, true);
-                canvas.DrawText("@" + managerAUsername.playerData.username, managerAPoint, paint);
+                if(TableProfile.managerA_ID == userData.id) canvas.DrawText("@" + managerAUsername.playerData.username.TruncateLongString(8), managerAPoint, paintForUser);
+                else canvas.DrawText("@" + managerAUsername.playerData.username.TruncateLongString(8), managerAPoint, paint);
             }
             if (TableProfile.managerB_ID != null)
             {
                 var managerBUsername = await WebManager.SendData(new UserProfile((int) TableProfile.managerB_ID),
                     WebManager.RequestType.GetUserData, true);
-                canvas.DrawText("@" + managerBUsername.playerData.username, managerBPoint, paint);
+                if(TableProfile.managerB_ID == userData.id) canvas.DrawText("@" + managerBUsername.playerData.username.TruncateLongString(8), managerBPoint, paintForUser);
+                else canvas.DrawText("@" + managerBUsername.playerData.username.TruncateLongString(8), managerBPoint, paint);
             }
             if (TableProfile.giverA_ID != null)
             {
                 var giverAUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverA_ID),
                     WebManager.RequestType.GetUserData, true);
-                canvas.DrawText("@" + giverAUsername.playerData.username, giverAPoint, paint);
+                if(TableProfile.giverA_ID == userData.id) canvas.DrawText("@" + giverAUsername.playerData.username.TruncateLongString(8), giverAPoint, paintForUser);
+                else canvas.DrawText("@" + giverAUsername.playerData.username.TruncateLongString(8), giverAPoint, paint);
             }
             if (TableProfile.giverB_ID != null)
             {
                 var giverBUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverB_ID),
                     WebManager.RequestType.GetUserData, true);
-                canvas.DrawText("@" + giverBUsername.playerData.username, giverBPoint, paint);
+                if(TableProfile.giverB_ID == userData.id) canvas.DrawText("@" + giverBUsername.playerData.username.TruncateLongString(8), giverBPoint, paintForUser);
+                else canvas.DrawText("@" + giverBUsername.playerData.username.TruncateLongString(8), giverBPoint, paint);
             }
             if (TableProfile.giverC_ID != null)
             {
                 var giverCUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverC_ID),
                     WebManager.RequestType.GetUserData, true);
-                canvas.DrawText("@" + giverCUsername.playerData.username, giverCPoint, paint);
+                if(TableProfile.giverC_ID == userData.id) canvas.DrawText("@" + giverCUsername.playerData.username.TruncateLongString(8), giverCPoint, paintForUser);
+                else canvas.DrawText("@" + giverCUsername.playerData.username.TruncateLongString(8), giverCPoint, paint);
             }
             if (TableProfile.giverD_ID != null)
             {
                 var giverDUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverD_ID),
                     WebManager.RequestType.GetUserData, true);
-                canvas.DrawText("@" + giverDUsername.playerData.username, giverDPoint, paint);
+                if(TableProfile.giverD_ID == userData.id) canvas.DrawText("@" + giverDUsername.playerData.username.TruncateLongString(8), giverDPoint, paintForUser);
+                else canvas.DrawText("@" + giverDUsername.playerData.username.TruncateLongString(8), giverDPoint, paint);
             }
             canvas.Flush();
             var resultImage = SKImage.FromBitmap(bitmap);

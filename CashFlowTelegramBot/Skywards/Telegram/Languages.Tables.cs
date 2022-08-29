@@ -711,7 +711,7 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Главное меню", "MainMenu")
                                 }
                             });
-                        caption = $"*Добро пожаловать на {TableProfile.GetTableType(userData.playerData, tableType)}*" +
+                        caption = $@"*Добро пожаловать на {TableProfile.GetTableType(userData.playerData, tableType)} стол\!*" +
                                   $"\n\n*ID стола:* {tableData.tableData.tableID}" +
                                   "\n\n*Фиксированный курс:*\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" +
@@ -720,7 +720,7 @@ public partial class Languages
                                   @"Узнайте реквизиты и сделайте финансовый подарок игроку\. 🎁 " +
                                   "\n\n" +
                                   @"Связаться с Банкиром можно через чат Telegram, нажав кнопку «*Связаться с Банкиром*»\. 📨" +
-                                  "\n\n👇 Теперь просто нажмите на текст ниже  и отправьте его Банкиру: " + "\n" +
+                                  "\n\n👇 Теперь просто нажмите на текст ниже  и отправьте его Банкиру: " + "\n\n" +
                                   $@"«`Привет\! 👋 Хочу подарить тебе подарок ${giftSum} 💸`»" +
                                   "\n\n\n" +
                                   @"_После того, как Вы выполнили условия, Банкир подтверждает Вас на столе, тем самым активирует Вас, как Дарителя_\.";
@@ -748,7 +748,7 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Main menu", "MainMenu")
                                 }
                             });
-                        caption = $"*Welcome to {TableProfile.GetTableType(userData.playerData, tableType)}*" +
+                        caption = $@"*Welcome to {TableProfile.GetTableType(userData.playerData, tableType)} table\!*" +
                                   $"\n\n*Table ID:* {tableData.tableData.tableID}" +
                                   "\n\n*Fixed exchange rate:*" + "\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" +
@@ -758,7 +758,7 @@ public partial class Languages
                                   @"Find out the details of the banker and make a financial gift to the player\. 🎁" +
                                   "\n\n" +
                                   @"You can contact the Banker via the Telegram chat by clicking the «*Contact the Banker*» button\. 📨" +
-                                  "\n\n👇 Now just click on the text below and send it to the Banker:" + "\n" +
+                                  "\n\n👇 Now just click on the text below and send it to the Banker:" + "\n\n" +
                                   $@"«`Hi\! 👋 I want to give you ${giftSum} as a gift 💸`»" +
                                   "\n\n\n" +
                                   @"_After you have fulfilled the conditions, the Banker confirms you on the table, thereby activating you as a Giver_\.";
@@ -787,7 +787,7 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Menu principal", "MainMenu")
                                 }
                             });
-                        caption = $"*Bienvenue à {TableProfile.GetTableType(userData.playerData, tableType)}*" +
+                        caption = $"*Bienvenue à table {TableProfile.GetTableType(userData.playerData, tableType)}*" +
                                   $"\n\n*Identifiant du tableau:* {tableData.tableData.tableID}" +
                                   "\n\n*Taux de change fixe:*" + "\n" +
                                   @"📈  1$ \= 0\.98€ \= 62₽" +
@@ -799,7 +799,7 @@ public partial class Languages
                                   @"Vous pouvez contacter le banquier via le chat Telegram en cliquant sur le bouton «*Contacter le banquier*»\. 📨" +
                                   "\n\n" +
                                   @"👇 Maintenant, cliquez simplement sur le texte ci\-dessous et envoyez\-le au banquier:" +
-                                  "\n" +
+                                  "\n\n" +
                                   $@"«`Salut\! 👋 Je veux vous offrir ${giftSum} en cadeau 💸`»" +
                                   "\n\n\n" +
                                   @"_Une fois que vous avez rempli les conditions, le banquier vous confirme sur la table, vous activant ainsi en tant que donneur_\.";
@@ -829,7 +829,7 @@ public partial class Languages
                                 }
                             });
 
-                        caption = $"*Willkommen bei {TableProfile.GetTableType(userData.playerData, tableType)}*" +
+                        caption = $@"*Willkommen am {TableProfile.GetTableType(userData.playerData, tableType)} tisch\!*" +
                                   "\n\n" +
                                   $@"*Tabellen\-ID:* {tableData.tableData.tableID}" +
                                   "\n\n*Fester Wechselkurs:*" + "\n" +
@@ -841,7 +841,7 @@ public partial class Languages
                                   "\n\n" +
                                   @"Sie können den Banker über den Telegramm\-Chat kontaktieren, indem Sie auf die Schaltfläche «*Banker kontaktieren*» klicken\. 📨" +
                                   "\n\n👇 Klicken Sie jetzt einfach auf den folgenden Text und senden Sie ihn an den Banker:" +
-                                  "\n" +
+                                  "\n\n" +
                                   $@"«`Hi\! 👋 Ich möchte dir ${giftSum} schenken 💸`»" +
                                   "\n\n\n" +
                                   @"_Nachdem Sie die Bedingungen erfüllt haben, bestätigt Sie der Banker auf dem Tisch und aktiviert Sie dadurch als Geber_\.";
