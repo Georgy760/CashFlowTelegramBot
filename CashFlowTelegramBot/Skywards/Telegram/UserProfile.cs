@@ -763,20 +763,20 @@ public class UserProfile
         switch (lang)
         {
             case "ru":
-                result = $"\n<b>Роль: {GetTableRole(tableRole)}</b>" +
+                result = $"<b>Роль: {GetTableRole(tableRole)}</b>" +
                          "\n<b>Место вакантно...</b>\n\n";
                 break;
             case "eng":
                 result = $"<b>Role: {GetTableRole(tableRole)}</b>" +
-                         "\n<b>Place is vacant...</b>";
+                         "\n<b>Place is vacant...</b>\n\n";
                 break;
             case "fr":
                 result = $"<b>Rôle: {GetTableRole(tableRole)}</b>" +
-                         "\n<b>La place est vacante...</b>";
+                         "\n<b>La place est vacante...</b>\n\n";
                 break;
             case "de":
                 result = $"<b>Rolle: {GetTableRole(tableRole)}</b>" +
-                         "\n<b>Platz ist frei...</b>";
+                         "\n<b>Platz ist frei...</b>\n\n";
                 break;
             default:
                 result = "empty";
