@@ -48,43 +48,43 @@ public class TableImage
             if (TableProfile.bankerID != null)
             {
                 var bankerName = await WebManager.SendData(new UserProfile((int) TableProfile.bankerID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 canvas.DrawText("@" + bankerName.playerData.username, bankerPoint, paint);
             }
             if (TableProfile.managerA_ID != null)
             {
                 var managerAUsername = await WebManager.SendData(new UserProfile((int) TableProfile.managerA_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 canvas.DrawText("@" + managerAUsername.playerData.username, managerAPoint, paint);
             }
             if (TableProfile.managerB_ID != null)
             {
                 var managerBUsername = await WebManager.SendData(new UserProfile((int) TableProfile.managerB_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 canvas.DrawText("@" + managerBUsername.playerData.username, managerBPoint, paint);
             }
             if (TableProfile.giverA_ID != null)
             {
                 var giverAUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverA_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 canvas.DrawText("@" + giverAUsername.playerData.username, giverAPoint, paint);
             }
             if (TableProfile.giverB_ID != null)
             {
                 var giverBUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverB_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 canvas.DrawText("@" + giverBUsername.playerData.username, giverBPoint, paint);
             }
             if (TableProfile.giverC_ID != null)
             {
                 var giverCUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverC_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 canvas.DrawText("@" + giverCUsername.playerData.username, giverCPoint, paint);
             }
             if (TableProfile.giverD_ID != null)
             {
                 var giverDUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverD_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 canvas.DrawText("@" + giverDUsername.playerData.username, giverDPoint, paint);
             }
             canvas.Flush();

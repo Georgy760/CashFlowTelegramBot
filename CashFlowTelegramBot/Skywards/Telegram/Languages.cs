@@ -161,7 +161,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -219,7 +219,7 @@ public partial class Languages
         UserData invitedBy = null;
         if (SearchedUser.refId != null)
             invitedBy = await WebManager.SendData(new UserProfile((int) SearchedUser.refId),
-                WebManager.RequestType.GetUserData);
+                WebManager.RequestType.GetUserData, true);
         UserData tableToBack = new UserData();
         Table.TableRole? userTableRole = Table.TableRole.giver;
         switch (tableType)
@@ -231,7 +231,7 @@ public partial class Languages
                     break;
                 }
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_copper),
-                    WebManager.RequestType.GetTableData);
+                    WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.copperTableRole;
                 tableRole = userData.UserTableList.copperTableRole;
                 break;
@@ -242,7 +242,7 @@ public partial class Languages
                     break;
                 }
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_bronze),
-                    WebManager.RequestType.GetTableData);
+                    WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.bronzeTableRole;
                 tableRole = userData.UserTableList.bronzeTableRole;
                 break;
@@ -253,7 +253,7 @@ public partial class Languages
                     break;
                 }
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_silver),
-                    WebManager.RequestType.GetTableData);
+                    WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.silverTableRole;
                 tableRole = userData.UserTableList.silverTableRole;
                 break;
@@ -264,7 +264,7 @@ public partial class Languages
                     break;
                 }
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_gold),
-                    WebManager.RequestType.GetTableData);
+                    WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.goldTableRole;
                 tableRole = userData.UserTableList.goldTableRole;
                 break;
@@ -275,7 +275,7 @@ public partial class Languages
                     break;
                 }
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_platinum),
-                    WebManager.RequestType.GetTableData);
+                    WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.platinumTableRole;
                 tableRole = userData.UserTableList.platinumTableRole;
                 break;
@@ -286,7 +286,7 @@ public partial class Languages
                     break;
                 }
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_diamond),
-                    WebManager.RequestType.GetTableData);
+                    WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.diamondTableRole;
                 tableRole = userData.UserTableList.diamondTableRole;
                 break;
@@ -1259,15 +1259,6 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                 }
                             });
-                    var sentMessage = await botClient.SendTextMessageAsync(
-                        chatId,
-                        "📋 Benutzerinformation: \n\n" +
-                        $"Rolle: {searchedUserRole}\n" +
-                        $"Spitzname: @{SearchedUser.username}\n" +
-                        $"ingeladen von: @{invitedBy.playerData.username}\n" +
-                        $"Persönlich eingeladen: {SearchedUser.invited}" +
-                        $"\n\nKontakt mit @{SearchedUser.username}",
-                        replyMarkup: inlineKeyboard);
                     caption = "<b>📋 Benutzerinformation:</b>" +
                               "\n" +
                               $"\n<b>Rolle:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
@@ -1352,7 +1343,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -1402,7 +1393,7 @@ public partial class Languages
                 if (user.UserTableList.table_ID_copper != null)
                 {
                     table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_copper),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else table.tableData.tableID = 0;
 
@@ -1411,7 +1402,7 @@ public partial class Languages
                 if (user.UserTableList.table_ID_bronze != null)
                 {
                     table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_bronze),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else table.tableData.tableID = 0;
 
@@ -1420,7 +1411,7 @@ public partial class Languages
                 if (user.UserTableList.table_ID_silver != null)
                 {
                     table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_silver),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else table.tableData.tableID = 0;
 
@@ -1429,7 +1420,7 @@ public partial class Languages
                 if (user.UserTableList.table_ID_gold != null)
                 {
                     table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_gold),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else table.tableData.tableID = 0;
 
@@ -1438,7 +1429,7 @@ public partial class Languages
                 if (user.UserTableList.table_ID_platinum != null)
                 {
                     table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_platinum),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else table.tableData.tableID = 0;
 
@@ -1447,13 +1438,13 @@ public partial class Languages
                 if (user.UserTableList.table_ID_diamond != null)
                 {
                     table = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_diamond),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else table.tableData.tableID = 0;
 
                 break;
         }
-
+        
         string path = null;
         InlineKeyboardMarkup? inlineKeyboard = null;
         string? caption = null;
@@ -1483,7 +1474,7 @@ public partial class Languages
             if (table.tableData.bankerID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.bankerID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.bankerID == user.id);
                 //if (table.tableData.bankerID == user.id) tableInfo += "🔘";
@@ -1497,7 +1488,7 @@ public partial class Languages
             if (table.tableData.managerA_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerA_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.managerA_ID == user.id);
                 //if (table.tableData.managerA_ID == user.id) tableInfo += "🔘";
@@ -1511,7 +1502,7 @@ public partial class Languages
             if (table.tableData.giverA_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverA_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverA_ID == user.id, table.tableData.verf_A, 1);
                 //if (table.tableData.giverA_ID == user.id) tableInfo += "🔘";
@@ -1525,7 +1516,7 @@ public partial class Languages
             if (table.tableData.giverB_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverB_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverB_ID == user.id, table.tableData.verf_B, 2);
                 //if (table.tableData.giverB_ID == user.id) tableInfo += "🔘";
@@ -1539,7 +1530,7 @@ public partial class Languages
             if (table.tableData.managerB_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerB_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.managerB_ID == user.id);
                 //if (table.tableData.managerB_ID == user.id) tableInfo += "🔘";
@@ -1553,7 +1544,7 @@ public partial class Languages
             if (table.tableData.giverC_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverC_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverC_ID == user.id, table.tableData.verf_C, 3);
                 //if (table.tableData.giverC_ID == user.id) tableInfo += "🔘";
@@ -1567,7 +1558,7 @@ public partial class Languages
             if (table.tableData.giverD_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverD_ID),
-                    WebManager.RequestType.GetUserData);
+                    WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverD_ID == user.id, table.tableData.verf_D, 4);
                 //if (table.tableData.giverD_ID == user.id) tableInfo += "🔘";
@@ -1705,7 +1696,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -1726,7 +1717,7 @@ public partial class Languages
                 if (userData.UserTableList.table_ID_copper != null)
                 {
                     tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_copper),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else tableData.tableData.tableID = 0;
 
@@ -1735,7 +1726,7 @@ public partial class Languages
                 if (userData.UserTableList.table_ID_bronze != null)
                 {
                     tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_bronze),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else tableData.tableData.tableID = 0;
 
@@ -1744,7 +1735,7 @@ public partial class Languages
                 if (userData.UserTableList.table_ID_silver != null)
                 {
                     tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_silver),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else tableData.tableData.tableID = 0;
 
@@ -1753,7 +1744,7 @@ public partial class Languages
                 if (userData.UserTableList.table_ID_gold != null)
                 {
                     tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_gold),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else tableData.tableData.tableID = 0;
 
@@ -1762,7 +1753,7 @@ public partial class Languages
                 if (userData.UserTableList.table_ID_platinum != null)
                 {
                     tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_platinum),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else tableData.tableData.tableID = 0;
 
@@ -1771,7 +1762,7 @@ public partial class Languages
                 if (userData.UserTableList.table_ID_diamond != null)
                 {
                     tableData = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_diamond),
-                        WebManager.RequestType.GetTableData);
+                        WebManager.RequestType.GetTableData, true);
                 }
                 else tableData.tableData.tableID = 0;
 
@@ -1801,7 +1792,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
             await botClient.EditMessageCaptionAsync(
                 callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
@@ -1882,7 +1873,7 @@ public partial class Languages
                 await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                     callbackData.Message.MessageId,
                     media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                );
+                ).WaitAsync(TimeSpan.FromSeconds(10));
             await botClient.EditMessageCaptionAsync(
                 callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
@@ -1918,27 +1909,27 @@ public partial class Languages
                 {
                     case Table.TableType.copper:
                         tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_copper),
-                            WebManager.RequestType.GetTableData);
+                            WebManager.RequestType.GetTableData, true);
                         break;
                     case Table.TableType.bronze:
                         tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_bronze),
-                            WebManager.RequestType.GetTableData);
+                            WebManager.RequestType.GetTableData, true);
                         break;
                     case Table.TableType.silver:
                         tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_silver),
-                            WebManager.RequestType.GetTableData);
+                            WebManager.RequestType.GetTableData, true);
                         break;
                     case Table.TableType.gold:
                         tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_gold),
-                            WebManager.RequestType.GetTableData);
+                            WebManager.RequestType.GetTableData, true);
                         break;
                     case Table.TableType.platinum:
                         tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_platinum),
-                            WebManager.RequestType.GetTableData);
+                            WebManager.RequestType.GetTableData, true);
                         break;
                     case Table.TableType.diamond:
                         tableToBack = await WebManager.SendData(new TableProfile(user.UserTableList.table_ID_diamond),
-                            WebManager.RequestType.GetTableData);
+                            WebManager.RequestType.GetTableData, true);
                         break;
                 }
 
@@ -2024,7 +2015,7 @@ public partial class Languages
                     await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    );
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
                 await botClient.EditMessageCaptionAsync(
                     callbackData.Message.Chat.Id,
                     callbackData.Message.MessageId,
@@ -2199,7 +2190,7 @@ public partial class Languages
                         await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                             callbackData.Message.MessageId,
                             media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                        );
+                        ).WaitAsync(TimeSpan.FromSeconds(10));
                     await botClient.EditMessageCaptionAsync(
                         callbackData.Message.Chat.Id,
                         callbackData.Message.MessageId,
@@ -2237,7 +2228,7 @@ public partial class Languages
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
                         @"Images\MainMenu\mainMenu.png");
-                var tableData = await WebManager.SendData(user, WebManager.RequestType.GetTableData);
+                var tableData = await WebManager.SendData(user, WebManager.RequestType.GetTableData, true);
                 Trace.Write(tableData.tableData.tableType);
                 switch (user.lang)
                 {
@@ -2308,7 +2299,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -2422,7 +2413,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -2572,7 +2563,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -2882,7 +2873,6 @@ public partial class Languages
                           "\n";
                 break;
         }
-
         var copper = false;
         var bronze = false;
         var silver = false;
@@ -2897,7 +2887,7 @@ public partial class Languages
         if (userData.UserTableList.table_ID_copper != null)
         {
             var tableDataCopper = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
+                new TableProfile((int) userData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData, true);
 
             copper = true;
             var giverCountCopper = 0;
@@ -3015,7 +3005,7 @@ public partial class Languages
         if (userData.UserTableList.table_ID_bronze != null)
         {
             var tableDataBronze = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
+                new TableProfile((int) userData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData, true);
 
             bronze = true;
             var giverCountBronze = 0;
@@ -3133,7 +3123,7 @@ public partial class Languages
         if (userData.UserTableList.table_ID_silver != null)
         {
             var tableDataSilver = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
+                new TableProfile((int) userData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData, true);
 
             silver = true;
             var giverCountSilver = 0;
@@ -3252,7 +3242,7 @@ public partial class Languages
         if (userData.UserTableList.table_ID_gold != null)
         {
             var tableDataGold = await WebManager.SendData(new TableProfile((int) userData.UserTableList.table_ID_gold),
-                WebManager.RequestType.GetTableData);
+                WebManager.RequestType.GetTableData, true);
 
             gold = true;
             var giverCountGold = 0;
@@ -3371,7 +3361,7 @@ public partial class Languages
         if (userData.UserTableList.table_ID_platinum != null)
         {
             var tableDataPlatinum = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
+                new TableProfile((int) userData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData, true);
 
             platinum = true;
             var giverCountPlatinum = 0;
@@ -3490,7 +3480,7 @@ public partial class Languages
         if (userData.UserTableList.table_ID_diamond != null)
         {
             var tableDataDiamond = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
+                new TableProfile((int) userData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData, true);
 
             diamond = true;
             var giverCountDiamond = 0;
@@ -3611,7 +3601,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -3707,7 +3697,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -3822,7 +3812,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -3967,7 +3957,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -4178,7 +4168,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -4393,7 +4383,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -4684,7 +4674,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -4724,7 +4714,7 @@ public partial class Languages
                                 new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("✅Да",
-                                        "Confirm" + callbackData.Data + "|" + tableType),
+                                        "Confirm" + callbackData.Data),
                                     InlineKeyboardButton.WithCallbackData("❌Нет", "ChooseTable"),
                                 }
                             });
@@ -4738,7 +4728,7 @@ public partial class Languages
                                 new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("✅Yes",
-                                        "Confirm" + callbackData.Data + "|" + tableType),
+                                        "Confirm" + callbackData.Data),
                                     InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
@@ -4752,7 +4742,7 @@ public partial class Languages
                                 new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("✅Yes",
-                                        "Confirm" + callbackData.Data + "|" + tableType),
+                                        "Confirm" + callbackData.Data),
                                     InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
@@ -4766,7 +4756,7 @@ public partial class Languages
                                 new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("✅JA",
-                                        "Confirm" + callbackData.Data + "|" + tableType),
+                                        "Confirm" + callbackData.Data),
                                     InlineKeyboardButton.WithCallbackData("❌NEIN", "ChooseTable"),
                                 }
                             });
@@ -4780,7 +4770,7 @@ public partial class Languages
                                 new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("✅Yes",
-                                        "Confirm" + callbackData.Data + "|" + tableType),
+                                        "Confirm" + callbackData.Data),
                                     InlineKeyboardButton.WithCallbackData("❌No", "ChooseTable"),
                                 }
                             });
@@ -4794,7 +4784,7 @@ public partial class Languages
                     await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    );
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
                 await botClient.EditMessageCaptionAsync(
                     callbackData.Message.Chat.Id,
                     callbackData.Message.MessageId,
@@ -4888,7 +4878,7 @@ public partial class Languages
                     await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    );
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
                 await botClient.EditMessageCaptionAsync(
                     callbackData.Message.Chat.Id,
                     callbackData.Message.MessageId,
@@ -4982,7 +4972,7 @@ public partial class Languages
                     await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    );
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
                 await botClient.EditMessageCaptionAsync(
                     callbackData.Message.Chat.Id,
                     callbackData.Message.MessageId,
@@ -5118,7 +5108,7 @@ public partial class Languages
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,

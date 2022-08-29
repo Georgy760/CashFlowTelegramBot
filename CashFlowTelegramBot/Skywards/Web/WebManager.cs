@@ -136,12 +136,11 @@ public class WebManager
     //private static readonly string targetURL = "http://79.174.13.107/logreg.php";
     private static readonly string targetURL = "http://79.174.13.107/logregV2.php";
 
-    public static async Task<UserData> SendData(UserProfile data, RequestType requestType)
+    public static async Task<UserData> SendData(UserProfile data, RequestType requestType, bool debug)
     {
-        var Debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
-        if(Debug) Trace.Write("\nJSON: " + json);
+        if(debug) Trace.Write("\nJSON: " + json);
 
         var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
         httpWebRequest.Method = "POST";
@@ -162,24 +161,23 @@ public class WebManager
         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
             var result = streamReader.ReadToEnd();
-            if(Debug) Trace.Write("\nResponse: " + result);
+            if(debug) Trace.Write("\nResponse: " + result);
             
-            UserData = await SetResponseData(result, Debug);
+            UserData = await SetResponseData(result, debug);
         }
 
-        if(Debug) Trace.Write(httpResponse.StatusCode);
+        if(debug) Trace.Write(httpResponse.StatusCode);
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }
 
         return UserData;
     }
-    public static async Task<UserData> SendData(TableProfile data, RequestType requestType)
+    public static async Task<UserData> SendData(TableProfile data, RequestType requestType, bool debug)
     {
-        var Debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
-        if(Debug) Trace.Write("\nJSON: " + json);
+        if(debug) Trace.Write("\nJSON: " + json);
 
         var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
         httpWebRequest.Method = "POST";
@@ -200,24 +198,23 @@ public class WebManager
         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
             var result = streamReader.ReadToEnd();
-            if(Debug) Trace.Write("\nResponse: " + result);
+            if(debug) Trace.Write("\nResponse: " + result);
             
-            UserData = await SetResponseData(result, Debug);
+            UserData = await SetResponseData(result, debug);
         }
 
-        if(Debug) Trace.Write(httpResponse.StatusCode);
+        if(debug) Trace.Write($"\n\n{httpResponse.StatusCode}");
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }
 
         return UserData;
     }
-    public static async Task<UserData> SendData(UserData data, RequestType requestType)
+    public static async Task<UserData> SendData(UserData data, RequestType requestType, bool debug)
     {
-        var Debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
-        if(Debug) Trace.Write("\nJSON: " + json);
+        if(debug) Trace.Write("\nJSON: " + json);
 
         var httpWebRequest = (HttpWebRequest) WebRequest.Create(targetURL);
         httpWebRequest.Method = "POST";
@@ -238,12 +235,12 @@ public class WebManager
         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
         {
             var result = streamReader.ReadToEnd();
-            if(Debug) Trace.Write("\nResponse: " + result);
+            if(debug) Trace.Write("\nResponse: " + result);
             
-            UserData = await SetResponseData(result, Debug);
+            UserData = await SetResponseData(result, debug);
         }
 
-        if(Debug) Trace.Write(httpResponse.StatusCode);
+        if(debug) Trace.Write($"\n\n{httpResponse.StatusCode}");
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }

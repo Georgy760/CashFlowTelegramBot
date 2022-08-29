@@ -5,21 +5,11 @@ namespace CashFlowTelegramBot.Skywards.Telegram;
 
 public class UserProfile
 {
-    public int id { get; set; }
-    public string? username { get; set; }
-    public int? refId { get; set; }
-    public string? invitedBy { get; set; }
-    public string? lang { get; set; }
-
-    public bool verf { get; set; }
-    public UserTableList? UserTableList { get; set; }
-
-    public Table.TableType level_tableType { get; set; }
+    public int giftsReceived = 0;
 
     //public string tableRole { get; set; }
     public int invited = 0;
     public int team = 0;
-    public int giftsReceived = 0;
 
     public UserProfile()
     {
@@ -36,10 +26,11 @@ public class UserProfile
         this.id = (int) id;
         this.username = username;
     }
+
     public UserProfile(long id, Table.TableType tableType)
     {
         this.id = (int) id;
-        this.level_tableType = tableType;
+        level_tableType = tableType;
     }
 
     public UserProfile(long id, int refId, string username)
@@ -63,6 +54,17 @@ public class UserProfile
         this.username = username;
         this.lang = lang;
     }
+
+    public int id { get; set; }
+    public string? username { get; set; }
+    public int? refId { get; set; }
+    public string? invitedBy { get; set; }
+    public string? lang { get; set; }
+
+    public bool verf { get; set; }
+    public UserTableList? UserTableList { get; set; }
+
+    public Table.TableType level_tableType { get; set; }
 
     public void AddLang(string lang)
     {
@@ -190,61 +192,342 @@ public class UserProfile
 
                 break;
             case "eng":
-                switch (UserTableList.copperTableRole)
+                switch (tableType)
                 {
-                    case Table.TableRole.giver:
-                        result = "🎁 Giver";
+                    case Table.TableType.copper:
+                        switch (UserTableList.copperTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Giver";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
                         break;
-                    case Table.TableRole.manager:
-                        result = "👤 Manager";
+                    case Table.TableType.bronze:
+                        switch (UserTableList.bronzeTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Giver";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
                         break;
-                    case Table.TableRole.banker:
-                        result = "🏦 Banker";
+                    case Table.TableType.silver:
+                        switch (UserTableList.silverTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Giver";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
                         break;
-                    default:
-                        result = "empty";
+                    case Table.TableType.gold:
+                        switch (UserTableList.goldTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Giver";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
+                        break;
+                    case Table.TableType.platinum:
+                        switch (UserTableList.platinumTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Giver";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
+                        break;
+                    case Table.TableType.diamond:
+                        switch (UserTableList.diamondTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Giver";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
                         break;
                 }
 
                 break;
             case "fr":
-                switch (UserTableList.copperTableRole)
+                switch (tableType)
                 {
-                    case Table.TableRole.giver:
-                        result = "🎁 Donateur";
+                    case Table.TableType.copper:
+                        switch (UserTableList.copperTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Donateur";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Gestionnaire";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banquier";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
                         break;
-                    case Table.TableRole.manager:
-                        result = "👤 Gestionnaire";
+                    case Table.TableType.bronze:
+                        switch (UserTableList.bronzeTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Donateur";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Gestionnaire";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banquier";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
                         break;
-                    case Table.TableRole.banker:
-                        result = "🏦 Banquier";
+                    case Table.TableType.silver:
+                        switch (UserTableList.silverTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Donateur";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Gestionnaire";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banquier";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
                         break;
-                    default:
-                        result = "empty";
+                    case Table.TableType.gold:
+                        switch (UserTableList.goldTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Donateur";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Gestionnaire";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banquier";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
+                        break;
+                    case Table.TableType.platinum:
+                        switch (UserTableList.platinumTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Donateur";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Gestionnaire";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banquier";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
+                        break;
+                    case Table.TableType.diamond:
+                        switch (UserTableList.diamondTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Donateur";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Gestionnaire";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banquier";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+
                         break;
                 }
 
                 break;
             case "de":
-                switch (UserTableList.copperTableRole)
+                switch (tableType)
                 {
-                    case Table.TableRole.giver:
-                        result = "🎁 Geber";
+                    case Table.TableType.copper:
+                        switch (UserTableList.copperTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Geber";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
                         break;
-                    case Table.TableRole.manager:
-                        result = "👤 Manager";
+                    case Table.TableType.bronze:
+                        switch (UserTableList.bronzeTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Geber";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
                         break;
-                    case Table.TableRole.banker:
-                        result = "🏦 Banker";
+                    case Table.TableType.silver:
+                        switch (UserTableList.silverTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Geber";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
                         break;
-                    default:
-                        result = "empty";
+                    case Table.TableType.gold:
+                        switch (UserTableList.goldTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Geber";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+                        break;
+                    case Table.TableType.platinum:
+                        switch (UserTableList.platinumTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Geber";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
+                        break;
+                    case Table.TableType.diamond:
+                        switch (UserTableList.diamondTableRole)
+                        {
+                            case Table.TableRole.giver:
+                                result = "🎁 Geber";
+                                break;
+                            case Table.TableRole.manager:
+                                result = "👤 Manager";
+                                break;
+                            case Table.TableRole.banker:
+                                result = "🏦 Banker";
+                                break;
+                            default:
+                                result = "empty";
+                                break;
+                        }
                         break;
                 }
 
                 break;
         }
-
         return result;
     }
 
@@ -333,33 +616,35 @@ public class UserProfile
     public string UserInfo(ITelegramBotClient botClient, string lang, TableProfile tableData, bool IsItYou)
     {
         var result = "";
-        string? firstName = "";
-        string? lastName = "";
+        var firstName = "";
+        var lastName = "";
         try
         {
             firstName = botClient.GetChatAsync(id).Result.FirstName;
         }
-        catch(AggregateException aex)
+        catch (AggregateException aex)
         {
             Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
+
         try
         {
             lastName = botClient.GetChatAsync(id).Result.LastName;
         }
-        catch(AggregateException aex)
+        catch (AggregateException aex)
         {
             Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
+
         switch (lang)
         {
             case "ru":
                 result = $"<b>Роль: {GetTableRole(lang, tableData.tableType)}</b>";
                 if (IsItYou) result += " 🔘";
                 result += $"\n<b>Ник:</b> @{username}" +
-                          $"\n<b>Имя пользователя:</b> {firstName} {lastName}" + 
+                          $"\n<b>Имя пользователя:</b> {firstName} {lastName}" +
                           $"\n<b>Лично приглашённых:</b> {invited}" +
                           $"\n<b>Пригласил:</b> @{invitedBy}\n\n";
                 break;
@@ -367,7 +652,7 @@ public class UserProfile
                 result = $"<b>Role: {GetTableRole(lang, tableData.tableType)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Nickname:</b> @{username}" +
-                          $"\n<b>Username:</b> {firstName} {lastName}" + 
+                          $"\n<b>Username:</b> {firstName} {lastName}" +
                           $"\n<b>Personally invited:</b> {invited}" +
                           $"\n<b>Invited:</b> @{invitedBy}\n\n";
                 break;
@@ -375,7 +660,7 @@ public class UserProfile
                 result = $"<b>Rôle: {GetTableRole(lang, tableData.tableType)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Pseudonyme: @{username}</b>" +
-                          $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" + 
+                          $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" +
                           $"\n<b>Personnellement invité:</b> {invited}" +
                           $"\n<b>Invité:</b> @{invitedBy}\n\n";
                 break;
@@ -383,7 +668,7 @@ public class UserProfile
                 result = $"<b>Rolle: {GetTableRole(lang, tableData.tableType)}</b>";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Spitzname:</b> @{username}" +
-                          $"\n<b>Benutzername:</b> {firstName} {lastName}" + 
+                          $"\n<b>Benutzername:</b> {firstName} {lastName}" +
                           $"\n<b>Persönlich eingeladen:</b> {invited}" +
                           $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
                 break;
@@ -399,26 +684,28 @@ public class UserProfile
         int num)
     {
         var result = "";
-        string? firstName = "";
-        string? lastName = "";
+        var firstName = "";
+        var lastName = "";
         try
         {
             firstName = botClient.GetChatAsync(id).Result.FirstName;
         }
-        catch(AggregateException aex)
+        catch (AggregateException aex)
         {
             Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
+
         try
         {
             lastName = botClient.GetChatAsync(id).Result.LastName;
         }
-        catch(AggregateException aex)
+        catch (AggregateException aex)
         {
             Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
+
         switch (lang)
         {
             case "ru":
@@ -438,7 +725,7 @@ public class UserProfile
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Nickname:</b> @{username}" +
-                          $"\n<b>Username:</b> {firstName} {lastName}" + 
+                          $"\n<b>Username:</b> {firstName} {lastName}" +
                           $"\n<b>Personally invited:</b> {invited}" +
                           $"\n<b>Invited:</b> @{invitedBy}\n\n";
                 break;
@@ -448,7 +735,7 @@ public class UserProfile
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Pseudonyme: @{username}</b>" +
-                          $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" + 
+                          $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" +
                           $"\n<b>Personnellement invité:</b> {invited}" +
                           $"\n<b>Invité:</b> @{invitedBy}\n\n";
                 break;
@@ -458,7 +745,7 @@ public class UserProfile
                 else result += " ❌";
                 if (IsItYou) result += "🔘";
                 result += $"\n<b>Spitzname:</b> @{username}" +
-                          $"\n<b>Benutzername:</b> {firstName} {lastName}" + 
+                          $"\n<b>Benutzername:</b> {firstName} {lastName}" +
                           $"\n<b>Persönlich eingeladen:</b> {invited}" +
                           $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
                 break;
@@ -502,10 +789,10 @@ public class UserProfile
     public void PrintUserProfile()
     {
         Trace.Write("\n---------------------------------------------------------------" +
-                          "\n--------------------------UserProfile--------------------------" +
-                          "\n---------------------------------------------------------------");
+                    "\n--------------------------UserProfile--------------------------" +
+                    "\n---------------------------------------------------------------");
         Trace.Write("\nID: " + id + "\nUsername: " + username + "\nRefId: " + refId + "\nInvitedBy: " +
-                          invitedBy + "\nLang: " + lang + "\nlevel_tableType: " + level_tableType + "\ntableRole: " +
-                          "\nInvited: " + invited);
+                    invitedBy + "\nLang: " + lang + "\nlevel_tableType: " + level_tableType + "\ntableRole: " +
+                    "\nInvited: " + invited);
     }
 }
