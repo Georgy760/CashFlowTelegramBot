@@ -1490,13 +1490,13 @@ public partial class Languages
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerA_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
-                    table.tableData.managerA_ID == user.id);
+                    table.tableData.managerA_ID == user.id, 1);
                 //if (table.tableData.managerA_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"👤Менеджер-1: @{userData.playerData.username}\n";
             }
             else
             {
-                caption += user.UserInfo(Table.TableRole.manager);
+                caption += user.UserInfo(Table.TableRole.manager, 1);
             }
 
             if (table.tableData.giverA_ID != null)
@@ -1510,7 +1510,7 @@ public partial class Languages
             }
             else
             {
-                caption += user.UserInfo(Table.TableRole.giver);
+                caption += user.UserInfo(Table.TableRole.giver, 1);
             }
 
             if (table.tableData.giverB_ID != null)
@@ -1524,7 +1524,7 @@ public partial class Languages
             }
             else
             {
-                caption += user.UserInfo(Table.TableRole.giver);
+                caption += user.UserInfo(Table.TableRole.giver, 2);
             }
 
             if (table.tableData.managerB_ID != null)
@@ -1532,13 +1532,13 @@ public partial class Languages
                 var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerB_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
-                    table.tableData.managerB_ID == user.id);
+                    table.tableData.managerB_ID == user.id, 2);
                 //if (table.tableData.managerB_ID == user.id) tableInfo += "🔘";
                 //tableInfo += $"👤Менеджер-2: @{userData.playerData.username}\n";
             }
             else
             {
-                caption += user.UserInfo(Table.TableRole.manager);
+                caption += user.UserInfo(Table.TableRole.manager, 2);
             }
 
             if (table.tableData.giverC_ID != null)
@@ -1552,7 +1552,7 @@ public partial class Languages
             }
             else
             {
-                caption += user.UserInfo(Table.TableRole.giver);
+                caption += user.UserInfo(Table.TableRole.giver, 3);
             }
 
             if (table.tableData.giverD_ID != null)
@@ -1566,7 +1566,7 @@ public partial class Languages
             }
             else
             {
-                caption += user.UserInfo(Table.TableRole.giver);
+                caption += user.UserInfo(Table.TableRole.giver, 4);
             }
 
             switch (lang)
@@ -2883,7 +2883,8 @@ public partial class Languages
         var IsGiverVerf = false;
         string tableType;
         string tableRole;
-
+        int num = 0;
+        
         if (userData.UserTableList.table_ID_copper != null)
         {
             var tableDataCopper = await WebManager.SendData(
@@ -2892,10 +2893,26 @@ public partial class Languages
             copper = true;
             var giverCountCopper = 0;
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.copper);
+            num = 0;
+            if (tableDataCopper.tableData.managerA_ID != null)
+            {
+                if (tableDataCopper.tableData.managerA_ID == userData.id)
+                {
+                    num = 1;
+                }
+            }
+            if (tableDataCopper.tableData.managerA_ID != null)
+            {
+                if (tableDataCopper.tableData.managerB_ID == userData.id)
+                {
+                    num = 2;
+                }
+            }
             if (tableDataCopper.tableData.giverA_ID != null)
             {
                 if (tableDataCopper.tableData.giverA_ID == userData.id)
                 {
+                    num = 1;
                     if (tableDataCopper.tableData.verf_A)
                         IsGiverVerf = true;
                 }
@@ -2907,6 +2924,7 @@ public partial class Languages
             {
                 if (tableDataCopper.tableData.giverB_ID == userData.id)
                 {
+                    num = 2;
                     if (tableDataCopper.tableData.verf_B)
                         IsGiverVerf = true;
                 }
@@ -2918,6 +2936,7 @@ public partial class Languages
             {
                 if (tableDataCopper.tableData.giverC_ID == userData.id)
                 {
+                    num = 3;
                     if (tableDataCopper.tableData.verf_C)
                         IsGiverVerf = true;
                 }
@@ -2929,22 +2948,27 @@ public partial class Languages
             {
                 if (tableDataCopper.tableData.giverD_ID == userData.id)
                 {
+                    num = 4;
                     if (tableDataCopper.tableData.verf_D)
                         IsGiverVerf = true;
                 }
 
                 giverCountCopper++;
             }
-
+            string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.copper);
             switch (userData.lang)
             {
                 case "ru":
                     caption += "\n" +
                                $"<b>{tableType}</b>" +
-                               "\n" +
-                               $"Ваша роль: {tableRole}" +
-                               "\n" +
+                               $"\n" +
+                               $"Ваша роль: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Всего дарителей на столе: {giverCountCopper} из 4";
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
                     {
@@ -2952,14 +2976,18 @@ public partial class Languages
                             caption += "\n✅ Вы активированы на столе\n";
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "eng":
                     caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Your role: {tableRole}" +
-                               "\n" +
+                               $"Your role: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total givers on the table: {giverCountCopper} of 4";
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
                     {
@@ -2967,14 +2995,18 @@ public partial class Languages
                             caption += "\n✅ You are activated on the table\n";
                         else caption += "\n❌ You are not activated on the table\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "fr":
                     caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Votre rôle: {tableRole}" +
-                               "\n" +
+                               $"Votre rôle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountCopper} sur 4";
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
                     {
@@ -2982,14 +3014,18 @@ public partial class Languages
                             caption += "\n✅ Vous êtes activé sur la table\n";
                         else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "de":
                     caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ihre Rolle: {tableRole}" +
-                               "\n" +
+                               $"Ihre Rolle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountCopper} von 4";
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
                     {
@@ -2997,7 +3033,7 @@ public partial class Languages
                             caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
-
+                    else caption += "\n";
                     break;
             }
         }
@@ -3010,10 +3046,25 @@ public partial class Languages
             bronze = true;
             var giverCountBronze = 0;
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.bronze);
+            if (tableDataBronze.tableData.managerA_ID != null)
+            {
+                if (tableDataBronze.tableData.managerA_ID == userData.id)
+                {
+                    num = 1;
+                }
+            }
+            if (tableDataBronze.tableData.managerA_ID != null)
+            {
+                if (tableDataBronze.tableData.managerB_ID == userData.id)
+                {
+                    num = 2;
+                }
+            }
             if (tableDataBronze.tableData.giverA_ID != null)
             {
                 if (tableDataBronze.tableData.giverA_ID == userData.id)
                 {
+                    num = 1;
                     if (tableDataBronze.tableData.verf_A)
                         IsGiverVerf = true;
                 }
@@ -3025,6 +3076,7 @@ public partial class Languages
             {
                 if (tableDataBronze.tableData.giverB_ID == userData.id)
                 {
+                    num = 2;
                     if (tableDataBronze.tableData.verf_B)
                         IsGiverVerf = true;
                 }
@@ -3036,6 +3088,7 @@ public partial class Languages
             {
                 if (tableDataBronze.tableData.giverC_ID == userData.id)
                 {
+                    num = 3;
                     if (tableDataBronze.tableData.verf_C)
                         IsGiverVerf = true;
                 }
@@ -3047,22 +3100,27 @@ public partial class Languages
             {
                 if (tableDataBronze.tableData.giverD_ID == userData.id)
                 {
+                    num = 4;
                     if (tableDataBronze.tableData.verf_D)
                         IsGiverVerf = true;
                 }
 
                 giverCountBronze++;
             }
-
+            string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.bronze);
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ваша роль: {tableRole}" +
-                               "\n" +
+                               $"Ваша роль: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Всего дарителей на столе: {giverCountBronze} из 4";
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
                     {
@@ -3070,14 +3128,18 @@ public partial class Languages
                             caption += "\n✅ Вы активированы на столе\n";
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "eng":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Your role: {tableRole}" +
-                               "\n" +
+                               $"Your role: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total givers on the table: {giverCountBronze} of 4";
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
                     {
@@ -3085,14 +3147,18 @@ public partial class Languages
                             caption += "\n✅ You are activated on the table\n";
                         else caption += "\n❌ You are not activated on the table\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "fr":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Votre rôle: {tableRole}" +
-                               "\n" +
+                               $"Votre rôle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountBronze} sur 4";
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
                     {
@@ -3100,14 +3166,18 @@ public partial class Languages
                             caption += "\n✅ Vous êtes activé sur la table\n";
                         else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "de":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ihre Rolle: {tableRole}" +
-                               "\n" +
+                               $"Ihre Rolle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountBronze} von 4";
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
                     {
@@ -3115,7 +3185,7 @@ public partial class Languages
                             caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
-
+                    else caption += "\n";
                     break;
             }
         }
@@ -3129,10 +3199,25 @@ public partial class Languages
             var giverCountSilver = 0;
 
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.silver);
+            if (tableDataSilver.tableData.managerA_ID != null)
+            {
+                if (tableDataSilver.tableData.managerA_ID == userData.id)
+                {
+                    num = 1;
+                }
+            }
+            if (tableDataSilver.tableData.managerA_ID != null)
+            {
+                if (tableDataSilver.tableData.managerB_ID == userData.id)
+                {
+                    num = 2;
+                }
+            }
             if (tableDataSilver.tableData.giverA_ID != null)
             {
                 if (tableDataSilver.tableData.giverA_ID == userData.id)
                 {
+                    num = 1;
                     if (tableDataSilver.tableData.verf_A)
                         IsGiverVerf = true;
                 }
@@ -3144,6 +3229,7 @@ public partial class Languages
             {
                 if (tableDataSilver.tableData.giverB_ID == userData.id)
                 {
+                    num = 2;
                     if (tableDataSilver.tableData.verf_B)
                         IsGiverVerf = true;
                 }
@@ -3155,6 +3241,7 @@ public partial class Languages
             {
                 if (tableDataSilver.tableData.giverC_ID == userData.id)
                 {
+                    num = 3;
                     if (tableDataSilver.tableData.verf_C)
                         IsGiverVerf = true;
                 }
@@ -3166,22 +3253,27 @@ public partial class Languages
             {
                 if (tableDataSilver.tableData.giverD_ID == userData.id)
                 {
+                    num = 4;
                     if (tableDataSilver.tableData.verf_D)
                         IsGiverVerf = true;
                 }
 
                 giverCountSilver++;
             }
-
+            string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.silver);
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ваша роль: {tableRole}" +
-                               "\n" +
+                               $"Ваша роль: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Всего дарителей на столе: {giverCountSilver} из 4";
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
                     {
@@ -3189,14 +3281,18 @@ public partial class Languages
                             caption += "\n✅ Вы активированы на столе\n";
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "eng":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Your role: {tableRole}" +
-                               "\n" +
+                               $"Your role: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total givers on the table: {giverCountSilver} of 4";
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
                     {
@@ -3204,14 +3300,18 @@ public partial class Languages
                             caption += "\n✅ You are activated on the table\n";
                         else caption += "\n❌ You are not activated on the table\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "fr":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Votre rôle: {tableRole}" +
-                               "\n" +
+                               $"Votre rôle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountSilver} sur 4";
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
                     {
@@ -3219,14 +3319,18 @@ public partial class Languages
                             caption += "\n✅ Vous êtes activé sur la table\n";
                         else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
                     }
-
+                    else caption += "\n";
                     break;
                 case "de":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ihre Rolle: {tableRole}" +
-                               "\n" +
+                               $"Ihre Rolle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountSilver} von 4";
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
                     {
@@ -3234,7 +3338,7 @@ public partial class Languages
                             caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
-
+                    else caption += "\n";
                     break;
             }
         }
@@ -3248,10 +3352,25 @@ public partial class Languages
             var giverCountGold = 0;
 
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.gold);
+            if (tableDataGold.tableData.managerA_ID != null)
+            {
+                if (tableDataGold.tableData.managerA_ID == userData.id)
+                {
+                    num = 1;
+                }
+            }
+            if (tableDataGold.tableData.managerA_ID != null)
+            {
+                if (tableDataGold.tableData.managerB_ID == userData.id)
+                {
+                    num = 2;
+                }
+            }
             if (tableDataGold.tableData.giverA_ID != null)
             {
                 if (tableDataGold.tableData.giverA_ID == userData.id)
                 {
+                    num = 1;
                     if (tableDataGold.tableData.verf_A)
                         IsGiverVerf = true;
                 }
@@ -3263,6 +3382,7 @@ public partial class Languages
             {
                 if (tableDataGold.tableData.giverB_ID == userData.id)
                 {
+                    num = 2;
                     if (tableDataGold.tableData.verf_B)
                         IsGiverVerf = true;
                 }
@@ -3274,6 +3394,7 @@ public partial class Languages
             {
                 if (tableDataGold.tableData.giverC_ID == userData.id)
                 {
+                    num = 3;
                     if (tableDataGold.tableData.verf_C)
                         IsGiverVerf = true;
                 }
@@ -3285,22 +3406,27 @@ public partial class Languages
             {
                 if (tableDataGold.tableData.giverD_ID == userData.id)
                 {
+                    num = 4;
                     if (tableDataGold.tableData.verf_D)
                         IsGiverVerf = true;
                 }
 
                 giverCountGold++;
             }
-
+            string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.gold);
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ваша роль: {tableRole}" +
-                               "\n" +
+                               $"Ваша роль: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Всего дарителей на столе: {giverCountGold} из 4";
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
                     {
@@ -3308,14 +3434,19 @@ public partial class Languages
                             caption += "\n✅ Вы активированы на столе\n";
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
+                    else caption += "\n";
 
                     break;
                 case "eng":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Your role: {tableRole}" +
-                               "\n" +
+                               $"Your role: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total givers on the table: {giverCountGold} of 4";
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
                     {
@@ -3323,14 +3454,19 @@ public partial class Languages
                             caption += "\n✅ You are activated on the table\n";
                         else caption += "\n❌ You are not activated on the table\n";
                     }
+                    else caption += "\n";
 
                     break;
                 case "fr":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Votre rôle: {tableRole}" +
-                               "\n" +
+                               $"Votre rôle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountGold} sur 4";
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
                     {
@@ -3338,14 +3474,19 @@ public partial class Languages
                             caption += "\n✅ Vous êtes activé sur la table\n";
                         else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
                     }
+                    else caption += "\n";
 
                     break;
                 case "de":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ihre Rolle: {tableRole}" +
-                               "\n" +
+                               $"Ihre Rolle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountGold} von 4";
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
                     {
@@ -3353,6 +3494,7 @@ public partial class Languages
                             caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
+                    else caption += "\n";
 
                     break;
             }
@@ -3367,10 +3509,25 @@ public partial class Languages
             var giverCountPlatinum = 0;
 
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.platinum);
+            if (tableDataPlatinum.tableData.managerA_ID != null)
+            {
+                if (tableDataPlatinum.tableData.managerA_ID == userData.id)
+                {
+                    num = 1;
+                }
+            }
+            if (tableDataPlatinum.tableData.managerA_ID != null)
+            {
+                if (tableDataPlatinum.tableData.managerB_ID == userData.id)
+                {
+                    num = 2;
+                }
+            }
             if (tableDataPlatinum.tableData.giverA_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverA_ID == userData.id)
                 {
+                    num = 1;
                     if (tableDataPlatinum.tableData.verf_A)
                         IsGiverVerf = true;
                 }
@@ -3382,6 +3539,7 @@ public partial class Languages
             {
                 if (tableDataPlatinum.tableData.giverB_ID == userData.id)
                 {
+                    num = 2;
                     if (tableDataPlatinum.tableData.verf_B)
                         IsGiverVerf = true;
                 }
@@ -3393,6 +3551,7 @@ public partial class Languages
             {
                 if (tableDataPlatinum.tableData.giverC_ID == userData.id)
                 {
+                    num = 3;
                     if (tableDataPlatinum.tableData.verf_C)
                         IsGiverVerf = true;
                 }
@@ -3404,22 +3563,27 @@ public partial class Languages
             {
                 if (tableDataPlatinum.tableData.giverD_ID == userData.id)
                 {
+                    num = 4;
                     if (tableDataPlatinum.tableData.verf_D)
                         IsGiverVerf = true;
                 }
 
                 giverCountPlatinum++;
             }
-
+            string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.platinum);
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ваша роль: {tableRole}" +
-                               "\n" +
+                               $"Ваша роль: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Всего дарителей на столе: {giverCountPlatinum} из 4";
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
                     {
@@ -3430,11 +3594,15 @@ public partial class Languages
 
                     break;
                 case "eng":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Your role: {tableRole}" +
-                               "\n" +
+                               $"Your role: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total givers on the table: {giverCountPlatinum} of 4";
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
                     {
@@ -3445,11 +3613,15 @@ public partial class Languages
 
                     break;
                 case "fr":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Votre rôle: {tableRole}" +
-                               "\n" +
+                               $"Votre rôle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountPlatinum} sur 4";
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
                     {
@@ -3460,11 +3632,15 @@ public partial class Languages
 
                     break;
                 case "de":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ihre Rolle: {tableRole}" +
-                               "\n" +
+                               $"Ihre Rolle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountPlatinum} von 4";
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
                     {
@@ -3472,6 +3648,7 @@ public partial class Languages
                             caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
+                    else caption += "\n";
 
                     break;
             }
@@ -3486,10 +3663,25 @@ public partial class Languages
             var giverCountDiamond = 0;
 
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.diamond);
+            if (tableDataDiamond.tableData.managerA_ID != null)
+            {
+                if (tableDataDiamond.tableData.managerA_ID == userData.id)
+                {
+                    num = 1;
+                }
+            }
+            if (tableDataDiamond.tableData.managerA_ID != null)
+            {
+                if (tableDataDiamond.tableData.managerB_ID == userData.id)
+                {
+                    num = 2;
+                }
+            }
             if (tableDataDiamond.tableData.giverA_ID != null)
             {
                 if (tableDataDiamond.tableData.giverA_ID == userData.id)
                 {
+                    num = 1;
                     if (tableDataDiamond.tableData.verf_A)
                         IsGiverVerf = true;
                 }
@@ -3501,6 +3693,7 @@ public partial class Languages
             {
                 if (tableDataDiamond.tableData.giverB_ID == userData.id)
                 {
+                    num = 2;
                     if (tableDataDiamond.tableData.verf_B)
                         IsGiverVerf = true;
                 }
@@ -3512,6 +3705,7 @@ public partial class Languages
             {
                 if (tableDataDiamond.tableData.giverC_ID == userData.id)
                 {
+                    num = 3;
                     if (tableDataDiamond.tableData.verf_C)
                         IsGiverVerf = true;
                 }
@@ -3523,22 +3717,27 @@ public partial class Languages
             {
                 if (tableDataDiamond.tableData.giverD_ID == userData.id)
                 {
+                    num = 4;
                     if (tableDataDiamond.tableData.verf_D)
                         IsGiverVerf = true;
                 }
 
                 giverCountDiamond++;
             }
-
+            string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.diamond);
             switch (userData.lang)
             {
                 case "ru":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ваша роль: {tableRole}" +
-                               "\n" +
+                               $"Ваша роль: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Всего дарителей на столе: {giverCountDiamond} из 4";
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
                     {
@@ -3549,11 +3748,15 @@ public partial class Languages
 
                     break;
                 case "eng":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Your role: {tableRole}" +
-                               "\n" +
+                               $"Your role: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total givers on the table: {giverCountDiamond} of 4";
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
                     {
@@ -3564,11 +3767,15 @@ public partial class Languages
 
                     break;
                 case "fr":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Votre rôle: {tableRole}" +
-                               "\n" +
+                               $"Votre rôle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountDiamond} sur 4";
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
                     {
@@ -3579,11 +3786,15 @@ public partial class Languages
 
                     break;
                 case "de":
-                    caption += "\n\n" +
+                    caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ihre Rolle: {tableRole}" +
-                               "\n" +
+                               $"Ihre Rolle: {tableRole}";
+                    if (num != 0)
+                    {
+                        caption += $"{numeration}";
+                    }
+                    caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountDiamond} von 4";
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
                     {
@@ -3591,7 +3802,7 @@ public partial class Languages
                             caption += "\n✅ Du bist auf dem Tisch aktiviert\n";
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
-
+                    else caption += "\n";
                     break;
             }
         }

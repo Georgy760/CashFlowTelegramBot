@@ -637,7 +637,7 @@ public class UserProfile
             Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
-
+    
         switch (lang)
         {
             case "ru":
@@ -679,7 +679,73 @@ public class UserProfile
 
         return result;
     }
+    public string UserInfo(ITelegramBotClient botClient, string lang, TableProfile tableData, bool IsItYou, int num)
+    {
+        var result = "";
+        var firstName = "";
+        var lastName = "";
+        try
+        {
+            firstName = botClient.GetChatAsync(id).Result.FirstName;
+        }
+        catch (AggregateException aex)
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
 
+        try
+        {
+            lastName = botClient.GetChatAsync(id).Result.LastName;
+        }
+        catch (AggregateException aex)
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            aex.Handle(ex => Exceptions.HandleException(ex));
+        }
+    
+        switch (lang)
+        {
+            case "ru":
+                result = $"<b>Роль: {GetTableRole(lang, tableData.tableType)}-{num}</b>";
+                if (IsItYou) result += " 🔘";
+                result += $"\n<b>Ник:</b> @{username}" +
+                          $"\n<b>Имя пользователя:</b> {firstName} {lastName}" +
+                          $"\n<b>Лично приглашённых:</b> {invited}" +
+                          $"\n<b>Пригласил:</b> @{invitedBy}\n\n";
+                break;
+            case "eng":
+                result = $"<b>Role: {GetTableRole(lang, tableData.tableType)}-{num}</b>";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Nickname:</b> @{username}" +
+                          $"\n<b>Username:</b> {firstName} {lastName}" +
+                          $"\n<b>Personally invited:</b> {invited}" +
+                          $"\n<b>Invited:</b> @{invitedBy}\n\n";
+                break;
+            case "fr":
+                result = $"<b>Rôle: {GetTableRole(lang, tableData.tableType)}-{num}</b>";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Pseudonyme: @{username}</b>" +
+                          $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" +
+                          $"\n<b>Personnellement invité:</b> {invited}" +
+                          $"\n<b>Invité:</b> @{invitedBy}\n\n";
+                break;
+            case "de":
+                result = $"<b>Rolle: {GetTableRole(lang, tableData.tableType)}-{num}</b>";
+                if (IsItYou) result += "🔘";
+                result += $"\n<b>Spitzname:</b> @{username}" +
+                          $"\n<b>Benutzername:</b> {firstName} {lastName}" +
+                          $"\n<b>Persönlich eingeladen:</b> {invited}" +
+                          $"\n<b>Eingeladen:</b> @{invitedBy}\n\n";
+                break;
+            default:
+                result = "empty";
+                break;
+        }
+
+        return result;
+    }
+    
     public string UserInfo(ITelegramBotClient botClient, string lang, TableProfile tableData, bool IsItYou, bool Verf,
         int num)
     {
@@ -776,6 +842,34 @@ public class UserProfile
                 break;
             case "de":
                 result = $"<b>Rolle: {GetTableRole(tableRole)}</b>" +
+                         "\n<b>Platz ist frei...</b>\n\n";
+                break;
+            default:
+                result = "empty";
+                break;
+        }
+
+        return result;
+    }
+    public string UserInfo(Table.TableRole tableRole, int num)
+    {
+        var result = "";
+        switch (lang)
+        {
+            case "ru":
+                result = $"<b>Роль: {GetTableRole(tableRole)}-{num}</b>" +
+                         "\n<b>Место вакантно...</b>\n\n";
+                break;
+            case "eng":
+                result = $"<b>Role: {GetTableRole(tableRole)}-{num}</b>" +
+                         "\n<b>Place is vacant...</b>\n\n";
+                break;
+            case "fr":
+                result = $"<b>Rôle: {GetTableRole(tableRole)}-{num}</b>" +
+                         "\n<b>La place est vacante...</b>\n\n";
+                break;
+            case "de":
+                result = $"<b>Rolle: {GetTableRole(tableRole)}-{num}</b>" +
                          "\n<b>Platz ist frei...</b>\n\n";
                 break;
             default:
