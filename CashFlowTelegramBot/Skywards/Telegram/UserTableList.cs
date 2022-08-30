@@ -6,7 +6,7 @@ namespace CashFlowTelegramBot.Skywards.Telegram;
 public class UserTableList
 {
     public int id { get; set; }
-    public int userID { get; set; }
+    public long userID { get; set; }
     public int? table_ID_copper = null;
     public Table.TableRole? copperTableRole;
     public int? table_ID_bronze = null;

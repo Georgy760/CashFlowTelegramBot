@@ -15,6 +15,7 @@ public class UserData
     public UserProfile playerData;
     public TableProfile tableData;
     public Notification notification;
+    public List<long> updateData;
 
     public UserData()
     {
@@ -22,6 +23,7 @@ public class UserData
         tableData = new TableProfile();
         error = new Error();
         notification = new Notification();
+        updateData = new List<long>();
     }
 
     public UserData(UserProfile userProfile, TableProfile tableProfile)
@@ -30,6 +32,7 @@ public class UserData
         tableData = tableProfile;
         error = new Error();
         notification = new Notification();
+        updateData = new List<long>();
     }
 }
 
@@ -50,13 +53,13 @@ public class Notification
 {
     public string notificationText;
     public int? tableID;
-    public int? bankerID;
-    public int? managerA_ID;
-    public int? managerB_ID;
-    public int? giverA_ID;
-    public int? giverB_ID;
-    public int? giverC_ID;
-    public int? giverD_ID;
+    public long? bankerID;
+    public long? managerA_ID;
+    public long? managerB_ID;
+    public long? giverA_ID;
+    public long? giverB_ID;
+    public long? giverC_ID;
+    public long? giverD_ID;
     public bool isNotify;
     public Table.TableType tableType;
 
@@ -119,7 +122,7 @@ public class WebManager
     public enum RequestType
     {
         GetUserData,
-        //Register,
+        GetAllUsersID,
         RegisterWithRef,
         ChangeLang,
         GetTableData,
@@ -258,13 +261,20 @@ public class WebManager
             var res = JObject.Parse(response);
             //userProfileJSON_DESERIALIZE 
             IList<JToken> results = res["userProfile"].Children().ToList();
-            if(Debug) Trace.Write("--------------\nuserProfile:\n--------------");
+            if(Debug) Trace.Write("\n--------------\nuserProfile:\n--------------\n");
             foreach (var obj in results) if(Debug){Trace.Write("\n" + obj);}
 
-            responseUser.id = (int) results[0];
+            try
+            {
+                responseUser.id = results[0].ToObject<long>();
+            }
+            catch
+            {
+                try{responseUser.id = (long) results[0].ToObject<int>();} catch{}
+            }
             responseUser.username = results[1].ToString().Replace("\"username\": \"", "").Replace("\"", "");
             if (!results[2].ToString().Contains("null"))
-                responseUser.refId = (int) results[2];
+                responseUser.refId = (long) results[2];
             else responseUser.refId = null;
 
             if (!results[3].ToString().Contains("null"))
@@ -276,12 +286,12 @@ public class WebManager
             {
                 var resp = JObject.Parse("{" + results[5] + "}");
                 IList<JToken> results_UserTableList = resp["userTableList"].Children().ToList();
-                if(Debug) Trace.Write("--------------\nuserProfile->userTableList:\n--------------");
+                if(Debug) Trace.Write("\n--------------\nuserProfile->userTableList:\n--------------\n");
                 foreach (var obj in results_UserTableList) if(Debug){Trace.Write("\n" + obj);}
                 //ID
                 responseUser.UserTableList.id = (int) results_UserTableList[0];
                 //USER_ID
-                responseUser.UserTableList.userID = (int) results_UserTableList[1];
+                responseUser.UserTableList.userID = (long) results_UserTableList[1];
                 //COPPER_INFO
                 if (!results_UserTableList[2].ToString().Contains("null"))
                 {
@@ -392,7 +402,7 @@ public class WebManager
         {
             var res = JObject.Parse(response);
             IList<JToken> tableProfiles = res["tableProfile"].Children().ToList();
-            if(Debug) Trace.Write("--------------\ntableProfile:\n--------------");
+            if(Debug) Trace.Write("\n--------------\ntableProfile:\n--------------\n");
             foreach (var obj in tableProfiles) if(Debug){Trace.Write("\n" + obj);}
             tableProfile.tableID = (int) tableProfiles[0];
             var tableType =
@@ -400,31 +410,31 @@ public class WebManager
                     tableProfiles[1].ToString().Replace("\"tableType\": \"", "").Replace("\"", ""), true);
             tableProfile.tableType = tableType;
             if (!tableProfiles[2].ToString().Contains("null"))
-                tableProfile.bankerID = (int) tableProfiles[2];
+                tableProfile.bankerID = (long) tableProfiles[2];
             else tableProfile.bankerID = null;
 
             if (!tableProfiles[3].ToString().Contains("null"))
-                tableProfile.managerA_ID = (int) tableProfiles[3];
+                tableProfile.managerA_ID = (long) tableProfiles[3];
             else tableProfile.managerA_ID = null;
             if (!tableProfiles[4].ToString().Contains("null"))
-                tableProfile.giverA_ID = (int) tableProfiles[4];
+                tableProfile.giverA_ID = (long) tableProfiles[4];
             else tableProfile.giverA_ID = null;
             tableProfile.verf_A = tableProfiles[5].ToString().Contains("1");
             if (!tableProfiles[6].ToString().Contains("null"))
-                tableProfile.giverB_ID = (int) tableProfiles[6];
+                tableProfile.giverB_ID = (long) tableProfiles[6];
             else tableProfile.giverB_ID = null;
             tableProfile.verf_B = tableProfiles[7].ToString().Contains("1");
 
             if (!tableProfiles[8].ToString().Contains("null"))
-                tableProfile.managerB_ID = (int) tableProfiles[8];
+                tableProfile.managerB_ID = (long) tableProfiles[8];
             else tableProfile.managerB_ID = null;
             
             if (!tableProfiles[9].ToString().Contains("null"))
-                tableProfile.giverC_ID = (int) tableProfiles[9];
+                tableProfile.giverC_ID = (long) tableProfiles[9];
             else tableProfile.giverC_ID = null;
             tableProfile.verf_C = tableProfiles[10].ToString().Contains("1");
             if (!tableProfiles[11].ToString().Contains("null"))
-                tableProfile.giverD_ID = (int) tableProfiles[11];
+                tableProfile.giverD_ID = (long) tableProfiles[11];
             else tableProfile.giverD_ID = null;
             tableProfile.verf_D = tableProfiles[12].ToString().Contains("1");
             if(Debug) tableProfile.PrintTableProfile();
@@ -435,7 +445,7 @@ public class WebManager
             
             var res = JObject.Parse(response);
             IList<JToken> errors = res["error"].Children().ToList();
-            Trace.Write("--------------\nerror:\n--------------");
+            if(Debug) Trace.Write("\n--------------\nerror:\n--------------\n");
             foreach (var obj in errors) if(Debug){Trace.Write("\n" + obj);}
 
             error.errorText = errors[0].ToString().Replace("\"errorText\": \"", "").Replace("\"", "");
@@ -456,31 +466,43 @@ public class WebManager
             else notification.tableID = null;
             
             if (!notifys[2].ToString().Contains("null"))
-                notification.bankerID = (int) notifys[2];
+                notification.bankerID = (long) notifys[2];
             else notification.bankerID = null;
             
             if (!notifys[3].ToString().Contains("null"))
-                notification.managerA_ID = (int) notifys[3];
+                notification.managerA_ID = (long) notifys[3];
             else notification.managerA_ID = null;
             if (!notifys[4].ToString().Contains("null"))
-                notification.managerB_ID = (int) notifys[4];
+                notification.managerB_ID = (long?) notifys[4];
             else notification.managerB_ID = null;
             
             if (!notifys[5].ToString().Contains("null"))
-                notification.giverA_ID = (int) notifys[5];
+                notification.giverA_ID = (long) notifys[5];
             else notification.giverA_ID = null;
             if (!notifys[6].ToString().Contains("null"))
-                notification.giverB_ID = (int) notifys[6];
+                notification.giverB_ID = (long) notifys[6];
             else notification.giverB_ID = null;
             if (!notifys[7].ToString().Contains("null"))
-                notification.giverC_ID = (int) notifys[7];
+                notification.giverC_ID = (long) notifys[7];
             else notification.giverC_ID = null;
             if (!notifys[8].ToString().Contains("null"))
-                notification.giverD_ID = (int) notifys[8];
+                notification.giverD_ID = (long) notifys[8];
             else notification.giverD_ID = null;
             notification.isNotify = true;
             notification.tableType = Enum.Parse<Table.TableType>(
                 notifys[10].ToString().Replace("\"tableType\": \"", "").Replace("\"", ""), true);
+        }
+        if (!response.Contains("updateData\":null"))
+        {
+            var res = JObject.Parse(response);
+            IList<JToken> errors = res["updateData"].Children().ToList();
+            if(Debug) Trace.Write("\n--------------\nupdateData:\n--------------\n");
+            foreach (var obj in errors)
+            {
+                if(Debug){Trace.Write("\n" + obj);}
+                userData.updateData.Add((long) obj);
+            }
+            Trace.WriteLine($"\nUsers count: [{userData.updateData.Count}]");
         }
 
         userData.playerData = responseUser;

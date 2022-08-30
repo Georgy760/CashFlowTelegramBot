@@ -16,48 +16,48 @@ public class UserProfile
         UserTableList = new UserTableList();
     }
 
-    public UserProfile(long id)
+    public UserProfile(long? id)
     {
-        this.id = (int) id;
+        this.id = (long) id;
     }
 
     public UserProfile(long id, string username)
     {
-        this.id = (int) id;
+        this.id = id;
         this.username = username;
     }
 
     public UserProfile(long id, Table.TableType tableType)
     {
-        this.id = (int) id;
+        this.id = id;
         level_tableType = tableType;
     }
 
-    public UserProfile(long id, int refId, string username)
+    public UserProfile(long id, long refId, string username)
     {
-        this.id = (int) id;
+        this.id = id;
         this.refId = refId;
         this.username = username;
     }
 
     public UserProfile(long id, string username, string lang)
     {
-        this.id = (int) id;
+        this.id = id;
         this.username = username;
         this.lang = lang;
     }
 
-    public UserProfile(long id, int refId, string username, string lang)
+    public UserProfile(long id, long refId, string username, string lang)
     {
-        this.id = (int) id;
+        this.id = id;
         this.refId = refId;
         this.username = username;
         this.lang = lang;
     }
 
-    public int id { get; set; }
+    public long id { get; set; }
     public string? username { get; set; }
-    public int? refId { get; set; }
+    public long? refId { get; set; }
     public string? invitedBy { get; set; }
     public string? lang { get; set; }
 

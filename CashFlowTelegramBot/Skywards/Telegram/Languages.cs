@@ -156,12 +156,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -249,7 +281,7 @@ public partial class Languages
         InlineKeyboardMarkup? inlineKeyboard = null;
         UserData invitedBy = null;
         if (SearchedUser.refId != null)
-            invitedBy = await WebManager.SendData(new UserProfile((int) SearchedUser.refId),
+            invitedBy = await WebManager.SendData(new UserProfile( SearchedUser.refId),
                 WebManager.RequestType.GetUserData, true);
         UserData tableToBack = new UserData();
         Table.TableRole? userTableRole = Table.TableRole.giver;
@@ -1369,12 +1401,44 @@ public partial class Languages
             }
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -1535,7 +1599,7 @@ public partial class Languages
             inlineKeyboard = null;
             if (table.tableData.bankerID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.bankerID),
+                var userData = await WebManager.SendData(new UserProfile( table.tableData.bankerID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.bankerID == user.id);
@@ -1549,7 +1613,7 @@ public partial class Languages
 
             if (table.tableData.managerA_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerA_ID),
+                var userData = await WebManager.SendData(new UserProfile( table.tableData.managerA_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.managerA_ID == user.id, 1);
@@ -1563,7 +1627,7 @@ public partial class Languages
 
             if (table.tableData.giverA_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverA_ID),
+                var userData = await WebManager.SendData(new UserProfile( table.tableData.giverA_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverA_ID == user.id, table.tableData.verf_A, 1);
@@ -1577,7 +1641,7 @@ public partial class Languages
 
             if (table.tableData.giverB_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverB_ID),
+                var userData = await WebManager.SendData(new UserProfile( table.tableData.giverB_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverB_ID == user.id, table.tableData.verf_B, 2);
@@ -1591,7 +1655,7 @@ public partial class Languages
 
             if (table.tableData.managerB_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.managerB_ID),
+                var userData = await WebManager.SendData(new UserProfile( table.tableData.managerB_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.managerB_ID == user.id, 2);
@@ -1605,7 +1669,7 @@ public partial class Languages
 
             if (table.tableData.giverC_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverC_ID),
+                var userData = await WebManager.SendData(new UserProfile( table.tableData.giverC_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverC_ID == user.id, table.tableData.verf_C, 3);
@@ -1619,7 +1683,7 @@ public partial class Languages
 
             if (table.tableData.giverD_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile((int) table.tableData.giverD_ID),
+                var userData = await WebManager.SendData(new UserProfile( table.tableData.giverD_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverD_ID == user.id, table.tableData.verf_D, 4);
@@ -1753,12 +1817,44 @@ public partial class Languages
             }
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -1930,11 +2026,42 @@ public partial class Languages
                     break;
             }
             Stream stream = TableImage.CreateTableImage(tableData.tableData, userData).Result;
+            try
+            {
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+            } catch
+            {
+                Trace.Write("Handle Remaining Exceptions");
+                try
+                {
+                    await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                            }
+                        });
+                    caption = "<b>An error occurred</b>\n\n" +
+                              "Please contact technical support and describe what caused this error";
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
 
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
             try
             {
                 await botClient.EditMessageCaptionAsync(
@@ -2041,12 +2168,45 @@ public partial class Languages
                     break;
                 }
             }
-            using (Stream
-                   stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+
+            try
+            {
+                using (Stream
+                       stream = System.IO.File.OpenRead(path))
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+            } catch
+            {
+                Trace.Write("Handle Remaining Exceptions");
+                try
+                {
+                    await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                            }
+                        });
+                    caption = "<b>An error occurred</b>\n\n" +
+                              "Please contact technical support and describe what caused this error";
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+
             try
             {
                 await botClient.EditMessageCaptionAsync(
@@ -2214,12 +2374,44 @@ public partial class Languages
                         break;
                 }
 
-                using (Stream
-                       stream = System.IO.File.OpenRead(path))
-                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                        callbackData.Message.MessageId,
-                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    using (Stream
+                           stream = System.IO.File.OpenRead(path))
+                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId,
+                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch
+                {
+                    Trace.Write("Handle Remaining Exceptions");
+                    try
+                    {
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                }
+                            });
+                        caption = "<b>An error occurred</b>\n\n" +
+                                  "Please contact technical support and describe what caused this error";
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
                 try
                 {
                     await botClient.EditMessageCaptionAsync(
@@ -2421,12 +2613,44 @@ public partial class Languages
                 }
                 else
                 {
-                    using (Stream
-                           stream = System.IO.File.OpenRead(path))
-                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                            callbackData.Message.MessageId,
-                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                    try
+                    {
+                        using (Stream
+                               stream = System.IO.File.OpenRead(path))
+                            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                                callbackData.Message.MessageId,
+                                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                            ).WaitAsync(TimeSpan.FromSeconds(10));
+                    } catch
+                    {
+                        Trace.Write("Handle Remaining Exceptions");
+                        try
+                        {
+                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                    }
+                                });
+                            caption = "<b>An error occurred</b>\n\n" +
+                                      "Please contact technical support and describe what caused this error";
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+
                     try
                     {
                         await botClient.EditMessageCaptionAsync(
@@ -2561,12 +2785,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try{
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
@@ -2705,12 +2961,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -2886,12 +3174,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -3107,7 +3427,7 @@ public partial class Languages
                     });
                 caption = "🔖 <b>Мой статус</b>" +
                           "\n\n" +
-                          $"<b>Ваш ID:</b> {userData.id}" +
+                          $"<b>Ваш ID:</b> {callbackData.From.Id}" +
                           "\n" +
                           $"<b>Ваш ник:</b> @{userData.username}" +
                           "\n" +
@@ -3142,7 +3462,7 @@ public partial class Languages
                     });
                 caption = "🔖 <b>My Status</b>" +
                           "\n\n" +
-                          $"<b>Your ID:</b> {userData.id}" +
+                          $"<b>Your ID:</b> {callbackData.From.Id}" +
                           "\n" +
                           $"<b>Your nickname:</b> @{userData.username}" +
                           "\n" +
@@ -3177,7 +3497,7 @@ public partial class Languages
                     });
                 caption = "🔖 <b>Mon statut</b>" +
                           "\n\n" +
-                          $"<b>Votre identifiant:</b> {userData.id}" +
+                          $"<b>Votre identifiant:</b> {callbackData.From.Id}" +
                           "\n" +
                           $"<b>Votre surnom:</b> @{userData.username}" +
                           "\n" +
@@ -3212,7 +3532,7 @@ public partial class Languages
                     });
                 caption = "🔖 <b>Mein Status</b>" +
                           "\n\n" +
-                          $"<b>Ihre ID:</b> {userData.id}" +
+                          $"<b>Ihre ID:</b> {callbackData.From.Id}" +
                           "\n" +
                           $"<b>Ihr Nickname:</b> @{userData.username}" +
                           "\n" +
@@ -3248,7 +3568,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataCopper = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData, true);
+                new TableProfile( userData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData, true);
 
             copper = true;
             var giverCountCopper = 0;
@@ -3279,7 +3599,6 @@ public partial class Languages
 
                 giverCountCopper++;
             }
-
             if (tableDataCopper.tableData.giverB_ID != null)
             {
                 if (tableDataCopper.tableData.giverB_ID == userData.id)
@@ -3291,7 +3610,6 @@ public partial class Languages
 
                 giverCountCopper++;
             }
-
             if (tableDataCopper.tableData.giverC_ID != null)
             {
                 if (tableDataCopper.tableData.giverC_ID == userData.id)
@@ -3303,7 +3621,6 @@ public partial class Languages
 
                 giverCountCopper++;
             }
-
             if (tableDataCopper.tableData.giverD_ID != null)
             {
                 if (tableDataCopper.tableData.giverD_ID == userData.id)
@@ -3321,7 +3638,7 @@ public partial class Languages
             {
                 case "ru":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} стол</b>" +
                                $"\n" +
                                $"Ваша роль: {tableRole}";
                     if (num != 0)
@@ -3340,7 +3657,7 @@ public partial class Languages
                     break;
                 case "eng":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Your role: {tableRole}";
                     if (num != 0)
@@ -3359,7 +3676,7 @@ public partial class Languages
                     break;
                 case "fr":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}";
                     if (num != 0)
@@ -3378,7 +3695,7 @@ public partial class Languages
                     break;
                 case "de":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} tisch</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}";
                     if (num != 0)
@@ -3402,7 +3719,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataBronze = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData, true);
+                new TableProfile( userData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData, true);
 
             bronze = true;
             var giverCountBronze = 0;
@@ -3432,7 +3749,6 @@ public partial class Languages
 
                 giverCountBronze++;
             }
-
             if (tableDataBronze.tableData.giverB_ID != null)
             {
                 if (tableDataBronze.tableData.giverB_ID == userData.id)
@@ -3444,7 +3760,6 @@ public partial class Languages
 
                 giverCountBronze++;
             }
-
             if (tableDataBronze.tableData.giverC_ID != null)
             {
                 if (tableDataBronze.tableData.giverC_ID == userData.id)
@@ -3456,7 +3771,6 @@ public partial class Languages
 
                 giverCountBronze++;
             }
-
             if (tableDataBronze.tableData.giverD_ID != null)
             {
                 if (tableDataBronze.tableData.giverD_ID == userData.id)
@@ -3474,7 +3788,7 @@ public partial class Languages
             {
                 case "ru":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} стол</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}";
                     if (num != 0)
@@ -3493,7 +3807,7 @@ public partial class Languages
                     break;
                 case "eng":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Your role: {tableRole}";
                     if (num != 0)
@@ -3514,7 +3828,7 @@ public partial class Languages
                     caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Votre rôle: {tableRole}";
+                               $"Votre rôle: {tableRole} tisch";
                     if (num != 0)
                     {
                         caption += $"{numeration}";
@@ -3533,7 +3847,7 @@ public partial class Languages
                     caption += "\n" +
                                $"<b>{tableType}</b>" +
                                "\n" +
-                               $"Ihre Rolle: {tableRole}";
+                               $"Ihre Rolle: {tableRole} table";
                     if (num != 0)
                     {
                         caption += $"{numeration}";
@@ -3555,7 +3869,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataSilver = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData, true);
+                new TableProfile( userData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData, true);
 
             silver = true;
             var giverCountSilver = 0;
@@ -3586,7 +3900,6 @@ public partial class Languages
 
                 giverCountSilver++;
             }
-
             if (tableDataSilver.tableData.giverB_ID != null)
             {
                 if (tableDataSilver.tableData.giverB_ID == userData.id)
@@ -3598,7 +3911,6 @@ public partial class Languages
 
                 giverCountSilver++;
             }
-
             if (tableDataSilver.tableData.giverC_ID != null)
             {
                 if (tableDataSilver.tableData.giverC_ID == userData.id)
@@ -3610,7 +3922,6 @@ public partial class Languages
 
                 giverCountSilver++;
             }
-
             if (tableDataSilver.tableData.giverD_ID != null)
             {
                 if (tableDataSilver.tableData.giverD_ID == userData.id)
@@ -3628,7 +3939,7 @@ public partial class Languages
             {
                 case "ru":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} стол</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}";
                     if (num != 0)
@@ -3647,7 +3958,7 @@ public partial class Languages
                     break;
                 case "eng":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Your role: {tableRole}";
                     if (num != 0)
@@ -3666,7 +3977,7 @@ public partial class Languages
                     break;
                 case "fr":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} tisch</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}";
                     if (num != 0)
@@ -3685,7 +3996,7 @@ public partial class Languages
                     break;
                 case "de":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}";
                     if (num != 0)
@@ -3708,7 +4019,7 @@ public partial class Languages
         if (userData.UserTableList.table_ID_gold != null)
         {
             num = 0;
-            var tableDataGold = await WebManager.SendData(new TableProfile((int) userData.UserTableList.table_ID_gold),
+            var tableDataGold = await WebManager.SendData(new TableProfile( userData.UserTableList.table_ID_gold),
                 WebManager.RequestType.GetTableData, true);
 
             gold = true;
@@ -3740,7 +4051,6 @@ public partial class Languages
 
                 giverCountGold++;
             }
-
             if (tableDataGold.tableData.giverB_ID != null)
             {
                 if (tableDataGold.tableData.giverB_ID == userData.id)
@@ -3752,7 +4062,6 @@ public partial class Languages
 
                 giverCountGold++;
             }
-
             if (tableDataGold.tableData.giverC_ID != null)
             {
                 if (tableDataGold.tableData.giverC_ID == userData.id)
@@ -3764,7 +4073,6 @@ public partial class Languages
 
                 giverCountGold++;
             }
-
             if (tableDataGold.tableData.giverD_ID != null)
             {
                 if (tableDataGold.tableData.giverD_ID == userData.id)
@@ -3782,7 +4090,7 @@ public partial class Languages
             {
                 case "ru":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} стол</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}";
                     if (num != 0)
@@ -3802,7 +4110,7 @@ public partial class Languages
                     break;
                 case "eng":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Your role: {tableRole}";
                     if (num != 0)
@@ -3822,7 +4130,7 @@ public partial class Languages
                     break;
                 case "fr":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} tisch</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}";
                     if (num != 0)
@@ -3842,7 +4150,7 @@ public partial class Languages
                     break;
                 case "de":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}";
                     if (num != 0)
@@ -3867,7 +4175,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataPlatinum = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData, true);
+                new TableProfile( userData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData, true);
 
             platinum = true;
             var giverCountPlatinum = 0;
@@ -3898,7 +4206,6 @@ public partial class Languages
 
                 giverCountPlatinum++;
             }
-
             if (tableDataPlatinum.tableData.giverB_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverB_ID == userData.id)
@@ -3910,7 +4217,6 @@ public partial class Languages
 
                 giverCountPlatinum++;
             }
-
             if (tableDataPlatinum.tableData.giverC_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverC_ID == userData.id)
@@ -3922,7 +4228,6 @@ public partial class Languages
 
                 giverCountPlatinum++;
             }
-
             if (tableDataPlatinum.tableData.giverD_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverD_ID == userData.id)
@@ -3940,7 +4245,7 @@ public partial class Languages
             {
                 case "ru":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} стол</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}";
                     if (num != 0)
@@ -3955,11 +4260,10 @@ public partial class Languages
                             caption += "\n✅ Вы активированы на столе\n";
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
-
                     break;
                 case "eng":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Your role: {tableRole}";
                     if (num != 0)
@@ -3978,7 +4282,7 @@ public partial class Languages
                     break;
                 case "fr":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} tisch</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}";
                     if (num != 0)
@@ -3997,7 +4301,7 @@ public partial class Languages
                     break;
                 case "de":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}";
                     if (num != 0)
@@ -4022,7 +4326,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataDiamond = await WebManager.SendData(
-                new TableProfile((int) userData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData, true);
+                new TableProfile( userData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData, true);
 
             diamond = true;
             var giverCountDiamond = 0;
@@ -4053,7 +4357,6 @@ public partial class Languages
 
                 giverCountDiamond++;
             }
-
             if (tableDataDiamond.tableData.giverB_ID != null)
             {
                 if (tableDataDiamond.tableData.giverB_ID == userData.id)
@@ -4065,7 +4368,6 @@ public partial class Languages
 
                 giverCountDiamond++;
             }
-
             if (tableDataDiamond.tableData.giverC_ID != null)
             {
                 if (tableDataDiamond.tableData.giverC_ID == userData.id)
@@ -4077,7 +4379,6 @@ public partial class Languages
 
                 giverCountDiamond++;
             }
-
             if (tableDataDiamond.tableData.giverD_ID != null)
             {
                 if (tableDataDiamond.tableData.giverD_ID == userData.id)
@@ -4095,7 +4396,7 @@ public partial class Languages
             {
                 case "ru":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} стол</b>" +
                                "\n" +
                                $"Ваша роль: {tableRole}";
                     if (num != 0)
@@ -4110,11 +4411,10 @@ public partial class Languages
                             caption += "\n✅ Вы активированы на столе\n";
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
-
                     break;
                 case "eng":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Your role: {tableRole}";
                     if (num != 0)
@@ -4133,7 +4433,7 @@ public partial class Languages
                     break;
                 case "fr":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} tisch</b>" +
                                "\n" +
                                $"Votre rôle: {tableRole}";
                     if (num != 0)
@@ -4152,7 +4452,7 @@ public partial class Languages
                     break;
                 case "de":
                     caption += "\n" +
-                               $"<b>{tableType}</b>" +
+                               $"<b>{tableType} table</b>" +
                                "\n" +
                                $"Ihre Rolle: {tableRole}";
                     if (num != 0)
@@ -4172,13 +4472,44 @@ public partial class Languages
             }
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
+        try
         {
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+            {
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+            }
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         try
@@ -4320,12 +4651,45 @@ public partial class Languages
                       "Please contact technical support and describe what caused this error";
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        }
+        catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -4466,12 +4830,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -4642,12 +5038,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -4884,12 +5312,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -5130,12 +5590,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -5452,12 +5944,44 @@ public partial class Languages
                 break;
         }
 
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(
@@ -5595,10 +6119,42 @@ public partial class Languages
 
                 using (Stream
                        stream = System.IO.File.OpenRead(path))
-                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                        callbackData.Message.MessageId,
-                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                    try
+                    {
+                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId,
+                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                    }catch
+                    {
+                        Trace.Write("Handle Remaining Exceptions");
+                        try
+                        {
+                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                    }
+                                });
+                            caption = "<b>An error occurred</b>\n\n" +
+                                      "Please contact technical support and describe what caused this error";
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
+
                 try
                 {
                     await botClient.EditMessageCaptionAsync(
@@ -5718,12 +6274,44 @@ public partial class Languages
                         break;
                 }
 
-                using (Stream
-                       stream = System.IO.File.OpenRead(path))
-                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                        callbackData.Message.MessageId,
-                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    using (Stream
+                           stream = System.IO.File.OpenRead(path))
+                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId,
+                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch
+                {
+                    Trace.Write("Handle Remaining Exceptions");
+                    try
+                    {
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                }
+                            });
+                        caption = "<b>An error occurred</b>\n\n" +
+                                  "Please contact technical support and describe what caused this error";
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
                 try
                 {
                     await botClient.EditMessageCaptionAsync(
@@ -5843,12 +6431,44 @@ public partial class Languages
                         break;
                 }
 
-                using (Stream
-                       stream = System.IO.File.OpenRead(path))
-                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                        callbackData.Message.MessageId,
-                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    using (Stream
+                           stream = System.IO.File.OpenRead(path))
+                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId,
+                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch
+                {
+                    Trace.Write("Handle Remaining Exceptions");
+                    try
+                    {
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                }
+                            });
+                        caption = "<b>An error occurred</b>\n\n" +
+                                  "Please contact technical support and describe what caused this error";
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
                 try
                 {
                     await botClient.EditMessageCaptionAsync(
@@ -6011,12 +6631,44 @@ public partial class Languages
 
         var caption = $"<b>Captcha</b>" +
                       $"\n\n{num1} + {num2} = ?:";
-        using (Stream
-               stream = System.IO.File.OpenRead(path))
-            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-            ).WaitAsync(TimeSpan.FromSeconds(10));
+        try
+        {
+            using (Stream
+                   stream = System.IO.File.OpenRead(path))
+                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                ).WaitAsync(TimeSpan.FromSeconds(10));
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         try
         {
             await botClient.EditMessageCaptionAsync(

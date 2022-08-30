@@ -23,16 +23,16 @@ public class Table
 
     public int tableID { get; set; }
     public TableType tableType { get; set; }
-    public int? bankerID { get; set; } = null;
-    public int? managerA_ID { get; set; } = null;
-    public int? giverA_ID { get; set; } = null;
+    public long? bankerID { get; set; } = null;
+    public long? managerA_ID { get; set; } = null;
+    public long? giverA_ID { get; set; } = null;
     public bool verf_A { get; set; }
-    public int? giverB_ID { get; set; } = null;
+    public long? giverB_ID { get; set; } = null;
     public bool verf_B { get; set; }
-    public int? managerB_ID { get; set; } = null;
-    public int? giverC_ID { get; set; } = null;
+    public long? managerB_ID { get; set; } = null;
+    public long? giverC_ID { get; set; } = null;
     public bool verf_C { get; set; }
-    public int? giverD_ID { get; set; } = null;
+    public long? giverD_ID { get; set; } = null;
     public bool verf_D { get; set; }
 }
 
@@ -48,7 +48,7 @@ public class TableProfile : Table
         TableRole = TableRole;
     }
 
-    public TableProfile(int tableID, int? giverA_ID, int? giverB_ID, int? giverC_ID, int? giverD_ID)
+    public TableProfile(int tableID, long? giverA_ID, long? giverB_ID, long? giverC_ID, long? giverD_ID)
     {
         this.giverA_ID = giverA_ID;
         this.giverB_ID = giverB_ID;

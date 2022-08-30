@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using CashFlowTelegramBot.Skywards.ImageEditor;
 using CashFlowTelegramBot.Skywards.Web;
 using Telegram.Bot;
@@ -7,6 +9,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.ReplyMarkups;
+using File = System.IO.File;
 
 namespace CashFlowTelegramBot.Skywards.Telegram;
 
@@ -66,6 +69,7 @@ public static class UpdateHandlers
 
     private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message updateMessage)
     {
+        Trace.Write($"\n{updateMessage.From.Id}");
         Trace.Write("MessageReceived: " + updateMessage.Text);
         if (updateMessage.Text.Contains("/chat"))
         {
@@ -74,6 +78,71 @@ public static class UpdateHandlers
             Trace.Write("Data: " + botClient.GetChatAsync(chatID).Result.FirstName);
             var user = new UserProfile(updateMessage.From.Id, updateMessage.From.Username!);
             var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData, true);
+        }
+
+        if (updateMessage.From.Id ==  524338144 || updateMessage.From.Id ==  237487193 || updateMessage.From.Id == 5680187538) //ADMINS
+        {
+            if (updateMessage.Text.Contains("/update"))
+            {
+                //var test = await botClient.GetFileAsync(updateMessage.Photo[updateMessage.Photo.Count() - 1].FileId);
+
+                //var image = Bitmap.FromStream(test.FileStream);
+
+                //image.Save(@"C:\\Users\xxx\Desktop\test.png");
+                var message = updateMessage.Text;
+                message = message.Remove(0, 7);
+                
+                Trace.WriteLine("\n" + message);
+                var data = await WebManager.SendData(new UserData(), WebManager.RequestType.GetAllUsersID, false);
+                InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("❌", "MainMenu")
+                        }
+                    });
+                if (data.updateData.Count > 0)
+                {
+                    //updateMessage.Video.
+                    string path = null;
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                            @"Images/MainMenu/mainMenu.png");
+
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                            @"Images\MainMenu\mainMenu.png");
+                    foreach (var ID in data.updateData)
+                    {
+                        long chatID = ID;
+                        try
+                        {
+
+                            var chat = botClient.GetChatAsync(chatID);
+                            Trace.WriteLine($"\nID:[{chat.Result.Id}] username: [{chat.Result.Username}]");
+                            chatID = chat.Result.Id;
+                            if (chatID != null)
+                            {
+                                await botClient.SendPhotoAsync(
+                                    chatID,
+                                    File.OpenRead(path),
+                                    message,
+                                    ParseMode.Html,
+                                    replyMarkup: inlineKeyboard);
+                            }
+                        }
+                        catch(AggregateException aex)
+                        {
+                            //Trace.WriteLine("Handle Remaining Exceptions");
+                            aex.Handle(ex => Exceptions.HandleException(ex));
+                        }
+
+                        
+                    }
+                    Trace.WriteLine("\nUpdate Sent");
+                }
+            }
         }
 
         /*if (updateMessage.Text.Contains("/start"))
@@ -135,7 +204,7 @@ public static class UpdateHandlers
     private static async Task BotOnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery)
     {
         Trace.Write("\nCallbackQuery.from.Username : " + callbackQuery.From.Username);
-        Trace.Write("\nCallbackQuery.from.Id : " + callbackQuery.From.Id);
+        Trace.Write($"\nCallbackQuery.from.Id : [{ callbackQuery.From.Id}]" + callbackQuery.From.Id);
         Trace.Write("\nCallbackQuery.Data : " + callbackQuery.Data);
         var user = new UserProfile(callbackQuery.From.Id, callbackQuery.From.Username!);
         var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData, true);
@@ -204,7 +273,7 @@ public static class UpdateHandlers
             
         }
         Trace.Write("\n---------------------------------------------------"
-                          + "\nTriggered by: " + userData.playerData.username + " at " + DateTime.Now +
+                          + $"\nTriggered by: [{callbackQuery.From.Id}] " + userData.playerData.username + " at " + DateTime.Now +
                           "\nCallBackQuery: " +
                           callbackQuery.Data
                           + "\n---------------------------------------------------");
@@ -282,7 +351,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.bankerID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.bankerID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -300,7 +369,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.bankerID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.bankerID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -318,7 +387,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.bankerID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.bankerID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -336,7 +405,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.bankerID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.bankerID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -354,7 +423,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.bankerID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.bankerID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -372,7 +441,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.bankerID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.bankerID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.bankerID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -404,7 +473,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -422,7 +491,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -440,7 +509,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -458,7 +527,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -476,7 +545,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -494,7 +563,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -526,7 +595,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -544,7 +613,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -562,7 +631,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -580,7 +649,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -598,7 +667,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -616,7 +685,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.managerB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.managerB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -648,7 +717,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -666,7 +735,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -684,7 +753,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -702,7 +771,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -720,7 +789,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -738,7 +807,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverA_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverA_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverA_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -770,7 +839,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -788,7 +857,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -806,7 +875,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -824,7 +893,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -842,7 +911,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -860,7 +929,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverB_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverB_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -892,7 +961,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverC_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverC_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -910,7 +979,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverC_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverC_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -928,7 +997,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverC_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverC_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -946,7 +1015,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverC_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverC_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -964,7 +1033,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverC_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverC_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -982,7 +1051,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverC_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverC_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverC_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -1014,7 +1083,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.managerB_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverD_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -1032,7 +1101,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverD_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverD_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -1050,7 +1119,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverD_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverD_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -1068,7 +1137,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverD_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverD_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -1086,7 +1155,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverD_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverD_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -1104,7 +1173,7 @@ public static class UpdateHandlers
                             WebManager.RequestType.GetTableData, true);
                         if (tableData.tableData.giverD_ID != null)
                         {
-                            var data = await WebManager.SendData(new UserProfile((int) tableData.tableData.giverD_ID),
+                            var data = await WebManager.SendData(new UserProfile( tableData.tableData.giverD_ID),
                                 WebManager.RequestType.GetUserData, true);
                             Languages.GetUserData(botClient, chatId, callbackQuery, userData.playerData,
                                 data.playerData, tableType);
@@ -1199,7 +1268,7 @@ public static class UpdateHandlers
                     break;
             }
 
-            UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverA_ID);
+            UserProfile userToRemove = new UserProfile( dataToRemove.tableData.giverA_ID);
             if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
             {
                 var response = await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
@@ -1260,7 +1329,7 @@ public static class UpdateHandlers
                     break;
             }
 
-            UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverB_ID);
+            UserProfile userToRemove = new UserProfile( dataToRemove.tableData.giverB_ID);
             if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
             {
                 var response = await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
@@ -1322,8 +1391,8 @@ public static class UpdateHandlers
                     break;
             }
 
-            UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverC_ID);
-            //userToRemove.id = (int) dataToRemove.tableData.giverC_ID;
+            UserProfile userToRemove = new UserProfile( dataToRemove.tableData.giverC_ID);
+            //userToRemove.id =  dataToRemove.tableData.giverC_ID;
             if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
             {
                 var response = await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
@@ -1384,7 +1453,7 @@ public static class UpdateHandlers
                     break;
             }
 
-            UserProfile userToRemove = new UserProfile((int) dataToRemove.tableData.giverD_ID);
+            UserProfile userToRemove = new UserProfile( dataToRemove.tableData.giverD_ID);
             if (dataToRemove.tableData.tableID != null && userToRemove.id != null)
             {
                 var response = await WebManager.SendData(new UserData(userToRemove, dataToRemove.tableData),
@@ -1445,7 +1514,7 @@ public static class UpdateHandlers
                     break;
             }
 
-            UserProfile userToConfirm = new UserProfile((int) dataToConfirm.tableData.giverA_ID);
+            UserProfile userToConfirm = new UserProfile( dataToConfirm.tableData.giverA_ID);
             if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
             {
                 var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
@@ -1509,7 +1578,7 @@ public static class UpdateHandlers
                     break;
             }
 
-            UserProfile userToConfirm = new UserProfile((int) dataToConfirm.tableData.giverB_ID);
+            UserProfile userToConfirm = new UserProfile( dataToConfirm.tableData.giverB_ID);
             if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
             {
                 var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
@@ -1573,7 +1642,7 @@ public static class UpdateHandlers
                     break;
             }
 
-            UserProfile userToConfirm = new UserProfile((int) dataToConfirm.tableData.giverC_ID);
+            UserProfile userToConfirm = new UserProfile( dataToConfirm.tableData.giverC_ID);
             if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
             {
                 var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
@@ -1637,7 +1706,7 @@ public static class UpdateHandlers
                     break;
             }
 
-            UserProfile userToConfirm = new UserProfile((int) dataToConfirm.tableData.giverD_ID);
+            UserProfile userToConfirm = new UserProfile( dataToConfirm.tableData.giverD_ID);
             if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
             {
                 var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),

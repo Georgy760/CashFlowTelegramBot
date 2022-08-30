@@ -31,7 +31,7 @@ public class Notifications
         return typeOfNotifications;
     }
     
-    public static void Notify(ITelegramBotClient botClient, int? executorID, Notification notification)
+    public static void Notify(ITelegramBotClient botClient, long executorID, Notification notification)
     {
         Trace.WriteLine($"\nNotify: {GetTypeOfNotifications(notification.notificationText)}");
         switch (GetTypeOfNotifications(notification.notificationText))
@@ -41,36 +41,36 @@ public class Notifications
                 {
                     if(notification.bankerID != null)
                         if (executorID != null)
-                            NewGiver(botClient, (int) executorID, (int) notification.bankerID,
-                                (int) notification.tableID);
+                            NewGiver(botClient,  executorID,  notification.bankerID,
+                                 notification.tableID);
                     if(notification.managerA_ID != null)
                         if (executorID != null)
-                            NewGiver(botClient, (int) executorID, (int) notification.managerA_ID,
-                                (int) notification.tableID);
+                            NewGiver(botClient,  executorID,  notification.managerA_ID,
+                                 notification.tableID);
                     if(notification.managerB_ID != null)
                         if (executorID != null)
-                            NewGiver(botClient, (int) executorID, (int) notification.managerB_ID,
-                                (int) notification.tableID);
+                            NewGiver(botClient,  executorID,  notification.managerB_ID,
+                                 notification.tableID);
                     if(notification.giverA_ID != null && 
                        notification.giverA_ID != executorID)
                         if (executorID != null)
-                            NewGiver(botClient, (int) executorID, (int) notification.giverA_ID,
-                                (int) notification.tableID);
+                            NewGiver(botClient,  executorID,  notification.giverA_ID,
+                                 notification.tableID);
                     if(notification.giverB_ID != null && 
                        notification.giverB_ID != executorID)
                         if (executorID != null)
-                            NewGiver(botClient, (int) executorID, (int) notification.giverB_ID,
-                                (int) notification.tableID);
+                            NewGiver(botClient,  executorID,  notification.giverB_ID,
+                                 notification.tableID);
                     if(notification.giverC_ID != null && 
                        notification.giverC_ID != executorID)
                         if (executorID != null)
-                            NewGiver(botClient, (int) executorID, (int) notification.giverC_ID,
-                                (int) notification.tableID);
+                            NewGiver(botClient,  executorID,  notification.giverC_ID,
+                                 notification.tableID);
                     if(notification.giverD_ID != null && 
                        notification.giverD_ID != executorID)
                         if (executorID != null)
-                            NewGiver(botClient, (int) executorID, (int) notification.giverD_ID,
-                                (int) notification.tableID);
+                            NewGiver(botClient,  executorID,  notification.giverD_ID,
+                                 notification.tableID);
                 }
                 break;
             case TypeOfNotifications.TableCompleted:
@@ -78,13 +78,13 @@ public class Notifications
                 {
                     if(notification.bankerID != null)
                         if (executorID != null)
-                            TableCompletedBanker(botClient, (int) executorID, notification);
-                    if(notification.managerA_ID != null)TableCompletedManager(botClient,(int) notification.managerA_ID, notification);
-                    if(notification.managerB_ID != null)TableCompletedManager(botClient,(int) notification.managerB_ID, notification);
-                    if(notification.giverA_ID != null)TableCompletedGiver(botClient,(int) notification.giverA_ID, notification);
-                    if(notification.giverB_ID != null)TableCompletedGiver(botClient,(int) notification.giverB_ID, notification);
-                    if(notification.giverC_ID != null)TableCompletedGiver(botClient,(int) notification.giverC_ID, notification);
-                    if(notification.giverD_ID != null)TableCompletedGiver(botClient,(int) notification.giverD_ID, notification);
+                            TableCompletedBanker(botClient,  executorID, notification);
+                    if(notification.managerA_ID != null)TableCompletedManager(botClient, notification.managerA_ID, notification);
+                    if(notification.managerB_ID != null)TableCompletedManager(botClient, notification.managerB_ID, notification);
+                    if(notification.giverA_ID != null)TableCompletedGiver(botClient, notification.giverA_ID, notification);
+                    if(notification.giverB_ID != null)TableCompletedGiver(botClient, notification.giverB_ID, notification);
+                    if(notification.giverC_ID != null)TableCompletedGiver(botClient, notification.giverC_ID, notification);
+                    if(notification.giverD_ID != null)TableCompletedGiver(botClient, notification.giverD_ID, notification);
                 }
                 break;
             case TypeOfNotifications.BannedAfterDayUnVerified:
@@ -98,20 +98,20 @@ public class Notifications
                 {
                     if(notification.giverA_ID != null)
                         if (executorID != null)
-                            GiverIsDeleted(botClient, (int) executorID, (int) notification.giverA_ID,
-                                (int) notification.tableID);
+                            GiverIsDeleted(botClient,  executorID,  notification.giverA_ID,
+                                 notification.tableID);
                     if(notification.giverB_ID != null)
                         if (executorID != null)
-                            GiverIsDeleted(botClient, (int) executorID, (int) notification.giverB_ID,
-                                (int) notification.tableID);
+                            GiverIsDeleted(botClient,  executorID,  notification.giverB_ID,
+                                 notification.tableID);
                     if(notification.giverC_ID != null)
                         if (executorID != null)
-                            GiverIsDeleted(botClient, (int) executorID, (int) notification.giverC_ID,
-                                (int) notification.tableID);
+                            GiverIsDeleted(botClient,  executorID,  notification.giverC_ID,
+                                 notification.tableID);
                     if(notification.giverD_ID != null)
                         if (executorID != null)
-                            GiverIsDeleted(botClient, (int) executorID, (int) notification.giverD_ID,
-                                (int) notification.tableID);
+                            GiverIsDeleted(botClient,  executorID,  notification.giverD_ID,
+                                 notification.tableID);
                 }
                 break;
             case TypeOfNotifications.GiverIsVerified:
@@ -119,50 +119,50 @@ public class Notifications
                 {
                     if(notification.giverA_ID != null)
                         if (executorID != null)
-                            GiverIsConfirmed(botClient, (int) executorID, (int) notification.giverA_ID,
-                                (int) notification.tableID);
+                            GiverIsConfirmed(botClient,  executorID,  notification.giverA_ID,
+                                 notification.tableID);
                     if(notification.giverB_ID != null)
                         if (executorID != null)
-                            GiverIsConfirmed(botClient, (int) executorID, (int) notification.giverB_ID,
-                                (int) notification.tableID);
+                            GiverIsConfirmed(botClient,  executorID,  notification.giverB_ID,
+                                 notification.tableID);
                     if(notification.giverC_ID != null)
                         if (executorID != null)
-                            GiverIsConfirmed(botClient, (int) executorID, (int) notification.giverC_ID,
-                                (int) notification.tableID);
+                            GiverIsConfirmed(botClient,  executorID,  notification.giverC_ID,
+                                 notification.tableID);
                     if(notification.giverD_ID != null)
                         if (executorID != null)
-                            GiverIsConfirmed(botClient, (int) executorID, (int) notification.giverD_ID,
-                                (int) notification.tableID);
+                            GiverIsConfirmed(botClient,  executorID,  notification.giverD_ID,
+                                 notification.tableID);
                 }
                 break;
             case TypeOfNotifications.Congrats2Invited:
-                if(notification.bankerID != null)Congrats2Givers(botClient, (int) notification.bankerID);
+                if(notification.bankerID != null)Congrats2Givers(botClient,  notification.bankerID);
                 break;
             case TypeOfNotifications.Congrats4Invited:
-                if(notification.bankerID != null)Congrats4Givers(botClient, (int) notification.bankerID);
+                if(notification.bankerID != null)Congrats4Givers(botClient,  notification.bankerID);
                 break;
             case TypeOfNotifications.Congrats6Invited:
-                if(notification.bankerID != null)Congrats6Givers(botClient, (int) notification.bankerID);
+                if(notification.bankerID != null)Congrats6Givers(botClient,  notification.bankerID);
                 break;
             case TypeOfNotifications.Congrats12Invited:
-                if(notification.bankerID != null)Congrats12Givers(botClient, (int) notification.bankerID);
+                if(notification.bankerID != null)Congrats12Givers(botClient,  notification.bankerID);
                 break;
             case TypeOfNotifications.NotifyBanker:
                 if (notification.bankerID != null)
                     if (executorID != null)
-                        NotifyBanker(botClient, (int) executorID, (int) notification.bankerID,
-                            (int) notification.tableID);
+                        NotifyBanker(botClient,  executorID,  notification.bankerID,
+                             notification.tableID);
                 break;
         }
     }
-    private static async void NewGiver(ITelegramBotClient botClient, int executorID, int userToNotify, int tableID)
+    private static async void NewGiver(ITelegramBotClient botClient, long executorID, long? userToNotify, int? tableID)
     {
         //Trace.WriteLine("\nNewGiver Method");
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         string caption = "";
-        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData, true);
-        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var userDataExecutor = await WebManager.SendData(new UserProfile( executorID), WebManager.RequestType.GetUserData, true);
+        var user = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         var tableData = await WebManager.SendData(new TableProfile(tableID), WebManager.RequestType.GetTableData, true);
         var tableType = tableData.tableData.tableType;
         long? chatId = null;
@@ -241,32 +241,11 @@ public class Notifications
                 replyMarkup: inlineKeyboard);
         }
     }
-    private static async void TableCompletedBanker(ITelegramBotClient botClient, int executorID, Notification notification)
+    private static async void TableCompletedBanker(ITelegramBotClient botClient, long executorID, Notification notification)
     {
-        //var userData = await WebManager.SendData(new UserProfile((int) notification.giverA_ID), WebManager.RequestType.GetUserData);
-        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData, true);
+        //var userData = await WebManager.SendData(new UserProfile( notification.giverA_ID), WebManager.RequestType.GetUserData);
+        var userDataExecutor = await WebManager.SendData(new UserProfile( executorID), WebManager.RequestType.GetUserData, true);
         UserData? tableData = null;
-        /*switch (notification.tableType)
-        {
-            case Table.TableType.copper:
-                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData);
-                break;
-            case Table.TableType.bronze:
-                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData);
-                break;
-            case Table.TableType.silver:
-                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData);
-                break;
-            case Table.TableType.gold:
-                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_gold), WebManager.RequestType.GetTableData);
-                break;
-            case Table.TableType.platinum:
-                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData);
-                break;
-            case Table.TableType.diamond:
-                tableData = await WebManager.SendData(new TableProfile(userData.playerData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData);
-                break;
-        }*/
         var tableType = notification.tableType;
         
         InlineKeyboardMarkup? inlineKeyboardExecutor = null;
@@ -417,9 +396,9 @@ public class Notifications
                 replyMarkup: inlineKeyboardExecutor);
         }
     }
-    private static async void TableCompletedManager(ITelegramBotClient botClient, int managerID, Notification notification)
+    private static async void TableCompletedManager(ITelegramBotClient botClient, long? managerID, Notification notification)
     {
-        var manager = await WebManager.SendData(new UserProfile((int) managerID), WebManager.RequestType.GetUserData, true);
+        var manager = await WebManager.SendData(new UserProfile( managerID), WebManager.RequestType.GetUserData, true);
         var tableType = notification.tableType;
         
         var giftSum = "";
@@ -532,12 +511,12 @@ public class Notifications
                 replyMarkup: inlineKeyboardManager);
         }
     }
-    private static async void TableCompletedGiver(ITelegramBotClient botClient, int giverID, Notification notification)
+    private static async void TableCompletedGiver(ITelegramBotClient botClient, long? giverID, Notification notification)
     {
 
         InlineKeyboardMarkup? inlineKeyboardGiver = null;
 
-        var giver = await WebManager.SendData(new UserProfile((int) giverID), WebManager.RequestType.GetUserData, true);
+        var giver = await WebManager.SendData(new UserProfile( giverID), WebManager.RequestType.GetUserData, true);
         var managerNum = 0;
         if (notification.giverA_ID == giverID) managerNum = 1;
         if (notification.giverB_ID == giverID) managerNum = 2;
@@ -626,12 +605,12 @@ public class Notifications
                 replyMarkup: inlineKeyboardGiver);
         }
     }
-    private static async void BannedAfterDayUnVerified(ITelegramBotClient botClient, int? userToNotify)
+    private static async void BannedAfterDayUnVerified(ITelegramBotClient botClient, long? userToNotify)
     {
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         string caption = "";
-        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var user = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         long? chatId = null;
         switch (user.playerData.lang)
         {
@@ -715,7 +694,7 @@ public class Notifications
                 replyMarkup: inlineKeyboard);
         }
     }
-    private static async void GiverIsDeleted(ITelegramBotClient botClient, int executorID, int userToNotify, int tableID)
+    private static async void GiverIsDeleted(ITelegramBotClient botClient, long executorID, long? userToNotify, int? tableID)
     {
         InlineKeyboardMarkup? inlineKeyboardGiver = null;
         InlineKeyboardMarkup? inlineKeyboardExecutor = null;
@@ -724,8 +703,8 @@ public class Notifications
         string captionGiver = "";
         string captionExecutor = "";
         
-        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData, true);
-        var giver = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var userDataExecutor = await WebManager.SendData(new UserProfile( executorID), WebManager.RequestType.GetUserData, true);
+        var giver = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         
         var tableData = await WebManager.SendData(new TableProfile(tableID), WebManager.RequestType.GetTableData, true);
         
@@ -899,13 +878,13 @@ public class Notifications
                 replyMarkup: inlineKeyboardGiver);
         }
     }
-    private static async void GiverIsConfirmed(ITelegramBotClient botClient, int executorID, int userToNotify, int tableID)
+    private static async void GiverIsConfirmed(ITelegramBotClient botClient, long executorID, long? userToNotify, int? tableID)
     {
         var tableData = await WebManager.SendData(new TableProfile(tableID), WebManager.RequestType.GetTableData, true);
         var tableType = tableData.tableData.tableType;
 
         InlineKeyboardMarkup? inlineKeyboardGiver = null;
-        var giver = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var giver = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         string captionGiver = "";
         long? chatIdGiver = null;
         switch (giver.playerData.lang)
@@ -974,7 +953,7 @@ public class Notifications
         }
         
         InlineKeyboardMarkup? inlineKeyboardExecutor = null;
-        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData, true);
+        var userDataExecutor = await WebManager.SendData(new UserProfile( executorID), WebManager.RequestType.GetUserData, true);
         string captionExecutor = "";
         long? chatIdExecutor = null;
         switch (userDataExecutor.playerData.lang)
@@ -1042,12 +1021,12 @@ public class Notifications
                 replyMarkup: inlineKeyboardExecutor);
         }
     }
-    private static async void Congrats2Givers(ITelegramBotClient botClient, int userToNotify)
+    private static async void Congrats2Givers(ITelegramBotClient botClient, long? userToNotify)
     {
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         string caption = "";
-        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var user = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         long? chatId = null;
         switch (user.playerData.lang)
         {
@@ -1123,12 +1102,12 @@ public class Notifications
                 replyMarkup: inlineKeyboard);
         }
     }
-    private static async void Congrats4Givers(ITelegramBotClient botClient, int userToNotify)
+    private static async void Congrats4Givers(ITelegramBotClient botClient, long? userToNotify)
     {
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         string caption = "";
-        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var user = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         long? chatId = null;
         switch (user.playerData.lang)
         {
@@ -1204,12 +1183,12 @@ public class Notifications
                 replyMarkup: inlineKeyboard);
         }
     }
-    private static async void Congrats6Givers(ITelegramBotClient botClient, int userToNotify)
+    private static async void Congrats6Givers(ITelegramBotClient botClient, long? userToNotify)
     {
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         string caption = "";
-        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var user = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         long? chatId = null;
         switch (user.playerData.lang)
         {
@@ -1285,12 +1264,12 @@ public class Notifications
                 replyMarkup: inlineKeyboard);
         }
     }
-    private static async void Congrats12Givers(ITelegramBotClient botClient, int userToNotify)
+    private static async void Congrats12Givers(ITelegramBotClient botClient, long? userToNotify)
     {
         InlineKeyboardMarkup? inlineKeyboard = null;
         Message? sentMessage;
         string caption = "";
-        var user = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var user = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         long? chatId = null;
         switch (user.playerData.lang)
         {
@@ -1366,7 +1345,7 @@ public class Notifications
                 replyMarkup: inlineKeyboard);
         }
     }
-    private static async void NotifyBanker(ITelegramBotClient botClient, int executorID, int userToNotify, int tableID)
+    private static async void NotifyBanker(ITelegramBotClient botClient, long executorID, long? userToNotify, int? tableID)
     {
         string path = null;
         
@@ -1384,8 +1363,8 @@ public class Notifications
         string captionBanker = "";
         string captionExecutor = "";
         
-        var userDataExecutor = await WebManager.SendData(new UserProfile((int) executorID), WebManager.RequestType.GetUserData, true);
-        var banker = await WebManager.SendData(new UserProfile((int) userToNotify), WebManager.RequestType.GetUserData, true);
+        var userDataExecutor = await WebManager.SendData(new UserProfile( executorID), WebManager.RequestType.GetUserData, true);
+        var banker = await WebManager.SendData(new UserProfile( userToNotify), WebManager.RequestType.GetUserData, true);
         
         var tableData = await WebManager.SendData(new TableProfile(tableID), WebManager.RequestType.GetTableData, true);
         
