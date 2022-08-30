@@ -4238,70 +4238,86 @@ public partial class Languages
         InlineKeyboardMarkup inlineKeyboard = null;
         Message? sentMessage;
         string? caption;
-        Trace.Write("https://t.me/originalCashFlowbot?start=R" + userData.id);
-        Message sentPhoto;
-        switch (userData.lang)
+        if (userData.id != 0)
         {
-            case "ru":
-                inlineKeyboard = new InlineKeyboardMarkup(
-                    new[]
-                    {
+            Trace.Write("https://t.me/originalCashFlowbot?start=R" + userData.id);
+            Message sentPhoto;
+            switch (userData.lang)
+            {
+                case "ru":
+                    inlineKeyboard = new InlineKeyboardMarkup(
                         new[]
                         {
-                            InlineKeyboardButtonMainMenuRU
-                        }
-                    });
-                caption = $"<b>🔗 Ваша реферальная ссылка:</b>" +
-                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
-                break;
-            case "eng":
-                inlineKeyboard = new InlineKeyboardMarkup(
-                    new[]
-                    {
+                            new[]
+                            {
+                                InlineKeyboardButtonMainMenuRU
+                            }
+                        });
+                    caption = $"<b>🔗 Ваша реферальная ссылка:</b>" +
+                              $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
+                    break;
+                case "eng":
+                    inlineKeyboard = new InlineKeyboardMarkup(
                         new[]
                         {
-                            InlineKeyboardButtonMainMenuENG
-                        }
-                    });
-                caption = $"<b>🔗 Your referral link:</b>" +
-                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
-                break;
-            case "fr":
-                inlineKeyboard = new InlineKeyboardMarkup(
-                    new[]
-                    {
+                            new[]
+                            {
+                                InlineKeyboardButtonMainMenuENG
+                            }
+                        });
+                    caption = $"<b>🔗 Your referral link:</b>" +
+                              $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
+                    break;
+                case "fr":
+                    inlineKeyboard = new InlineKeyboardMarkup(
                         new[]
                         {
-                            InlineKeyboardButtonMainMenuFR
-                        }
-                    });
-                caption = $"<b>🔗 Votre lien de référence:</b>" +
-                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
-                break;
-            case "de":
-                inlineKeyboard = new InlineKeyboardMarkup(
-                    new[]
-                    {
+                            new[]
+                            {
+                                InlineKeyboardButtonMainMenuFR
+                            }
+                        });
+                    caption = $"<b>🔗 Votre lien de référence:</b>" +
+                              $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
+                    break;
+                case "de":
+                    inlineKeyboard = new InlineKeyboardMarkup(
                         new[]
                         {
-                            InlineKeyboardButtonMainMenuDE
-                        }
-                    });
-                caption = $"<b>🔗 Ihr Empfehlungslink:</b>" +
-                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
-                break;
-            default:
-                inlineKeyboard = new InlineKeyboardMarkup(
-                    new[]
-                    {
+                            new[]
+                            {
+                                InlineKeyboardButtonMainMenuDE
+                            }
+                        });
+                    caption = $"<b>🔗 Ihr Empfehlungslink:</b>" +
+                              $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
+                    break;
+                default:
+                    inlineKeyboard = new InlineKeyboardMarkup(
                         new[]
                         {
-                            InlineKeyboardButtonMainMenuENG
-                        }
-                    });
-                caption = $"<b>🔗 Your referral link:</b>" +
-                          $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
-                break;
+                            new[]
+                            {
+                                InlineKeyboardButtonMainMenuENG
+                            }
+                        });
+                    caption = $"<b>🔗 Your referral link:</b>" +
+                              $"\n\nhttps://t.me/originalCashFlowbot?start=R{userData.id}";
+                    break;
+            }
+        }
+        else
+        {
+            inlineKeyboard = new InlineKeyboardMarkup(
+                new[]
+                {
+                    new[]
+                    {
+                        InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                    }
+                });
+            caption = "<b>An error occurred</b>\n\n" +
+                      "Please contact technical support and describe what caused this error";
         }
 
         using (Stream
