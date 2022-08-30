@@ -162,14 +162,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void RegLanguageMenu(ITelegramBotClient botClient, long chatId)
@@ -1344,14 +1375,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        }catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     private static string GetCallbackAddress(Table.TableType tableType)
@@ -1697,14 +1759,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        }catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void ShowTableAsImage(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -1842,15 +1935,46 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-            await botClient.EditMessageCaptionAsync(
-                callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                caption,
-                ParseMode.Html,
-                null,
-                inlineKeyboard
-            );
-            stream.Dispose();
+            try
+            {
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    caption,
+                    ParseMode.Html,
+                    null,
+                    inlineKeyboard
+                );
+                stream.Dispose();
+            }catch
+            {
+                Trace.Write("Handle Remaining Exceptions");
+                try
+                {
+                    await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                            }
+                        });
+                    caption = "<b>An error occurred</b>\n\n" +
+                              "Please contact technical support and describe what caused this error";
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
         }
         else
         {
@@ -1923,14 +2047,45 @@ public partial class Languages
                     callbackData.Message.MessageId,
                     media: new InputMediaPhoto(new InputMedia(stream, "media"))
                 ).WaitAsync(TimeSpan.FromSeconds(10));
-            await botClient.EditMessageCaptionAsync(
-                callbackData.Message.Chat.Id,
-                callbackData.Message.MessageId,
-                caption,
-                ParseMode.Html,
-                null,
-                inlineKeyboard
-            );
+            try
+            {
+                await botClient.EditMessageCaptionAsync(
+                    callbackData.Message.Chat.Id,
+                    callbackData.Message.MessageId,
+                    caption,
+                    ParseMode.Html,
+                    null,
+                    inlineKeyboard
+                );
+            }catch
+            {
+                Trace.Write("Handle Remaining Exceptions");
+                try
+                {
+                    await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                            }
+                        });
+                    caption = "<b>An error occurred</b>\n\n" +
+                              "Please contact technical support and describe what caused this error";
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
         }
     }
 
@@ -2065,14 +2220,46 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                await botClient.EditMessageCaptionAsync(
-                    callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    caption,
-                    ParseMode.Html,
-                    null,
-                    inlineKeyboard
-                );
+                try
+                {
+                    await botClient.EditMessageCaptionAsync(
+                        callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        caption,
+                        ParseMode.Html,
+                        null,
+                        inlineKeyboard
+                    );
+                }catch
+                {
+                    Trace.Write("Handle Remaining Exceptions");
+                    try
+                    {
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                }
+                            });
+                        caption = "<b>An error occurred</b>\n\n" +
+                                  "Please contact technical support and describe what caused this error";
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
                 break;
             }
             case Error.RefLinkInvalid:
@@ -2240,14 +2427,45 @@ public partial class Languages
                             callbackData.Message.MessageId,
                             media: new InputMediaPhoto(new InputMedia(stream, "media"))
                         ).WaitAsync(TimeSpan.FromSeconds(10));
-                    await botClient.EditMessageCaptionAsync(
-                        callbackData.Message.Chat.Id,
-                        callbackData.Message.MessageId,
-                        caption,
-                        ParseMode.Html,
-                        null,
-                        inlineKeyboard
-                    );
+                    try
+                    {
+                        await botClient.EditMessageCaptionAsync(
+                            callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId,
+                            caption,
+                            ParseMode.Html,
+                            null,
+                            inlineKeyboard
+                        );
+                    }catch
+                    {
+                        Trace.Write("Handle Remaining Exceptions");
+                        try
+                        {
+                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                            inlineKeyboard = new InlineKeyboardMarkup(
+                                new[]
+                                {
+                                    new[]
+                                    {
+                                        InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                    }
+                                });
+                            caption = "<b>An error occurred</b>\n\n" +
+                                      "Please contact technical support and describe what caused this error";
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
+                    }
                 }
 
                 break;
@@ -2349,6 +2567,7 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
+        try{
         await botClient.EditMessageCaptionAsync(
             callbackData.Message.Chat.Id,
             callbackData.Message.MessageId,
@@ -2357,6 +2576,35 @@ public partial class Languages
             null,
             inlineKeyboard
         );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void ConnectingError(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -2463,14 +2711,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Markdown,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Markdown,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void MainMenu(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -2613,14 +2892,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void MainMenu(ITelegramBotClient botClient, long chatId, string lang)
@@ -3864,18 +4174,54 @@ public partial class Languages
 
         using (Stream
                stream = System.IO.File.OpenRead(path))
+        {
             await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        }
+
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            ).WaitAsync(TimeSpan.FromSeconds(10));
+        }
+        catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+        
     }
 
     public static async void RefLink(ITelegramBotClient botClient, long chatId, UserProfile userData,
@@ -3964,14 +4310,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void Agreement(ITelegramBotClient botClient, long chatId,
@@ -4079,14 +4456,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void TechSupport(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -4224,14 +4632,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
 
@@ -4435,14 +4874,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     //TABLE MENU//
@@ -4650,14 +5120,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -4941,14 +5442,45 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.MarkdownV2,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.MarkdownV2,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     public static async void Warning(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -5051,14 +5583,45 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                await botClient.EditMessageCaptionAsync(
-                    callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    caption,
-                    ParseMode.Html,
-                    null,
-                    inlineKeyboard
-                );
+                try
+                {
+                    await botClient.EditMessageCaptionAsync(
+                        callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        caption,
+                        ParseMode.Html,
+                        null,
+                        inlineKeyboard
+                    );
+                } catch
+                {
+                    Trace.Write("Handle Remaining Exceptions");
+                    try
+                    {
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                }
+                            });
+                        caption = "<b>An error occurred</b>\n\n" +
+                                  "Please contact technical support and describe what caused this error";
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
 
                 break;
             }
@@ -5145,14 +5708,45 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                await botClient.EditMessageCaptionAsync(
-                    callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    caption,
-                    ParseMode.Html,
-                    null,
-                    inlineKeyboard
-                );
+                try
+                {
+                    await botClient.EditMessageCaptionAsync(
+                        callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        caption,
+                        ParseMode.Html,
+                        null,
+                        inlineKeyboard
+                    );
+                } catch
+                {
+                    Trace.Write("Handle Remaining Exceptions");
+                    try
+                    {
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                }
+                            });
+                        caption = "<b>An error occurred</b>\n\n" +
+                                  "Please contact technical support and describe what caused this error";
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
 
                 break;
             }
@@ -5239,14 +5833,46 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                await botClient.EditMessageCaptionAsync(
-                    callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    caption,
-                    ParseMode.Html,
-                    null,
-                    inlineKeyboard
-                );
+                try
+                {
+                    await botClient.EditMessageCaptionAsync(
+                        callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        caption,
+                        ParseMode.Html,
+                        null,
+                        inlineKeyboard
+                    );
+                } catch
+                {
+                    Trace.Write("Handle Remaining Exceptions");
+                    try
+                    {
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        inlineKeyboard = new InlineKeyboardMarkup(
+                            new[]
+                            {
+                                new[]
+                                {
+                                    InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                                }
+                            });
+                        caption = "<b>An error occurred</b>\n\n" +
+                                  "Please contact technical support and describe what caused this error";
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+
                 break;
             }
         }
@@ -5375,13 +6001,44 @@ public partial class Languages
                 callbackData.Message.MessageId,
                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Html,
-            null,
-            inlineKeyboard
-        );
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Html,
+                null,
+                inlineKeyboard
+            );
+        } catch
+        {
+            Trace.Write("Handle Remaining Exceptions");
+            try
+            {
+                await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                inlineKeyboard = new InlineKeyboardMarkup(
+                    new[]
+                    {
+                        new[]
+                        {
+                            InlineKeyboardButton.WithCallbackData("📲 Tech Support", "TechSupport"),
+                        }
+                    });
+                caption = "<b>An error occurred</b>\n\n" +
+                          "Please contact technical support and describe what caused this error";
+                await botClient.SendPhotoAsync(
+                    chatId,
+                    File.OpenRead(path),
+                    caption,
+                    ParseMode.Html,
+                    replyMarkup: inlineKeyboard
+                );
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 }
