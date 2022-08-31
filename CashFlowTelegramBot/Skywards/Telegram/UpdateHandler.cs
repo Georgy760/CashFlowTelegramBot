@@ -140,6 +140,20 @@ public static class UpdateHandlers
 
                         
                     }
+                    inlineKeyboard = new InlineKeyboardMarkup(
+                        new[]
+                        {
+                            new[]
+                            {
+                                InlineKeyboardButton.WithCallbackData("❌", "Close")
+                            }
+                        });
+                     await botClient.SendPhotoAsync(
+                         updateMessage.From.Id,
+                         File.OpenRead(path),
+                         "Update completed",
+                         ParseMode.Html,
+                         replyMarkup: inlineKeyboard);
                     Trace.WriteLine("\nUpdate Sent");
                 }
             }

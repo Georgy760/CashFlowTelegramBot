@@ -8,13 +8,13 @@ public class Exceptions
     {
         if (ex is AggregateException)
         {
-            Console.WriteLine("Handling: {0}", ex.Message);
+            //Console.WriteLine("Handling: {0}", ex.Message);
             return true;
         }
 
         if (ex is ApiRequestException)
         {
-            Console.WriteLine("Handling: {0}", ex.Message);
+            //Console.WriteLine("Handling: {0}", ex.Message);
             return true;
         }
 
