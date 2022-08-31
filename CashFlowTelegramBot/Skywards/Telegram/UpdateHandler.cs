@@ -124,12 +124,19 @@ public static class UpdateHandlers
                             chatID = chat.Result.Id;
                             if (chatID != null)
                             {
-                                await botClient.SendPhotoAsync(
-                                    chatID,
-                                    File.OpenRead(path),
-                                    message,
-                                    ParseMode.Html,
-                                    replyMarkup: inlineKeyboard);
+                                try
+                                {
+                                    await botClient.SendPhotoAsync(
+                                        chatID,
+                                        File.OpenRead(path),
+                                        message,
+                                        ParseMode.Html,
+                                        replyMarkup: inlineKeyboard);
+                                }
+                                catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
                             }
                         }
                         catch(AggregateException aex)
@@ -159,13 +166,16 @@ public static class UpdateHandlers
                                 InlineKeyboardButton.WithCallbackData("❌", "Close")
                             }
                         });
-                     await botClient.SendPhotoAsync(
-                         updateMessage.From.Id,
-                         File.OpenRead(path),
-                         "Update completed",
-                         ParseMode.Html,
-                         replyMarkup: inlineKeyboard);
-                    Trace.WriteLine("\nUpdate Sent");
+                    try
+                    {
+                        await botClient.SendPhotoAsync(
+                            updateMessage.From.Id,
+                            File.OpenRead(path),
+                            "Update completed",
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard);
+                        Trace.WriteLine("\nUpdate Sent");
+                    } catch{}
                 }
             }
         }
@@ -208,7 +218,11 @@ public static class UpdateHandlers
             if (updateMessage.From.Username != null)
             {
                 var error = await WebManager.SendData(user, WebManager.RequestType.RegisterWithRef, true);
-                await botClient.DeleteMessageAsync(updateMessage.Chat.Id, updateMessage.MessageId);
+                try
+                {
+                    await botClient.DeleteMessageAsync(updateMessage.Chat.Id, updateMessage.MessageId);
+                } catch{}
+
                 if (error.error.errorText != "RefLink invalid")
                 {
                     Languages.RegLanguageMenu(botClient, updateMessage.Chat.Id);
@@ -1798,7 +1812,11 @@ public static class UpdateHandlers
         {
             //--------REG_LANG--------
             case "Close":
-                await botClient.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
+                try
+                {
+                    await botClient.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
+                } catch{}
+
                 break;
             case "Reg_RUCaptcha":
                 await Languages.Captcha(botClient, chatId, callbackQuery);
@@ -2159,7 +2177,7 @@ public static class UpdateHandlers
                 )
             )
         };
-
+        
         await botClient.AnswerInlineQueryAsync(inlineQuery.Id,
             results,
             isPersonal: true,

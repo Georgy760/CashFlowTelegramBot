@@ -160,10 +160,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -180,18 +183,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -220,18 +226,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -259,14 +268,16 @@ public partial class Languages
                     InlineKeyboardButton.WithCallbackData("🇩🇪 Deutsch", "Reg_DECaptcha")
                 }
             });
-
-        var sentPhoto = await botClient.SendPhotoAsync(
-            chatId,
-            File.OpenRead(path)!,
-            "<b>🌐 Language menu:</b>" +
-            "\n\nClick the corresponding button to change the language:",
-            ParseMode.Html,
-            replyMarkup: inlineKeyboard);
+        try
+        {
+            var sentPhoto = await botClient.SendPhotoAsync(
+                chatId,
+                File.OpenRead(path)!,
+                "<b>🌐 Language menu:</b>" +
+                "\n\nClick the corresponding button to change the language:",
+                ParseMode.Html,
+                replyMarkup: inlineKeyboard);
+        } catch{}
     }
 
     public static async void GetUserData(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -1405,10 +1416,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -1425,18 +1439,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -1465,18 +1482,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -1821,10 +1841,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -1841,18 +1864,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -1881,18 +1907,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -2048,13 +2077,16 @@ public partial class Languages
                         });
                     caption = "<b>An error occurred</b>\n\n" +
                               "Please contact technical support and describe what caused this error";
-                    await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path),
-                        caption,
-                        ParseMode.Html,
-                        replyMarkup: inlineKeyboard
-                    );
+                    try
+                    {
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    } catch{}
                 }
                 catch
                 {
@@ -2089,13 +2121,16 @@ public partial class Languages
                         });
                     caption = "<b>An error occurred</b>\n\n" +
                               "Please contact technical support and describe what caused this error";
-                    await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path),
-                        caption,
-                        ParseMode.Html,
-                        replyMarkup: inlineKeyboard
-                    );
+                    try
+                    {
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    } catch{}
                 }
                 catch
                 {
@@ -2173,10 +2208,13 @@ public partial class Languages
             {
                 using (Stream
                        stream = System.IO.File.OpenRead(path))
-                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                        callbackData.Message.MessageId,
-                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                    try
+                    {
+                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId,
+                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                    } catch{}
             } catch
             {
                 Trace.Write("Handle Remaining Exceptions");
@@ -2193,13 +2231,16 @@ public partial class Languages
                         });
                     caption = "<b>An error occurred</b>\n\n" +
                               "Please contact technical support and describe what caused this error";
-                    await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path),
-                        caption,
-                        ParseMode.Html,
-                        replyMarkup: inlineKeyboard
-                    );
+                    try
+                    {
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    } catch{}
                 }
                 catch
                 {
@@ -2233,13 +2274,16 @@ public partial class Languages
                         });
                     caption = "<b>An error occurred</b>\n\n" +
                               "Please contact technical support and describe what caused this error";
-                    await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path),
-                        caption,
-                        ParseMode.Html,
-                        replyMarkup: inlineKeyboard
-                    );
+                    try
+                    {
+                        await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    } catch{}
                 }
                 catch
                 {
@@ -2378,10 +2422,14 @@ public partial class Languages
                 {
                     using (Stream
                            stream = System.IO.File.OpenRead(path))
-                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                            callbackData.Message.MessageId,
-                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                        try
+                        {
+                            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                                callbackData.Message.MessageId,
+                                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                            ).WaitAsync(TimeSpan.FromSeconds(10));
+                        } catch{}
+
                 } catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
@@ -2398,13 +2446,16 @@ public partial class Languages
                             });
                         caption = "<b>An error occurred</b>\n\n" +
                                   "Please contact technical support and describe what caused this error";
-                        await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path),
-                            caption,
-                            ParseMode.Html,
-                            replyMarkup: inlineKeyboard
-                        );
+                        try
+                        {
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        } catch{}
                     }
                     catch
                     {
@@ -2438,13 +2489,16 @@ public partial class Languages
                             });
                         caption = "<b>An error occurred</b>\n\n" +
                                   "Please contact technical support and describe what caused this error";
-                        await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path),
-                            caption,
-                            ParseMode.Html,
-                            replyMarkup: inlineKeyboard
-                        );
+                        try
+                        {
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        } catch{}
                     }
                     catch
                     {
@@ -2523,13 +2577,17 @@ public partial class Languages
                         break;
                 }
 
-                sentMessage = await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    sentMessage = await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
+
                 break;
             case Error.UserWithoutUsername:
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -2603,13 +2661,16 @@ public partial class Languages
 
                 if (callbackData.Data == "null")
                 {
-                    sentMessage = await botClient.SendPhotoAsync(
-                        chatId,
-                        File.OpenRead(path),
-                        caption,
-                        ParseMode.Html,
-                        replyMarkup: inlineKeyboard
-                    );
+                    try
+                    {
+                        sentMessage = await botClient.SendPhotoAsync(
+                            chatId,
+                            File.OpenRead(path),
+                            caption,
+                            ParseMode.Html,
+                            replyMarkup: inlineKeyboard
+                        );
+                    } catch{}
                 }
                 else
                 {
@@ -2617,10 +2678,13 @@ public partial class Languages
                     {
                         using (Stream
                                stream = System.IO.File.OpenRead(path))
-                            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                                callbackData.Message.MessageId,
-                                media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                            ).WaitAsync(TimeSpan.FromSeconds(10));
+                            try
+                            {
+                                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                                    callbackData.Message.MessageId,
+                                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                                ).WaitAsync(TimeSpan.FromSeconds(10));
+                            } catch{}
                     } catch
                     {
                         Trace.Write("Handle Remaining Exceptions");
@@ -2637,13 +2701,16 @@ public partial class Languages
                                 });
                             caption = "<b>An error occurred</b>\n\n" +
                                       "Please contact technical support and describe what caused this error";
-                            await botClient.SendPhotoAsync(
-                                chatId,
-                                File.OpenRead(path),
-                                caption,
-                                ParseMode.Html,
-                                replyMarkup: inlineKeyboard
-                            );
+                            try
+                            {
+                                await botClient.SendPhotoAsync(
+                                    chatId,
+                                    File.OpenRead(path),
+                                    caption,
+                                    ParseMode.Html,
+                                    replyMarkup: inlineKeyboard
+                                );
+                            } catch{}
                         }
                         catch
                         {
@@ -2677,13 +2744,16 @@ public partial class Languages
                                 });
                             caption = "<b>An error occurred</b>\n\n" +
                                       "Please contact technical support and describe what caused this error";
-                            await botClient.SendPhotoAsync(
-                                chatId,
-                                File.OpenRead(path),
-                                caption,
-                                ParseMode.Html,
-                                replyMarkup: inlineKeyboard
-                            );
+                            try
+                            {
+                                await botClient.SendPhotoAsync(
+                                    chatId,
+                                    File.OpenRead(path),
+                                    caption,
+                                    ParseMode.Html,
+                                    replyMarkup: inlineKeyboard
+                                );
+                            } catch{}
                         }
                         catch
                         {
@@ -2789,10 +2859,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -2809,18 +2882,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try{
@@ -2848,18 +2924,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -2965,10 +3044,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -2985,18 +3067,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -3025,18 +3110,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -3178,10 +3266,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -3198,18 +3289,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -3238,18 +3332,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -3386,13 +3483,16 @@ public partial class Languages
                 break;
         }
 
-        sentMessage = await botClient.SendPhotoAsync(
-            chatId,
-            File.OpenRead(path),
-            caption,
-            ParseMode.Html,
-            replyMarkup: inlineKeyboard
-        );
+        try
+        {
+            sentMessage = await botClient.SendPhotoAsync(
+                chatId,
+                File.OpenRead(path),
+                caption,
+                ParseMode.Html,
+                replyMarkup: inlineKeyboard
+            );
+        } catch{}
     }
 
     public static async void Status(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -4477,10 +4577,13 @@ public partial class Languages
             using (Stream
                    stream = System.IO.File.OpenRead(path))
             {
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
             }
         } catch
         {
@@ -4498,18 +4601,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -4539,18 +4645,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
         
     }
@@ -4676,18 +4785,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -4716,18 +4828,22 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -4854,18 +4970,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -4894,18 +5013,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -5042,10 +5164,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -5062,18 +5187,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -5102,18 +5230,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -5316,10 +5447,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -5336,18 +5470,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -5376,18 +5513,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -5594,10 +5734,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -5614,18 +5757,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -5654,18 +5800,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -5948,10 +6097,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -5968,18 +6120,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -6008,18 +6163,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 
@@ -6141,13 +6299,16 @@ public partial class Languages
                                 });
                             caption = "<b>An error occurred</b>\n\n" +
                                       "Please contact technical support and describe what caused this error";
-                            await botClient.SendPhotoAsync(
-                                chatId,
-                                File.OpenRead(path),
-                                caption,
-                                ParseMode.Html,
-                                replyMarkup: inlineKeyboard
-                            );
+                            try
+                            {
+                                await botClient.SendPhotoAsync(
+                                    chatId,
+                                    File.OpenRead(path),
+                                    caption,
+                                    ParseMode.Html,
+                                    replyMarkup: inlineKeyboard
+                                );
+                            } catch{}
                         }
                         catch
                         {
@@ -6181,13 +6342,16 @@ public partial class Languages
                             });
                         caption = "<b>An error occurred</b>\n\n" +
                                   "Please contact technical support and describe what caused this error";
-                        await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path),
-                            caption,
-                            ParseMode.Html,
-                            replyMarkup: inlineKeyboard
-                        );
+                        try
+                        {
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        } catch{}
                     }
                     catch
                     {
@@ -6278,10 +6442,13 @@ public partial class Languages
                 {
                     using (Stream
                            stream = System.IO.File.OpenRead(path))
-                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                            callbackData.Message.MessageId,
-                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                        try
+                        {
+                            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                                callbackData.Message.MessageId,
+                                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                            ).WaitAsync(TimeSpan.FromSeconds(10));
+                        } catch{}
                 } catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
@@ -6298,13 +6465,16 @@ public partial class Languages
                             });
                         caption = "<b>An error occurred</b>\n\n" +
                                   "Please contact technical support and describe what caused this error";
-                        await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path),
-                            caption,
-                            ParseMode.Html,
-                            replyMarkup: inlineKeyboard
-                        );
+                        try
+                        {
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        } catch{}
                     }
                     catch
                     {
@@ -6338,13 +6508,16 @@ public partial class Languages
                             });
                         caption = "<b>An error occurred</b>\n\n" +
                                   "Please contact technical support and describe what caused this error";
-                        await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path),
-                            caption,
-                            ParseMode.Html,
-                            replyMarkup: inlineKeyboard
-                        );
+                        try
+                        {
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        } catch{}
                     }
                     catch
                     {
@@ -6435,10 +6608,13 @@ public partial class Languages
                 {
                     using (Stream
                            stream = System.IO.File.OpenRead(path))
-                        await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                            callbackData.Message.MessageId,
-                            media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                        ).WaitAsync(TimeSpan.FromSeconds(10));
+                        try
+                        {
+                            await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                                callbackData.Message.MessageId,
+                                media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                            ).WaitAsync(TimeSpan.FromSeconds(10));
+                        } catch{}
                 } catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
@@ -6455,13 +6631,16 @@ public partial class Languages
                             });
                         caption = "<b>An error occurred</b>\n\n" +
                                   "Please contact technical support and describe what caused this error";
-                        await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path),
-                            caption,
-                            ParseMode.Html,
-                            replyMarkup: inlineKeyboard
-                        );
+                        try
+                        {
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        } catch{}
                     }
                     catch
                     {
@@ -6495,13 +6674,16 @@ public partial class Languages
                             });
                         caption = "<b>An error occurred</b>\n\n" +
                                   "Please contact technical support and describe what caused this error";
-                        await botClient.SendPhotoAsync(
-                            chatId,
-                            File.OpenRead(path),
-                            caption,
-                            ParseMode.Html,
-                            replyMarkup: inlineKeyboard
-                        );
+                        try
+                        {
+                            await botClient.SendPhotoAsync(
+                                chatId,
+                                File.OpenRead(path),
+                                caption,
+                                ParseMode.Html,
+                                replyMarkup: inlineKeyboard
+                            );
+                        } catch{}
                     }
                     catch
                     {
@@ -6635,10 +6817,13 @@ public partial class Languages
         {
             using (Stream
                    stream = System.IO.File.OpenRead(path))
-                await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
-                    callbackData.Message.MessageId,
-                    media: new InputMediaPhoto(new InputMedia(stream, "media"))
-                ).WaitAsync(TimeSpan.FromSeconds(10));
+                try
+                {
+                    await botClient.EditMessageMediaAsync(callbackData.Message.Chat.Id,
+                        callbackData.Message.MessageId,
+                        media: new InputMediaPhoto(new InputMedia(stream, "media"))
+                    ).WaitAsync(TimeSpan.FromSeconds(10));
+                } catch{}
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
@@ -6655,18 +6840,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
 
         try
@@ -6695,18 +6883,21 @@ public partial class Languages
                     });
                 caption = "<b>An error occurred</b>\n\n" +
                           "Please contact technical support and describe what caused this error";
-                await botClient.SendPhotoAsync(
-                    chatId,
-                    File.OpenRead(path),
-                    caption,
-                    ParseMode.Html,
-                    replyMarkup: inlineKeyboard
-                );
+                try
+                {
+                    await botClient.SendPhotoAsync(
+                        chatId,
+                        File.OpenRead(path),
+                        caption,
+                        ParseMode.Html,
+                        replyMarkup: inlineKeyboard
+                    );
+                } catch{}
             }
-            catch
-            {
-                // ignored
-            }
+            catch (ApiRequestException apiRequestException)
+                                {
+                                    //
+                                }
         }
     }
 }
