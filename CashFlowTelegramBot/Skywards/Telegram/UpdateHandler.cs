@@ -134,6 +134,17 @@ public static class UpdateHandlers
                         }
                         catch(AggregateException aex)
                         {
+                            try
+                            {
+                                var user = await WebManager.SendData(new UserProfile(chatID),
+                                    WebManager.RequestType.GetUserData, false);
+                                Trace.WriteLine($"\nCannot send message to - ID:[{user.playerData.id}] username: [@{user.playerData.username}]");
+                            }
+                            catch
+                            {
+                                Trace.WriteLine($"Someting wrong with ID: [{chatID}]");
+                            }
+
                             //Trace.WriteLine("Handle Remaining Exceptions");
                             aex.Handle(ex => Exceptions.HandleException(ex));
                         }
@@ -1878,7 +1889,8 @@ public static class UpdateHandlers
             //-//------SilverTable------\\-\\
             case "SilverTable":
                 Trace.Write("TableSelected: Silver");
-                if (userData.playerData.invited >= 2)
+                if (userData.playerData.invited >= 2 ||
+                    userData.playerData.level_tableType.CompareTo(Table.TableType.silver) >= 0)
                 {
                     if (userData.playerData.UserTableList.table_ID_silver == null)
                     {

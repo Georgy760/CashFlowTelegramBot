@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2f6e78d2-aa43-4927-abc0-70443e90bdb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Skywards/Exceptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Exceptions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
@@ -104,6 +103,8 @@
       <workItem from="1661838311952" duration="66000" />
       <workItem from="1661844657012" duration="28212000" />
       <workItem from="1661936299789" duration="720000" />
+      <workItem from="1661938328179" duration="93000" />
+      <workItem from="1661938589065" duration="1626000" />
     </task>
     <servers />
   </component>
