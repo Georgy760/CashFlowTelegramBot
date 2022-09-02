@@ -53,7 +53,7 @@ Trace.Listeners.Add(twtl);
 Trace.Listeners.Add(ctl);
 Trace.AutoFlush = true;
 
-Trace.WriteLine("The first line to be in the logfile and on the console.");
+Trace.WriteLine("\nThe first line to be in the logfile and on the console.");
 
 
 
@@ -67,7 +67,7 @@ if (filestream != null)
 }
 */
 
-Console.WriteLine($"Start listening for @{me.Username}");
+Console.WriteLine($"\nStart listening for @{me.Username}");
 Console.ReadLine();
 
 

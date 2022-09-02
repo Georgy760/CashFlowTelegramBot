@@ -169,7 +169,7 @@ public class WebManager
             UserData = await SetResponseData(result, debug);
         }
 
-        if(debug) Trace.Write(httpResponse.StatusCode);
+        if(debug) Trace.Write($"\n{httpResponse.StatusCode}");
         if (httpResponse.StatusCode == HttpStatusCode.OK)
         {
         }

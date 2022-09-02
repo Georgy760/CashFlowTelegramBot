@@ -643,14 +643,15 @@ public partial class Languages
                                 }
                             });
 
-                    caption = "<b>📋 Информация о пользователе:</b>" +
-                              "\n" +
-                              $"\n<b>Роль:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
-                              $"\n<b>Ник:</b> @{SearchedUser.username}" +
-                              $"\n<b>Имя пользователя:</b> {firstName} {lastName}" +
-                              $"\n<b>Лично приглашенных:</b> {SearchedUser.invited}" +
-                              "\n" +
-                              $"\n<b>Пригласил:</b> @{invitedBy.playerData.username}";
+                    if (invitedBy != null)
+                        caption = "<b>📋 Информация о пользователе:</b>" +
+                                  "\n" +
+                                  $"\n<b>Роль:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
+                                  $"\n<b>Ник:</b> @{SearchedUser.username}" +
+                                  $"\n<b>Имя пользователя:</b> {firstName} {lastName}" +
+                                  $"\n<b>Лично приглашенных:</b> {SearchedUser.invited}" +
+                                  "\n" +
+                                  $"\n<b>Пригласил:</b> @{invitedBy.playerData.username}";
                     break;
                 }
                 case "eng":
@@ -873,14 +874,15 @@ public partial class Languages
                                 }
                             });
 
-                    caption = "<b>📋 User info:</b>" +
-                              "\n" +
-                              $"\n<b>Role:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
-                              $"\n<b>Nickname:</b> @{SearchedUser.username}" +
-                              $"\n<b>Username:</b> {firstName} {lastName}" +
-                              $"\n<b>Personally invited:</b> {SearchedUser.invited}" +
-                              "\n" +
-                              $"\n<b>Invited by:</b> @{invitedBy.playerData.username}";
+                    if (invitedBy != null)
+                        caption = "<b>📋 User info:</b>" +
+                                  "\n" +
+                                  $"\n<b>Role:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
+                                  $"\n<b>Nickname:</b> @{SearchedUser.username}" +
+                                  $"\n<b>Username:</b> {firstName} {lastName}" +
+                                  $"\n<b>Personally invited:</b> {SearchedUser.invited}" +
+                                  "\n" +
+                                  $"\n<b>Invited by:</b> @{invitedBy.playerData.username}";
 
                     break;
                 }
@@ -1104,14 +1106,15 @@ public partial class Languages
                                 }
                             });
 
-                    caption = "<b>📋 Informations de l'utilisateur:</b>" +
-                              "\n" +
-                              $"\n<b>Rôle:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
-                              $"\n<b>Surnom:</b> @{SearchedUser.username}" +
-                              $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" +
-                              $"\n<b>invité personnellement:</b> {SearchedUser.invited}" +
-                              "\n" +
-                              $"\n<b>inviter par:</b> @{invitedBy.playerData.username}";
+                    if (invitedBy != null)
+                        caption = "<b>📋 Informations de l'utilisateur:</b>" +
+                                  "\n" +
+                                  $"\n<b>Rôle:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
+                                  $"\n<b>Surnom:</b> @{SearchedUser.username}" +
+                                  $"\n<b>Nom d'utilisateur:</b> {firstName} {lastName}" +
+                                  $"\n<b>invité personnellement:</b> {SearchedUser.invited}" +
+                                  "\n" +
+                                  $"\n<b>inviter par:</b> @{invitedBy.playerData.username}";
                     break;
                 }
                 case "de":
@@ -1333,14 +1336,15 @@ public partial class Languages
                                     InlineKeyboardButton.WithCallbackData("🗂 Hauptmenü", "MainMenu")
                                 }
                             });
-                    caption = "<b>📋 Benutzerinformation:</b>" +
-                              "\n" +
-                              $"\n<b>Rolle:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
-                              $"\n<b>Spitzname:</b> @{SearchedUser.username}" +
-                              $"\n<b>Benutzername:</b> {firstName} {lastName}" +
-                              $"\n<b>Persönlich eingeladen:</b> {SearchedUser.invited}" +
-                              "\n" +
-                              $"\n<b>ingeladen von:</b> @{invitedBy.playerData.username}";
+                    if (invitedBy != null)
+                        caption = "<b>📋 Benutzerinformation:</b>" +
+                                  "\n" +
+                                  $"\n<b>Rolle:</b> {SearchedUser.GetTableRole(lang, tableType) + searchedUserRole}" +
+                                  $"\n<b>Spitzname:</b> @{SearchedUser.username}" +
+                                  $"\n<b>Benutzername:</b> {firstName} {lastName}" +
+                                  $"\n<b>Persönlich eingeladen:</b> {SearchedUser.invited}" +
+                                  "\n" +
+                                  $"\n<b>ingeladen von:</b> @{invitedBy.playerData.username}";
 
                     break;
                 }
@@ -2984,7 +2988,7 @@ public partial class Languages
                         }
 
                         caption =
-                            $"🤷 Для открытия данного стола Вам необходимо пригласить на Бронзовый стол еще {toInvite} игроков";
+                            $"🤷 Для открытия данного стола Вам необходимо пригласить на Бронзовый стол еще {toInvite} игроков или пройти стол уровнем ниже";
                         break;
                     }
 
@@ -3137,11 +3141,11 @@ public partial class Languages
         string? caption;
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images/MainMenu/mainMenu.png");
+                @"Images/MainMenu/mainMenuImage.png");
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                @"Images\MainMenu\mainMenu.png");
+                @"Images\MainMenu\mainMenuImage.png");
         Message? sentPhoto;
         switch (lang)
         {
@@ -5284,7 +5288,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("💠 Правила CASH FLOW",
-                                "https://telegra.ph/Pravila-Cash-Flow-07-21")
+                                "https://telegra.ph/PRAVILA-CASH-FLOW-08-07")
                         },
                         new[]
                         {
@@ -5293,7 +5297,7 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("👥 Роли", "https://telegra.ph/Roli-07-21")
+                            InlineKeyboardButton.WithUrl("👥 Роли", "https://telegra.ph/Roli-v-CASH-FLOW-08-07")
                         },
                         new[]
                         {
@@ -5318,7 +5322,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("💠 CASH FLOW Rules",
-                                "https://telegra.ph/Cash-Flow-Rules-07-21")
+                                "https://telegra.ph/RULES-09-01-9")
                         },
                         new[]
                         {
@@ -5327,7 +5331,7 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("👥 Roles", "https://telegra.ph/Roles-07-21")
+                            InlineKeyboardButton.WithUrl("👥 Roles", "https://telegra.ph/ROLES-09-01")
                         },
                         new[]
                         {
@@ -5353,7 +5357,7 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("💠 Règles CASH FLOW",
-                                "https://telegra.ph/Cash-Flow-r%C3%A8gles-07-21")
+                                "https://telegra.ph/RÈGLES-09-01")
                         },
                         new[]
                         {
@@ -5362,7 +5366,7 @@ public partial class Languages
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("👥 RÔLE ", "https://telegra.ph/R%C3%94LE-07-21")
+                            InlineKeyboardButton.WithUrl("👥 RÔLE ", "https://telegra.ph/ROLES-09-01-2")
                         },
                         new[]
                         {
@@ -5388,16 +5392,16 @@ public partial class Languages
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("💠 CASH FLOW Regeln",
-                                "https://telegra.ph/Cashflow-Regeln-07-21")
+                                "https://telegra.ph/REGELN-09-01")
                         },
                         new[]
                         {
                             InlineKeyboardButton.WithUrl("📘 Tabellen und Bedingungen",
-                                "https://google.com")
+                                "https://telegra.ph/TABELLEN-UND-KONDITIONEN-09-01")
                         },
                         new[]
                         {
-                            InlineKeyboardButton.WithUrl("👥 Rollen", "https://telegra.ph/3-ROLLEN-07-21")
+                            InlineKeyboardButton.WithUrl("👥 Rollen", "https://telegra.ph/ROLLEN-09-01")
                         },
                         new[]
                         {

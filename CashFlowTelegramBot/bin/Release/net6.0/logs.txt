@@ -1,0 +1,4 @@
+
+The first line to be in the logfile and on the console.
+
+The first line to be in the logfile and on the console.

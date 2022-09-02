@@ -1,0 +1,7 @@
+
+The first line to be in the logfile and on the console.
+Telegram API Error:
+[409]
+Conflict: terminated by other getUpdates request; make sure that only one bot instance is runningTelegram API Error:
+[409]
+Conflict: terminated by other getUpdates request; make sure that only one bot instance is running

@@ -16,3 +16,12 @@ E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\obj\Release\net6.0\ref
 E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\obj\Release\net6.0\CashFlowTelegramBot.pdb
 E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\obj\Release\net6.0\CashFlowTelegramBot.genruntimeconfig.cache
 E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\obj\Release\net6.0\ref\CashFlowTelegramBot.dll
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\SkiaSharp.dll
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\runtimes\linux-arm\native\libSkiaSharp.so
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\runtimes\linux-arm64\native\libSkiaSharp.so
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\runtimes\linux-musl-x64\native\libSkiaSharp.so
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\runtimes\linux-x64\native\libSkiaSharp.so
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\runtimes\osx\native\libSkiaSharp.dylib
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\runtimes\win-arm64\native\libSkiaSharp.dll
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\runtimes\win-x64\native\libSkiaSharp.dll
+E:\user\Documents\CashFlowTelegramBot\CashFlowTelegramBot\bin\Release\net6.0\runtimes\win-x86\native\libSkiaSharp.dll

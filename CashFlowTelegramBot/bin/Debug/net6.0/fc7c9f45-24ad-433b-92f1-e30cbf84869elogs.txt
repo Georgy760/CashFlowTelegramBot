@@ -1,0 +1,209 @@
+
+The first line to be in the logfile and on the console.
+Telegram API Error:
+[409]
+Conflict: terminated by other getUpdates request; make sure that only one bot instance is running
+CallbackQuery.from.Username : GeorgyK1
+CallbackQuery.from.Id : [237487193]237487193
+CallbackQuery.Data : ChooseTable
+JSON: {
+  "Type": "GetUserData",
+  "User": {
+    "giftsReceived": 0,
+    "invited": 0,
+    "team": 0,
+    "id": 237487193,
+    "username": "GeorgyK1",
+    "refId": null,
+    "invitedBy": null,
+    "lang": null,
+    "verf": false,
+    "UserTableList": null,
+    "level_tableType": 0
+  },
+  "Table": null,
+  "UserTableList": null
+}
+Response: {"userProfile":{"id":"237487193","username":"GeorgyK1","refId":"0","invitedBy":"BotFather","lang":"ru","userTableList":{"id":"1251","userID":"237487193","table_ID_copper":null,"copperTableRole":null,"table_ID_bronze":null,"bronzeTableRole":null,"table_ID_silver":null,"silverTableRole":null,"table_ID_gold":null,"goldTableRole":null,"table_ID_platinum":null,"platinumTableRole":null,"table_ID_diamond":null,"diamondTableRole":null},"verf":0,"level_tableType":"copper","invited":0,"team":0,"giftsReceived":"0"},"tableProfile":null,"notification":null,"error":{"errorText":"empty","isError":false},"updateData":null}
+--------------
+userProfile:
+--------------
+
+"id": "237487193"
+"username": "GeorgyK1"
+"refId": "0"
+"invitedBy": "BotFather"
+"lang": "ru"
+"userTableList": {
+  "id": "1251",
+  "userID": "237487193",
+  "table_ID_copper": null,
+  "copperTableRole": null,
+  "table_ID_bronze": null,
+  "bronzeTableRole": null,
+  "table_ID_silver": null,
+  "silverTableRole": null,
+  "table_ID_gold": null,
+  "goldTableRole": null,
+  "table_ID_platinum": null,
+  "platinumTableRole": null,
+  "table_ID_diamond": null,
+  "diamondTableRole": null
+}
+"verf": 0
+"level_tableType": "copper"
+"invited": 0
+"team": 0
+"giftsReceived": "0"
+--------------
+userProfile->userTableList:
+--------------
+
+"id": "1251"
+"userID": "237487193"
+"table_ID_copper": null
+"copperTableRole": null
+"table_ID_bronze": null
+"bronzeTableRole": null
+"table_ID_silver": null
+"silverTableRole": null
+"table_ID_gold": null
+"goldTableRole": null
+"table_ID_platinum": null
+"platinumTableRole": null
+"table_ID_diamond": null
+"diamondTableRole": null
+-----------------------------------------------------------------
+--------------------------UserTableList--------------------------
+-----------------------------------------------------------------
+ID: 1251
+userID: 237487193
+table_ID_copper: 
+copperTableRole: 
+table_ID_bronze: 
+bronzeTableRole: 
+table_ID_silver: 
+silverTableRole: 
+table_ID_gold: 
+goldTableRole: 
+table_ID_platinum: 
+platinumTableRole: 
+table_ID_diamond: 
+---------------------------------------------------------------
+--------------------------UserProfile--------------------------
+---------------------------------------------------------------
+ID: 237487193
+Username: GeorgyK1
+RefId: 0
+InvitedBy: BotFather
+Lang: ru
+level_tableType: copper
+tableRole: 
+Invited: 0
+OK
+---------------------------------------------------
+Triggered by: [237487193] GeorgyK1 at 9/2/2022 11:47:43 AM
+CallBackQuery: ChooseTable
+---------------------------------------------------ChooseTable
+CallbackQuery.from.Username : GeorgyK1
+CallbackQuery.from.Id : [237487193]237487193
+CallbackQuery.Data : MainMenu
+JSON: {
+  "Type": "GetUserData",
+  "User": {
+    "giftsReceived": 0,
+    "invited": 0,
+    "team": 0,
+    "id": 237487193,
+    "username": "GeorgyK1",
+    "refId": null,
+    "invitedBy": null,
+    "lang": null,
+    "verf": false,
+    "UserTableList": null,
+    "level_tableType": 0
+  },
+  "Table": null,
+  "UserTableList": null
+}
+Response: {"userProfile":{"id":"237487193","username":"GeorgyK1","refId":"0","invitedBy":"BotFather","lang":"ru","userTableList":{"id":"1251","userID":"237487193","table_ID_copper":null,"copperTableRole":null,"table_ID_bronze":null,"bronzeTableRole":null,"table_ID_silver":null,"silverTableRole":null,"table_ID_gold":null,"goldTableRole":null,"table_ID_platinum":null,"platinumTableRole":null,"table_ID_diamond":null,"diamondTableRole":null},"verf":0,"level_tableType":"copper","invited":0,"team":0,"giftsReceived":"0"},"tableProfile":null,"notification":null,"error":{"errorText":"empty","isError":false},"updateData":null}
+--------------
+userProfile:
+--------------
+
+"id": "237487193"
+"username": "GeorgyK1"
+"refId": "0"
+"invitedBy": "BotFather"
+"lang": "ru"
+"userTableList": {
+  "id": "1251",
+  "userID": "237487193",
+  "table_ID_copper": null,
+  "copperTableRole": null,
+  "table_ID_bronze": null,
+  "bronzeTableRole": null,
+  "table_ID_silver": null,
+  "silverTableRole": null,
+  "table_ID_gold": null,
+  "goldTableRole": null,
+  "table_ID_platinum": null,
+  "platinumTableRole": null,
+  "table_ID_diamond": null,
+  "diamondTableRole": null
+}
+"verf": 0
+"level_tableType": "copper"
+"invited": 0
+"team": 0
+"giftsReceived": "0"
+--------------
+userProfile->userTableList:
+--------------
+
+"id": "1251"
+"userID": "237487193"
+"table_ID_copper": null
+"copperTableRole": null
+"table_ID_bronze": null
+"bronzeTableRole": null
+"table_ID_silver": null
+"silverTableRole": null
+"table_ID_gold": null
+"goldTableRole": null
+"table_ID_platinum": null
+"platinumTableRole": null
+"table_ID_diamond": null
+"diamondTableRole": null
+-----------------------------------------------------------------
+--------------------------UserTableList--------------------------
+-----------------------------------------------------------------
+ID: 1251
+userID: 237487193
+table_ID_copper: 
+copperTableRole: 
+table_ID_bronze: 
+bronzeTableRole: 
+table_ID_silver: 
+silverTableRole: 
+table_ID_gold: 
+goldTableRole: 
+table_ID_platinum: 
+platinumTableRole: 
+table_ID_diamond: 
+---------------------------------------------------------------
+--------------------------UserProfile--------------------------
+---------------------------------------------------------------
+ID: 237487193
+Username: GeorgyK1
+RefId: 0
+InvitedBy: BotFather
+Lang: ru
+level_tableType: copper
+tableRole: 
+Invited: 0
+OK
+---------------------------------------------------
+Triggered by: [237487193] GeorgyK1 at 9/2/2022 11:47:44 AM
+CallBackQuery: MainMenu
+---------------------------------------------------
