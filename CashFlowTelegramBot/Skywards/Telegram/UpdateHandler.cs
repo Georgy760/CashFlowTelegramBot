@@ -539,7 +539,34 @@ public static class UpdateHandlers
         Trace.Write($"\nCallbackQuery.from.Id : [{ callbackQuery.From.Id}]" + callbackQuery.From.Id);
         Trace.Write("\nCallbackQuery.Data : " + callbackQuery.Data);
         var user = new UserProfile(callbackQuery.From.Id, callbackQuery.From.Username!);
-        var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData, true);
+        var userData = await WebManager.SendData(user, WebManager.RequestType.GetUserData, false);
+        var UserWithoutNick = new UserProfile(callbackQuery.From.Id, 0, callbackQuery.From.Username);
+        if (userData.playerData.refId != null)
+        {
+            UserWithoutNick = new UserProfile(callbackQuery.From.Id, userData.playerData.refId, callbackQuery.From.Username);
+        }
+        switch (callbackQuery.From.LanguageCode)
+        {
+            case "ru":
+                UserWithoutNick.AddLang("ru");
+                break;
+            case "en":
+                UserWithoutNick.AddLang("eng");
+                break;
+            case "fr":
+                UserWithoutNick.AddLang("fr");
+                break;
+            case "de":
+                UserWithoutNick.AddLang("de");
+                break;
+        }
+
+        if (callbackQuery.From.Username == null)
+        {
+            Trace.Write("Username is still null");
+            Languages.Warning(botClient, callbackQuery.Message.Chat.Id, callbackQuery, UserWithoutNick, Error.UserWithoutUsername, null);
+            return;
+        }
         if (userData.playerData.UserTableList != null)
         {
             if (userData.playerData.UserTableList.table_ID_copper != null)
@@ -951,7 +978,7 @@ public static class UpdateHandlers
             if (callbackQuery.Data.Contains("TryToReg"))
             {
                 var refIdString = callbackQuery.Data.Split("|");
-                var refId = Int32.Parse(refIdString[0]);
+                var refId = Int64.Parse(refIdString[0]);
                 var NewUser = new UserProfile(callbackQuery.From.Id, refId, callbackQuery.From.Username);
                 switch (callbackQuery.From.LanguageCode)
                 {
@@ -2179,11 +2206,60 @@ public static class UpdateHandlers
                 UserProfile userToConfirm = new UserProfile(dataToConfirm.tableData.giverA_ID);
                 if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
                 {
+                    var userConfirm =
+                        await WebManager.SendData(userToConfirm, WebManager.RequestType.GetUserData, false);
+                    var refUserData = await WebManager.SendData(new UserProfile(userConfirm.playerData.refId), WebManager.RequestType.GetUserData, false);
                     var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
-                        WebManager.RequestType.Confirm, true);
+                        WebManager.RequestType.Confirm, false);
                     if (response.notification.isNotify)
                     {
                         Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                    }
+                    if (response.notification.giverA_ID != null)
+                    {
+                        long playerId = (long) response.notification.giverA_ID;
+                        var playerData = await WebManager.SendData(new UserProfile(playerId),
+                            WebManager.RequestType.GetUserData, false);
+                        if (playerData.playerData.refId != null)
+                        {
+                            var refId = (long) playerData.playerData.refId;
+                            var refUser = await WebManager.SendData(new UserProfile(refId),
+                                WebManager.RequestType.GetUserData, true);
+                            if ((refUserData.playerData.invited == 1 || refUserData.playerData.invited == 3 ||
+                                 refUserData.playerData.invited == 5 || refUserData.playerData.invited == 11) &&
+                                (refUser.playerData.invited == 2 || refUser.playerData.invited == 4 ||
+                                 refUser.playerData.invited == 6 || refUser.playerData.invited == 12))
+                            {
+                                Notification? notification;
+                                switch (refUser.playerData.invited)
+                                {
+                                    case 2:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats2Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 4:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats4Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 6:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats6Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 12:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats12Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                }
+                            }
+                        }
                     }
 
                     if (!(response.error.isError && response.error.errorText == "TableCompleted"))
@@ -2245,11 +2321,61 @@ public static class UpdateHandlers
                 UserProfile userToConfirm = new UserProfile(dataToConfirm.tableData.giverB_ID);
                 if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
                 {
+                    var userConfirm =
+                        await WebManager.SendData(userToConfirm, WebManager.RequestType.GetUserData, false);
+                    var refUserData = await WebManager.SendData(new UserProfile(userConfirm.playerData.refId), WebManager.RequestType.GetUserData, false);
                     var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
                         WebManager.RequestType.Confirm, true);
                     if (response.notification.isNotify)
                     {
                         Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                    }
+                    if (response.notification.giverB_ID != null)
+                    {
+                        long playerId = (long) response.notification.giverB_ID;
+                        var playerData = await WebManager.SendData(new UserProfile(playerId),
+                            WebManager.RequestType.GetUserData, false);
+                        if (playerData.playerData.refId != null)
+                        {
+                            var refId = (long) playerData.playerData.refId;
+                            var refUser = await WebManager.SendData(new UserProfile(refId),
+                                WebManager.RequestType.GetUserData, true);
+
+                            if ((refUserData.playerData.invited == 1 || refUserData.playerData.invited == 3 ||
+                                 refUserData.playerData.invited == 5 || refUserData.playerData.invited == 11) &&
+                                (refUser.playerData.invited == 2 || refUser.playerData.invited == 4 ||
+                                 refUser.playerData.invited == 6 || refUser.playerData.invited == 12))
+                            {
+                                Notification? notification;
+                                switch (refUser.playerData.invited)
+                                {
+                                    case 2:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats2Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 4:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats4Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 6:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats6Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 12:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats12Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                }
+                            }
+                        }
                     }
 
                     if (!(response.error.isError && response.error.errorText == "TableCompleted"))
@@ -2311,11 +2437,61 @@ public static class UpdateHandlers
                 UserProfile userToConfirm = new UserProfile(dataToConfirm.tableData.giverC_ID);
                 if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
                 {
+                    var userConfirm =
+                        await WebManager.SendData(userToConfirm, WebManager.RequestType.GetUserData, false);
+                    var refUserData = await WebManager.SendData(new UserProfile(userConfirm.playerData.refId), WebManager.RequestType.GetUserData, false);
                     var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
                         WebManager.RequestType.Confirm, true);
                     if (response.notification.isNotify)
                     {
                         Notifications.Notify(botClient, userData.playerData.id, response.notification);
+                    }
+                    if (response.notification.giverC_ID != null)
+                    {
+                        long playerId = (long) response.notification.giverC_ID;
+                        var playerData = await WebManager.SendData(new UserProfile(playerId),
+                            WebManager.RequestType.GetUserData, false);
+                        if (playerData.playerData.refId != null)
+                        {
+                            var refId = (long) playerData.playerData.refId;
+                            var refUser = await WebManager.SendData(new UserProfile(refId),
+                                WebManager.RequestType.GetUserData, true);
+
+                            if ((refUserData.playerData.invited == 1 || refUserData.playerData.invited == 3 ||
+                                 refUserData.playerData.invited == 5 || refUserData.playerData.invited == 11) &&
+                                (refUser.playerData.invited == 2 || refUser.playerData.invited == 4 ||
+                                 refUser.playerData.invited == 6 || refUser.playerData.invited == 12))
+                            {
+                                Notification? notification;
+                                switch (refUser.playerData.invited)
+                                {
+                                    case 2:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats2Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 4:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats4Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 6:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats6Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 12:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats12Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                }
+                            }
+                        }
                     }
 
                     if (!(response.error.isError && response.error.errorText == "TableCompleted"))
@@ -2377,6 +2553,9 @@ public static class UpdateHandlers
                 UserProfile userToConfirm = new UserProfile(dataToConfirm.tableData.giverD_ID);
                 if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
                 {
+                    var userConfirm =
+                        await WebManager.SendData(userToConfirm, WebManager.RequestType.GetUserData, false);
+                    var refUserData = await WebManager.SendData(new UserProfile(userConfirm.playerData.refId), WebManager.RequestType.GetUserData, false);
                     var response = await WebManager.SendData(new UserData(userToConfirm, dataToConfirm.tableData),
                         WebManager.RequestType.Confirm, true);
                     if (response.notification.isNotify)
@@ -2384,6 +2563,55 @@ public static class UpdateHandlers
                         Notifications.Notify(botClient, userData.playerData.id, response.notification);
                     }
 
+                    if (response.notification.giverD_ID != null)
+                    {
+                        long playerId = (long) response.notification.giverD_ID;
+                        var playerData = await WebManager.SendData(new UserProfile(playerId),
+                            WebManager.RequestType.GetUserData, false);
+                        if (playerData.playerData.refId != null)
+                        {
+                            var refId = (long) playerData.playerData.refId;
+                            var refUser = await WebManager.SendData(new UserProfile(refId),
+                                WebManager.RequestType.GetUserData, true);
+
+                            if ((refUserData.playerData.invited == 1 || refUserData.playerData.invited == 3 ||
+                                 refUserData.playerData.invited == 5 || refUserData.playerData.invited == 11) &&
+                                (refUser.playerData.invited == 2 || refUser.playerData.invited == 4 ||
+                                 refUser.playerData.invited == 6 || refUser.playerData.invited == 12))
+                            {
+                                Notification? notification;
+                                switch (refUser.playerData.invited)
+                                {
+                                    case 2:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats2Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 4:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats4Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 6:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats6Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                    case 12:
+                                        notification = new Notification();
+                                        notification.isNotify = true;
+                                        notification.notificationText = "Congrats12Invited";
+                                        Notifications.Notify(botClient, refId, notification);
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                        
                     if (!(response.error.isError && response.error.errorText == "TableCompleted"))
                         SelectByTableType(botClient, callbackQuery, userData, tableType);
                     else

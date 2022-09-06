@@ -39,6 +39,12 @@ public class UserProfile
         this.refId = refId;
         this.username = username;
     }
+    public UserProfile(long id, long? refId, string username)
+    {
+        this.id = id;
+        this.refId = refId;
+        this.username = username;
+    }
 
     public UserProfile(long id, string username, string lang)
     {

@@ -136,16 +136,16 @@ public class Notifications
                 }
                 break;
             case TypeOfNotifications.Congrats2Invited:
-                if(notification.bankerID != null)Congrats2Givers(botClient,  notification.bankerID);
+                Congrats2Givers(botClient,  executorID);
                 break;
             case TypeOfNotifications.Congrats4Invited:
-                if(notification.bankerID != null)Congrats4Givers(botClient,  notification.bankerID);
+                Congrats4Givers(botClient,  executorID);
                 break;
             case TypeOfNotifications.Congrats6Invited:
-                if(notification.bankerID != null)Congrats6Givers(botClient,  notification.bankerID);
+                Congrats6Givers(botClient,  executorID);
                 break;
             case TypeOfNotifications.Congrats12Invited:
-                if(notification.bankerID != null)Congrats12Givers(botClient,  notification.bankerID);
+                Congrats12Givers(botClient,  executorID);
                 break;
             case TypeOfNotifications.NotifyBanker:
                 if (notification.bankerID != null)
@@ -723,7 +723,7 @@ public class Notifications
                             InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
                         }
                     });
-                captionGiver = $"<b>Вы были удалены Банкиром (@{giver.playerData.username}) с {GetTableTypeRemove(giver.playerData, tableType)} стола.</b>" +
+                captionGiver = $"<b>Вы были удалены Банкиром (@{userDataExecutor.playerData.username}) с {GetTableTypeRemove(giver.playerData, tableType)} стола.</b>" +
                                $"\n\n" +
                                $"Теперь Вы не сможете зайти на данный стол в течение 24 часов." +
                                $"\n\n" +
@@ -739,7 +739,7 @@ public class Notifications
                             InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
                         }
                     });
-                captionGiver = $"<b>You have been removed by the Banker (@{giver.playerData.username}) from the {GetTableTypeRemove(giver.playerData, tableType)} table.</b>" +
+                captionGiver = $"<b>You have been removed by the Banker (@{userDataExecutor.playerData.username}) from the {GetTableTypeRemove(giver.playerData, tableType)} table.</b>" +
                                $"\n\n" +
                                $"You will now be unable to access this table for 24 hours." +
                                $"\n\n" +
@@ -755,7 +755,7 @@ public class Notifications
                             InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
                         }
                     });
-                captionGiver = $"<b>Vous avez été supprimé par le banquier (@{giver.playerData.username}) de la table {GetTableTypeRemove(giver.playerData, tableType)}.</b>" +
+                captionGiver = $"<b>Vous avez été supprimé par le banquier (@{userDataExecutor.playerData.username}) de la table {GetTableTypeRemove(giver.playerData, tableType)}.</b>" +
                                $"\n\n" +
                                $"Vous ne pourrez plus accéder à cette table pendant 24 heures." +
                                $"\n\n" +
@@ -771,7 +771,7 @@ public class Notifications
                             InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
                         }
                     });
-                captionGiver = $"<b>Sie wurden vom Bankier (@{giver.playerData.username}) aus der Tabelle {GetTableTypeRemove(giver.playerData, tableType)} entfernt.</b>" +
+                captionGiver = $"<b>Sie wurden vom Bankier (@{userDataExecutor.playerData.username}) aus der Tabelle {GetTableTypeRemove(giver.playerData, tableType)} entfernt.</b>" +
                                $"\n\n" +
                                $"Sie können nun 24 Stunden lang nicht auf diese Tabelle zugreifen." +
                                $"\n\n" +

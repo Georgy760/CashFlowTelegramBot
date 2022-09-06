@@ -207,3 +207,507 @@ OK
 Triggered by: [237487193] GeorgyK1 at 9/2/2022 11:47:44 AM
 CallBackQuery: MainMenu
 ---------------------------------------------------
+CallbackQuery.from.Username : GeorgyK1
+CallbackQuery.from.Id : [237487193]237487193
+CallbackQuery.Data : Status
+JSON: {
+  "Type": "GetUserData",
+  "User": {
+    "giftsReceived": 0,
+    "invited": 0,
+    "team": 0,
+    "id": 237487193,
+    "username": "GeorgyK1",
+    "refId": null,
+    "invitedBy": null,
+    "lang": null,
+    "verf": false,
+    "UserTableList": null,
+    "level_tableType": 0
+  },
+  "Table": null,
+  "UserTableList": null
+}
+Response: {"userProfile":{"id":"237487193","username":"GeorgyK1","refId":"0","invitedBy":"BotFather","lang":"ru","userTableList":{"id":"1251","userID":"237487193","table_ID_copper":null,"copperTableRole":null,"table_ID_bronze":null,"bronzeTableRole":null,"table_ID_silver":null,"silverTableRole":null,"table_ID_gold":null,"goldTableRole":null,"table_ID_platinum":null,"platinumTableRole":null,"table_ID_diamond":null,"diamondTableRole":null},"verf":0,"level_tableType":"copper","invited":0,"team":0,"giftsReceived":"0"},"tableProfile":null,"notification":null,"error":{"errorText":"empty","isError":false},"updateData":null}
+--------------
+userProfile:
+--------------
+
+"id": "237487193"
+"username": "GeorgyK1"
+"refId": "0"
+"invitedBy": "BotFather"
+"lang": "ru"
+"userTableList": {
+  "id": "1251",
+  "userID": "237487193",
+  "table_ID_copper": null,
+  "copperTableRole": null,
+  "table_ID_bronze": null,
+  "bronzeTableRole": null,
+  "table_ID_silver": null,
+  "silverTableRole": null,
+  "table_ID_gold": null,
+  "goldTableRole": null,
+  "table_ID_platinum": null,
+  "platinumTableRole": null,
+  "table_ID_diamond": null,
+  "diamondTableRole": null
+}
+"verf": 0
+"level_tableType": "copper"
+"invited": 0
+"team": 0
+"giftsReceived": "0"
+--------------
+userProfile->userTableList:
+--------------
+
+"id": "1251"
+"userID": "237487193"
+"table_ID_copper": null
+"copperTableRole": null
+"table_ID_bronze": null
+"bronzeTableRole": null
+"table_ID_silver": null
+"silverTableRole": null
+"table_ID_gold": null
+"goldTableRole": null
+"table_ID_platinum": null
+"platinumTableRole": null
+"table_ID_diamond": null
+"diamondTableRole": null
+-----------------------------------------------------------------
+--------------------------UserTableList--------------------------
+-----------------------------------------------------------------
+ID: 1251
+userID: 237487193
+table_ID_copper: 
+copperTableRole: 
+table_ID_bronze: 
+bronzeTableRole: 
+table_ID_silver: 
+silverTableRole: 
+table_ID_gold: 
+goldTableRole: 
+table_ID_platinum: 
+platinumTableRole: 
+table_ID_diamond: 
+---------------------------------------------------------------
+--------------------------UserProfile--------------------------
+---------------------------------------------------------------
+ID: 237487193
+Username: GeorgyK1
+RefId: 0
+InvitedBy: BotFather
+Lang: ru
+level_tableType: copper
+tableRole: 
+Invited: 0
+OK
+---------------------------------------------------
+Triggered by: [237487193] GeorgyK1 at 9/2/2022 11:49:20 AM
+CallBackQuery: Status
+---------------------------------------------------Status
+CallbackQuery.from.Username : GeorgyK1
+CallbackQuery.from.Id : [237487193]237487193
+CallbackQuery.Data : MainMenu
+JSON: {
+  "Type": "GetUserData",
+  "User": {
+    "giftsReceived": 0,
+    "invited": 0,
+    "team": 0,
+    "id": 237487193,
+    "username": "GeorgyK1",
+    "refId": null,
+    "invitedBy": null,
+    "lang": null,
+    "verf": false,
+    "UserTableList": null,
+    "level_tableType": 0
+  },
+  "Table": null,
+  "UserTableList": null
+}
+Response: {"userProfile":{"id":"237487193","username":"GeorgyK1","refId":"0","invitedBy":"BotFather","lang":"ru","userTableList":{"id":"1251","userID":"237487193","table_ID_copper":null,"copperTableRole":null,"table_ID_bronze":null,"bronzeTableRole":null,"table_ID_silver":null,"silverTableRole":null,"table_ID_gold":null,"goldTableRole":null,"table_ID_platinum":null,"platinumTableRole":null,"table_ID_diamond":null,"diamondTableRole":null},"verf":0,"level_tableType":"copper","invited":0,"team":0,"giftsReceived":"0"},"tableProfile":null,"notification":null,"error":{"errorText":"empty","isError":false},"updateData":null}
+--------------
+userProfile:
+--------------
+
+"id": "237487193"
+"username": "GeorgyK1"
+"refId": "0"
+"invitedBy": "BotFather"
+"lang": "ru"
+"userTableList": {
+  "id": "1251",
+  "userID": "237487193",
+  "table_ID_copper": null,
+  "copperTableRole": null,
+  "table_ID_bronze": null,
+  "bronzeTableRole": null,
+  "table_ID_silver": null,
+  "silverTableRole": null,
+  "table_ID_gold": null,
+  "goldTableRole": null,
+  "table_ID_platinum": null,
+  "platinumTableRole": null,
+  "table_ID_diamond": null,
+  "diamondTableRole": null
+}
+"verf": 0
+"level_tableType": "copper"
+"invited": 0
+"team": 0
+"giftsReceived": "0"
+--------------
+userProfile->userTableList:
+--------------
+
+"id": "1251"
+"userID": "237487193"
+"table_ID_copper": null
+"copperTableRole": null
+"table_ID_bronze": null
+"bronzeTableRole": null
+"table_ID_silver": null
+"silverTableRole": null
+"table_ID_gold": null
+"goldTableRole": null
+"table_ID_platinum": null
+"platinumTableRole": null
+"table_ID_diamond": null
+"diamondTableRole": null
+-----------------------------------------------------------------
+--------------------------UserTableList--------------------------
+-----------------------------------------------------------------
+ID: 1251
+userID: 237487193
+table_ID_copper: 
+copperTableRole: 
+table_ID_bronze: 
+bronzeTableRole: 
+table_ID_silver: 
+silverTableRole: 
+table_ID_gold: 
+goldTableRole: 
+table_ID_platinum: 
+platinumTableRole: 
+table_ID_diamond: 
+---------------------------------------------------------------
+--------------------------UserProfile--------------------------
+---------------------------------------------------------------
+ID: 237487193
+Username: GeorgyK1
+RefId: 0
+InvitedBy: BotFather
+Lang: ru
+level_tableType: copper
+tableRole: 
+Invited: 0
+OK
+---------------------------------------------------
+Triggered by: [237487193] GeorgyK1 at 9/2/2022 11:49:21 AM
+CallBackQuery: MainMenu
+---------------------------------------------------
+CallbackQuery.from.Username : gavr_blog
+CallbackQuery.from.Id : [1413515256]1413515256
+CallbackQuery.Data : ChooseTable
+JSON: {
+  "Type": "GetUserData",
+  "User": {
+    "giftsReceived": 0,
+    "invited": 0,
+    "team": 0,
+    "id": 1413515256,
+    "username": "gavr_blog",
+    "refId": null,
+    "invitedBy": null,
+    "lang": null,
+    "verf": false,
+    "UserTableList": null,
+    "level_tableType": 0
+  },
+  "Table": null,
+  "UserTableList": null
+}
+Response: {"userProfile":{"id":"1413515256","username":"gavr_blog","refId":"915083611","invitedBy":"andycasali","lang":"ru","userTableList":{"id":"1175","userID":"1413515256","table_ID_copper":null,"copperTableRole":null,"table_ID_bronze":null,"bronzeTableRole":null,"table_ID_silver":"242","silverTableRole":"banker","table_ID_gold":null,"goldTableRole":null,"table_ID_platinum":null,"platinumTableRole":null,"table_ID_diamond":null,"diamondTableRole":null},"verf":0,"level_tableType":"silver","invited":1,"team":162,"giftsReceived":"100"},"tableProfile":null,"notification":null,"error":{"errorText":"empty","isError":false},"updateData":null}
+--------------
+userProfile:
+--------------
+
+"id": "1413515256"
+"username": "gavr_blog"
+"refId": "915083611"
+"invitedBy": "andycasali"
+"lang": "ru"
+"userTableList": {
+  "id": "1175",
+  "userID": "1413515256",
+  "table_ID_copper": null,
+  "copperTableRole": null,
+  "table_ID_bronze": null,
+  "bronzeTableRole": null,
+  "table_ID_silver": "242",
+  "silverTableRole": "banker",
+  "table_ID_gold": null,
+  "goldTableRole": null,
+  "table_ID_platinum": null,
+  "platinumTableRole": null,
+  "table_ID_diamond": null,
+  "diamondTableRole": null
+}
+"verf": 0
+"level_tableType": "silver"
+"invited": 1
+"team": 162
+"giftsReceived": "100"
+--------------
+userProfile->userTableList:
+--------------
+
+"id": "1175"
+"userID": "1413515256"
+"table_ID_copper": null
+"copperTableRole": null
+"table_ID_bronze": null
+"bronzeTableRole": null
+"table_ID_silver": "242"
+"silverTableRole": "banker"
+"table_ID_gold": null
+"goldTableRole": null
+"table_ID_platinum": null
+"platinumTableRole": null
+"table_ID_diamond": null
+"diamondTableRole": null
+-----------------------------------------------------------------
+--------------------------UserTableList--------------------------
+-----------------------------------------------------------------
+ID: 1175
+userID: 1413515256
+table_ID_copper: 
+copperTableRole: 
+table_ID_bronze: 
+bronzeTableRole: 
+table_ID_silver: 242
+silverTableRole: banker
+table_ID_gold: 
+goldTableRole: 
+table_ID_platinum: 
+platinumTableRole: 
+table_ID_diamond: 
+---------------------------------------------------------------
+--------------------------UserProfile--------------------------
+---------------------------------------------------------------
+ID: 1413515256
+Username: gavr_blog
+RefId: 915083611
+InvitedBy: andycasali
+Lang: ru
+level_tableType: silver
+tableRole: 
+Invited: 1
+OK
+---------------------------------------------------
+Triggered by: [1413515256] gavr_blog at 9/2/2022 11:50:34 AM
+CallBackQuery: ChooseTable
+---------------------------------------------------ChooseTable
+CallbackQuery.from.Username : gavr_blog
+CallbackQuery.from.Id : [1413515256]1413515256
+CallbackQuery.Data : MainMenu
+JSON: {
+  "Type": "GetUserData",
+  "User": {
+    "giftsReceived": 0,
+    "invited": 0,
+    "team": 0,
+    "id": 1413515256,
+    "username": "gavr_blog",
+    "refId": null,
+    "invitedBy": null,
+    "lang": null,
+    "verf": false,
+    "UserTableList": null,
+    "level_tableType": 0
+  },
+  "Table": null,
+  "UserTableList": null
+}
+Response: {"userProfile":{"id":"1413515256","username":"gavr_blog","refId":"915083611","invitedBy":"andycasali","lang":"ru","userTableList":{"id":"1175","userID":"1413515256","table_ID_copper":null,"copperTableRole":null,"table_ID_bronze":null,"bronzeTableRole":null,"table_ID_silver":"242","silverTableRole":"banker","table_ID_gold":null,"goldTableRole":null,"table_ID_platinum":null,"platinumTableRole":null,"table_ID_diamond":null,"diamondTableRole":null},"verf":0,"level_tableType":"silver","invited":1,"team":162,"giftsReceived":"100"},"tableProfile":null,"notification":null,"error":{"errorText":"empty","isError":false},"updateData":null}
+--------------
+userProfile:
+--------------
+
+"id": "1413515256"
+"username": "gavr_blog"
+"refId": "915083611"
+"invitedBy": "andycasali"
+"lang": "ru"
+"userTableList": {
+  "id": "1175",
+  "userID": "1413515256",
+  "table_ID_copper": null,
+  "copperTableRole": null,
+  "table_ID_bronze": null,
+  "bronzeTableRole": null,
+  "table_ID_silver": "242",
+  "silverTableRole": "banker",
+  "table_ID_gold": null,
+  "goldTableRole": null,
+  "table_ID_platinum": null,
+  "platinumTableRole": null,
+  "table_ID_diamond": null,
+  "diamondTableRole": null
+}
+"verf": 0
+"level_tableType": "silver"
+"invited": 1
+"team": 162
+"giftsReceived": "100"
+--------------
+userProfile->userTableList:
+--------------
+
+"id": "1175"
+"userID": "1413515256"
+"table_ID_copper": null
+"copperTableRole": null
+"table_ID_bronze": null
+"bronzeTableRole": null
+"table_ID_silver": "242"
+"silverTableRole": "banker"
+"table_ID_gold": null
+"goldTableRole": null
+"table_ID_platinum": null
+"platinumTableRole": null
+"table_ID_diamond": null
+"diamondTableRole": null
+-----------------------------------------------------------------
+--------------------------UserTableList--------------------------
+-----------------------------------------------------------------
+ID: 1175
+userID: 1413515256
+table_ID_copper: 
+copperTableRole: 
+table_ID_bronze: 
+bronzeTableRole: 
+table_ID_silver: 242
+silverTableRole: banker
+table_ID_gold: 
+goldTableRole: 
+table_ID_platinum: 
+platinumTableRole: 
+table_ID_diamond: 
+---------------------------------------------------------------
+--------------------------UserProfile--------------------------
+---------------------------------------------------------------
+ID: 1413515256
+Username: gavr_blog
+RefId: 915083611
+InvitedBy: andycasali
+Lang: ru
+level_tableType: silver
+tableRole: 
+Invited: 1
+OK
+---------------------------------------------------
+Triggered by: [1413515256] gavr_blog at 9/2/2022 11:50:35 AM
+CallBackQuery: MainMenu
+---------------------------------------------------
+1413515256MessageReceived: /menu
+JSON: {
+  "Type": "GetUserData",
+  "User": {
+    "giftsReceived": 0,
+    "invited": 0,
+    "team": 0,
+    "id": 1413515256,
+    "username": null,
+    "refId": null,
+    "invitedBy": null,
+    "lang": null,
+    "verf": false,
+    "UserTableList": null,
+    "level_tableType": 0
+  },
+  "Table": null,
+  "UserTableList": null
+}
+Response: {"userProfile":{"id":"1413515256","username":"gavr_blog","refId":"915083611","invitedBy":"andycasali","lang":"ru","userTableList":{"id":"1175","userID":"1413515256","table_ID_copper":null,"copperTableRole":null,"table_ID_bronze":null,"bronzeTableRole":null,"table_ID_silver":"242","silverTableRole":"banker","table_ID_gold":null,"goldTableRole":null,"table_ID_platinum":null,"platinumTableRole":null,"table_ID_diamond":null,"diamondTableRole":null},"verf":0,"level_tableType":"silver","invited":1,"team":162,"giftsReceived":"100"},"tableProfile":null,"notification":null,"error":{"errorText":"empty","isError":false},"updateData":null}
+--------------
+userProfile:
+--------------
+
+"id": "1413515256"
+"username": "gavr_blog"
+"refId": "915083611"
+"invitedBy": "andycasali"
+"lang": "ru"
+"userTableList": {
+  "id": "1175",
+  "userID": "1413515256",
+  "table_ID_copper": null,
+  "copperTableRole": null,
+  "table_ID_bronze": null,
+  "bronzeTableRole": null,
+  "table_ID_silver": "242",
+  "silverTableRole": "banker",
+  "table_ID_gold": null,
+  "goldTableRole": null,
+  "table_ID_platinum": null,
+  "platinumTableRole": null,
+  "table_ID_diamond": null,
+  "diamondTableRole": null
+}
+"verf": 0
+"level_tableType": "silver"
+"invited": 1
+"team": 162
+"giftsReceived": "100"
+--------------
+userProfile->userTableList:
+--------------
+
+"id": "1175"
+"userID": "1413515256"
+"table_ID_copper": null
+"copperTableRole": null
+"table_ID_bronze": null
+"bronzeTableRole": null
+"table_ID_silver": "242"
+"silverTableRole": "banker"
+"table_ID_gold": null
+"goldTableRole": null
+"table_ID_platinum": null
+"platinumTableRole": null
+"table_ID_diamond": null
+"diamondTableRole": null
+-----------------------------------------------------------------
+--------------------------UserTableList--------------------------
+-----------------------------------------------------------------
+ID: 1175
+userID: 1413515256
+table_ID_copper: 
+copperTableRole: 
+table_ID_bronze: 
+bronzeTableRole: 
+table_ID_silver: 242
+silverTableRole: banker
+table_ID_gold: 
+goldTableRole: 
+table_ID_platinum: 
+platinumTableRole: 
+table_ID_diamond: 
+---------------------------------------------------------------
+--------------------------UserProfile--------------------------
+---------------------------------------------------------------
+ID: 1413515256
+Username: gavr_blog
+RefId: 915083611
+InvitedBy: andycasali
+Lang: ru
+level_tableType: silver
+tableRole: 
+Invited: 1
+OK
