@@ -99,7 +99,7 @@ public static class UpdateHandlers
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("💎", "MainMenu")
+                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
                         }
                     });
                 if (data.updateData.Count > 0)
@@ -108,18 +108,28 @@ public static class UpdateHandlers
                     string path = null;
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                         path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images/MainMenu/update.png");
+                            @"Images/MainMenu/presentation.png");
 
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                         path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images\MainMenu\update.png");
+                            @"Images\MainMenu\presentation.png");
                     foreach (var ID in data.updateData)
                     {
                         long chatID = ID;
+                        UserData user;
                         try
                         {
-                            var user = await WebManager.SendData(new UserProfile(chatID),
-                                WebManager.RequestType.GetUserData, false);
+                            try
+                            {
+                                user = await WebManager.SendData(new UserProfile(chatID),
+                                    WebManager.RequestType.GetUserData, false);
+                            }
+                            catch
+                            {
+                                user = new UserData();
+                                user.playerData.lang = "eng";
+                            }
+                            
                             var chat = botClient.GetChatAsync(chatID);
                             Trace.WriteLine($"\nID:[{chat.Result.Id}] username: [{chat.Result.Username}]");
                             chatID = chat.Result.Id;
@@ -144,7 +154,7 @@ public static class UpdateHandlers
                         {
                             try
                             {
-                                var user = await WebManager.SendData(new UserProfile(chatID),
+                                user = await WebManager.SendData(new UserProfile(chatID),
                                     WebManager.RequestType.GetUserData, false);
                                 Trace.WriteLine($"\nCannot send message to - ID:[{user.playerData.id}] username: [@{user.playerData.username}]");
                             }
@@ -196,7 +206,7 @@ public static class UpdateHandlers
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("💎", "MainMenu")
+                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
                         }
                     });
                 if (data.updateData.Count > 0)
@@ -205,18 +215,27 @@ public static class UpdateHandlers
                     string path = null;
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                         path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images/MainMenu/update.png");
+                            @"Images/MainMenu/presentation.png");
 
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                         path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images\MainMenu\update.png");
+                            @"Images\MainMenu\presentation.png");
                     foreach (var ID in data.updateData)
                     {
                         long chatID = ID;
+                        UserData user;
                         try
                         {
-                            var user = await WebManager.SendData(new UserProfile(chatID),
-                                WebManager.RequestType.GetUserData, false);
+                            try
+                            {
+                                user = await WebManager.SendData(new UserProfile(chatID),
+                                    WebManager.RequestType.GetUserData, false);
+                            }
+                            catch
+                            {
+                                user = new UserData();
+                                user.playerData.lang = "eng";
+                            }
                             var chat = botClient.GetChatAsync(chatID);
                             Trace.WriteLine($"\nID:[{chat.Result.Id}] username: [{chat.Result.Username}]");
                             chatID = chat.Result.Id;
@@ -241,7 +260,7 @@ public static class UpdateHandlers
                         {
                             try
                             {
-                                var user = await WebManager.SendData(new UserProfile(chatID),
+                                user = await WebManager.SendData(new UserProfile(chatID),
                                     WebManager.RequestType.GetUserData, false);
                                 Trace.WriteLine($"\nCannot send message to - ID:[{user.playerData.id}] username: [@{user.playerData.username}]");
                             }
@@ -293,7 +312,7 @@ public static class UpdateHandlers
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("💎", "MainMenu")
+                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
                         }
                     });
                 if (data.updateData.Count > 0)
@@ -302,18 +321,27 @@ public static class UpdateHandlers
                     string path = null;
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                         path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images/MainMenu/update.png");
+                            @"Images/MainMenu/presentation.png");
 
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                         path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images\MainMenu\update.png");
+                            @"Images\MainMenu\presentation.png");
                     foreach (var ID in data.updateData)
                     {
                         long chatID = ID;
+                        UserData user;
                         try
                         {
-                            var user = await WebManager.SendData(new UserProfile(chatID),
-                                WebManager.RequestType.GetUserData, false);
+                            try
+                            {
+                                user = await WebManager.SendData(new UserProfile(chatID),
+                                    WebManager.RequestType.GetUserData, false);
+                            }
+                            catch
+                            {
+                                user = new UserData();
+                                user.playerData.lang = "eng";
+                            }
                             var chat = botClient.GetChatAsync(chatID);
                             Trace.WriteLine($"\nID:[{chat.Result.Id}] username: [{chat.Result.Username}]");
                             chatID = chat.Result.Id;
@@ -338,7 +366,7 @@ public static class UpdateHandlers
                         {
                             try
                             {
-                                var user = await WebManager.SendData(new UserProfile(chatID),
+                                user = await WebManager.SendData(new UserProfile(chatID),
                                     WebManager.RequestType.GetUserData, false);
                                 Trace.WriteLine($"\nCannot send message to - ID:[{user.playerData.id}] username: [@{user.playerData.username}]");
                             }
@@ -390,7 +418,7 @@ public static class UpdateHandlers
                     {
                         new[]
                         {
-                            InlineKeyboardButton.WithCallbackData("💎", "MainMenu")
+                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
                         }
                     });
                 if (data.updateData.Count > 0)
@@ -399,18 +427,27 @@ public static class UpdateHandlers
                     string path = null;
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                         path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images/MainMenu/update.png");
+                            @"Images/MainMenu/presentation.png");
 
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                         path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images\MainMenu\update.png");
+                            @"Images\MainMenu\presentation.png");
                     foreach (var ID in data.updateData)
                     {
                         long chatID = ID;
+                        UserData user;
                         try
                         {
-                            var user = await WebManager.SendData(new UserProfile(chatID),
-                                WebManager.RequestType.GetUserData, false);
+                            try
+                            {
+                                user = await WebManager.SendData(new UserProfile(chatID),
+                                    WebManager.RequestType.GetUserData, false);
+                            }
+                            catch
+                            {
+                                user = new UserData();
+                                user.playerData.lang = "eng";
+                            }
                             var chat = botClient.GetChatAsync(chatID);
                             Trace.WriteLine($"\nID:[{chat.Result.Id}] username: [{chat.Result.Username}]");
                             chatID = chat.Result.Id;
@@ -435,7 +472,7 @@ public static class UpdateHandlers
                         {
                             try
                             {
-                                var user = await WebManager.SendData(new UserProfile(chatID),
+                                user = await WebManager.SendData(new UserProfile(chatID),
                                     WebManager.RequestType.GetUserData, false);
                                 Trace.WriteLine($"\nCannot send message to - ID:[{user.playerData.id}] username: [@{user.playerData.username}]");
                             }

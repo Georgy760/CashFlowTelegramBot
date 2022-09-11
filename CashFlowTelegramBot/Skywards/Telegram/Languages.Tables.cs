@@ -20,65 +20,16 @@ public partial class Languages
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableRU =
             InlineKeyboardButton.WithCallbackData("🔙 Назад", "ChooseTable");
 
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverARU =
-            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverA");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverBRU =
-            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverB");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverCRU =
-            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverC");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverDRU =
-            InlineKeyboardButton.WithCallbackData("✅ Активировать", "VerfGiverD");
-
         //------ENG------\\
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableENG =
             InlineKeyboardButton.WithCallbackData("🔙 Back", "ChooseTable");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverAENG =
-            InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverA");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverBENG =
-            InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverB");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverCENG =
-            InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverC");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverDENG =
-            InlineKeyboardButton.WithCallbackData("✅ Confirm", "VerfGiverD");
-
         //------FR------\\
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableFR =
             InlineKeyboardButton.WithCallbackData("🔙 Retour", "ChooseTable");
-        
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverAFR =
-            InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverA");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverBFR =
-            InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverB");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverCFR =
-            InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverC");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverDFR =
-            InlineKeyboardButton.WithCallbackData("✅ Confirmer", "VerfGiverD");
-
         //------DE------\\
         public static readonly InlineKeyboardButton InlineKeyboardButtonChooseTableDE =
             InlineKeyboardButton.WithCallbackData("🔙Der Rücken", "ChooseTable");
-        
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverADE =
-            InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverA");
 
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverBDE =
-            InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverB");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverCDE =
-            InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverC");
-
-        public static readonly InlineKeyboardButton InlineKeyboardButtonVerfGiverDDE =
-            InlineKeyboardButton.WithCallbackData("✅ Bestätigen", "VerfGiverD");
 
         /// <summary>
         /// Creates an table menu with giver view
@@ -1709,7 +1660,7 @@ public partial class Languages
                 {
                     inlineKeyboardButtonGiverAInfo =
                         InlineKeyboardButton.WithCallbackData($"🎁 @{giverInfo.playerData.username} ❌",
-                            "GetGiverAData|" + tableType);
+                            $"GetGiverAData|" + tableType);
                 }
 
                 giverCount++;

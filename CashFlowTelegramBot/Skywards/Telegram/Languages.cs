@@ -6150,7 +6150,7 @@ public partial class Languages
                 ParseMode.MarkdownV2,
                 null,
                 inlineKeyboard
-            );
+            ).WaitAsync(TimeSpan.FromSeconds(10));
         } catch
         {
             Trace.Write("Handle Remaining Exceptions");
