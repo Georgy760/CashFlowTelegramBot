@@ -82,6 +82,14 @@ public static class UpdateHandlers
 
         if (updateMessage.From.Id ==  524338144 || updateMessage.From.Id ==  237487193 || updateMessage.From.Id == 5680187538 || updateMessage.From.Id == 1688540052) //ADMINS
         {
+            string path = null;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images/MainMenu/presentation.png");
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    @"Images\MainMenu\presentation.png");
             if (updateMessage.Text.Contains("/updateRU"))
             {
                 //var test = await botClient.GetFileAsync(updateMessage.Photo[updateMessage.Photo.Count() - 1].FileId);
@@ -105,14 +113,7 @@ public static class UpdateHandlers
                 if (data.updateData.Count > 0)
                 {
                     //updateMessage.Video.
-                    string path = null;
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images/MainMenu/presentation.png");
-
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images\MainMenu\presentation.png");
+                    
                     foreach (var ID in data.updateData)
                     {
                         long chatID = ID;
@@ -212,14 +213,6 @@ public static class UpdateHandlers
                 if (data.updateData.Count > 0)
                 {
                     //updateMessage.Video.
-                    string path = null;
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images/MainMenu/presentation.png");
-
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images\MainMenu\presentation.png");
                     foreach (var ID in data.updateData)
                     {
                         long chatID = ID;
@@ -318,14 +311,6 @@ public static class UpdateHandlers
                 if (data.updateData.Count > 0)
                 {
                     //updateMessage.Video.
-                    string path = null;
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images/MainMenu/presentation.png");
-
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images\MainMenu\presentation.png");
                     foreach (var ID in data.updateData)
                     {
                         long chatID = ID;
@@ -424,14 +409,6 @@ public static class UpdateHandlers
                 if (data.updateData.Count > 0)
                 {
                     //updateMessage.Video.
-                    string path = null;
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images/MainMenu/presentation.png");
-
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                            @"Images\MainMenu\presentation.png");
                     foreach (var ID in data.updateData)
                     {
                         long chatID = ID;
