@@ -56,7 +56,6 @@ Trace.AutoFlush = true;
 Trace.WriteLine("\nThe first line to be in the logfile and on the console.");
 
 
-
 /*
 if (filestream != null)
 {

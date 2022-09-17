@@ -203,6 +203,7 @@ public class TableProfile : Table
         Table.TableType tableType = Enum.Parse<TableType>(data, true);
         return tableType;
     }
+
     public static string GetTableType(UserProfile user, TableType tableType)
     {
         var result = "";
@@ -320,16 +321,17 @@ public class TableProfile : Table
 
         return result;
     }
+
     public void PrintTableProfile()
     {
-        Trace.Write("\n-----------------------------------------------------------------------" + 
-                          $"\n--------------------------TableProfile of: {tableID}--------------------------" +
-                          "\n-----------------------------------------------------------------------");
+        Trace.Write("\n-----------------------------------------------------------------------" +
+                    $"\n--------------------------TableProfile of: {tableID}--------------------------" +
+                    "\n-----------------------------------------------------------------------");
         Trace.Write("\ntableID: " + tableID + "\nTableType: " + tableType + "\nBankerID: " + bankerID +
-                          "\nManagerA_ID: " + managerA_ID + "\nManagerB_ID: " + managerB_ID +
-                          "\nGiverA_ID: " + giverA_ID + "\nVerfA_ID: " + verf_A +
-                          "\nGiverB_ID: " + giverB_ID + "\nVerfB_ID: " + verf_B +
-                          "\nGiverC_ID: " + giverC_ID + "\nVerfC_ID: " + verf_C +
-                          "\nGiverD_ID: " + giverD_ID + "\nVerfD_ID: " + verf_D);
+                    "\nManagerA_ID: " + managerA_ID + "\nManagerB_ID: " + managerB_ID +
+                    "\nGiverA_ID: " + giverA_ID + "\nVerfA_ID: " + verf_A +
+                    "\nGiverB_ID: " + giverB_ID + "\nVerfB_ID: " + verf_B +
+                    "\nGiverC_ID: " + giverC_ID + "\nVerfC_ID: " + verf_C +
+                    "\nGiverD_ID: " + giverD_ID + "\nVerfD_ID: " + verf_D);
     }
 }

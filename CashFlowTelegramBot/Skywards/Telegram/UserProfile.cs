@@ -39,6 +39,7 @@ public class UserProfile
         this.refId = refId;
         this.username = username;
     }
+
     public UserProfile(long id, long? refId, string username)
     {
         this.id = id;
@@ -444,6 +445,7 @@ public class UserProfile
                                 result = "empty";
                                 break;
                         }
+
                         break;
                     case Table.TableType.bronze:
                         switch (UserTableList.bronzeTableRole)
@@ -461,6 +463,7 @@ public class UserProfile
                                 result = "empty";
                                 break;
                         }
+
                         break;
                     case Table.TableType.silver:
                         switch (UserTableList.silverTableRole)
@@ -478,6 +481,7 @@ public class UserProfile
                                 result = "empty";
                                 break;
                         }
+
                         break;
                     case Table.TableType.gold:
                         switch (UserTableList.goldTableRole)
@@ -495,6 +499,7 @@ public class UserProfile
                                 result = "empty";
                                 break;
                         }
+
                         break;
                     case Table.TableType.platinum:
                         switch (UserTableList.platinumTableRole)
@@ -512,6 +517,7 @@ public class UserProfile
                                 result = "empty";
                                 break;
                         }
+
                         break;
                     case Table.TableType.diamond:
                         switch (UserTableList.diamondTableRole)
@@ -529,11 +535,13 @@ public class UserProfile
                                 result = "empty";
                                 break;
                         }
+
                         break;
                 }
 
                 break;
         }
+
         return result;
     }
 
@@ -643,7 +651,7 @@ public class UserProfile
             Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
-    
+
         switch (lang)
         {
             case "ru":
@@ -685,6 +693,7 @@ public class UserProfile
 
         return result;
     }
+
     public string UserInfo(ITelegramBotClient botClient, string lang, TableProfile tableData, bool IsItYou, int num)
     {
         var result = "";
@@ -709,7 +718,7 @@ public class UserProfile
             Trace.Write("Handle Remaining Exceptions");
             aex.Handle(ex => Exceptions.HandleException(ex));
         }
-    
+
         switch (lang)
         {
             case "ru":
@@ -751,7 +760,7 @@ public class UserProfile
 
         return result;
     }
-    
+
     public string UserInfo(ITelegramBotClient botClient, string lang, TableProfile tableData, bool IsItYou, bool Verf,
         int num)
     {
@@ -857,6 +866,7 @@ public class UserProfile
 
         return result;
     }
+
     public string UserInfo(Table.TableRole tableRole, int num)
     {
         var result = "";

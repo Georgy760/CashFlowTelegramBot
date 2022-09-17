@@ -166,8 +166,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -192,12 +196,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -210,7 +217,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -235,12 +243,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -277,7 +288,10 @@ public partial class Languages
                 "\n\nClick the corresponding button to change the language:",
                 ParseMode.Html,
                 replyMarkup: inlineKeyboard);
-        } catch{}
+        }
+        catch
+        {
+        }
     }
 
     public static async void GetUserData(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -292,73 +306,79 @@ public partial class Languages
         InlineKeyboardMarkup? inlineKeyboard = null;
         UserData invitedBy = null;
         if (SearchedUser.refId != null)
-            invitedBy = await WebManager.SendData(new UserProfile( SearchedUser.refId),
+            invitedBy = await WebManager.SendData(new UserProfile(SearchedUser.refId),
                 WebManager.RequestType.GetUserData, true);
         UserData tableToBack = new UserData();
         Table.TableRole? userTableRole = Table.TableRole.giver;
         switch (tableType)
         {
             case Table.TableType.copper:
-                if(SearchedUser.UserTableList.table_ID_copper == null)
+                if (SearchedUser.UserTableList.table_ID_copper == null)
                 {
                     tableToBack.tableData.tableID = 0;
                     break;
                 }
+
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_copper),
                     WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.copperTableRole;
                 tableRole = userData.UserTableList.copperTableRole;
                 break;
             case Table.TableType.bronze:
-                if(SearchedUser.UserTableList.table_ID_bronze == null)
+                if (SearchedUser.UserTableList.table_ID_bronze == null)
                 {
                     tableToBack.tableData.tableID = 0;
                     break;
                 }
+
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_bronze),
                     WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.bronzeTableRole;
                 tableRole = userData.UserTableList.bronzeTableRole;
                 break;
             case Table.TableType.silver:
-                if(SearchedUser.UserTableList.table_ID_silver == null)
+                if (SearchedUser.UserTableList.table_ID_silver == null)
                 {
                     tableToBack.tableData.tableID = 0;
                     break;
                 }
+
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_silver),
                     WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.silverTableRole;
                 tableRole = userData.UserTableList.silverTableRole;
                 break;
             case Table.TableType.gold:
-                if(SearchedUser.UserTableList.table_ID_gold == null)
+                if (SearchedUser.UserTableList.table_ID_gold == null)
                 {
                     tableToBack.tableData.tableID = 0;
                     break;
                 }
+
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_gold),
                     WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.goldTableRole;
                 tableRole = userData.UserTableList.goldTableRole;
                 break;
             case Table.TableType.platinum:
-                if(SearchedUser.UserTableList.table_ID_platinum == null)
+                if (SearchedUser.UserTableList.table_ID_platinum == null)
                 {
                     tableToBack.tableData.tableID = 0;
                     break;
                 }
+
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_platinum),
                     WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.platinumTableRole;
                 tableRole = userData.UserTableList.platinumTableRole;
                 break;
             case Table.TableType.diamond:
-                if(SearchedUser.UserTableList.table_ID_diamond == null)
+                if (SearchedUser.UserTableList.table_ID_diamond == null)
                 {
                     tableToBack.tableData.tableID = 0;
                     break;
                 }
+
                 tableToBack = await WebManager.SendData(new TableProfile(SearchedUser.UserTableList.table_ID_diamond),
                     WebManager.RequestType.GetTableData, true);
                 userTableRole = SearchedUser.UserTableList.diamondTableRole;
@@ -1426,8 +1446,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -1452,12 +1476,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -1470,7 +1497,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        }catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -1495,12 +1523,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -1594,7 +1625,7 @@ public partial class Languages
 
                 break;
         }
-        
+
         string path = null;
         InlineKeyboardMarkup? inlineKeyboard = null;
         string? caption = null;
@@ -1623,7 +1654,7 @@ public partial class Languages
             inlineKeyboard = null;
             if (table.tableData.bankerID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile( table.tableData.bankerID),
+                var userData = await WebManager.SendData(new UserProfile(table.tableData.bankerID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.bankerID == user.id);
@@ -1637,7 +1668,7 @@ public partial class Languages
 
             if (table.tableData.managerA_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile( table.tableData.managerA_ID),
+                var userData = await WebManager.SendData(new UserProfile(table.tableData.managerA_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.managerA_ID == user.id, 1);
@@ -1651,7 +1682,7 @@ public partial class Languages
 
             if (table.tableData.giverA_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile( table.tableData.giverA_ID),
+                var userData = await WebManager.SendData(new UserProfile(table.tableData.giverA_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverA_ID == user.id, table.tableData.verf_A, 1);
@@ -1665,7 +1696,7 @@ public partial class Languages
 
             if (table.tableData.giverB_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile( table.tableData.giverB_ID),
+                var userData = await WebManager.SendData(new UserProfile(table.tableData.giverB_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverB_ID == user.id, table.tableData.verf_B, 2);
@@ -1679,7 +1710,7 @@ public partial class Languages
 
             if (table.tableData.managerB_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile( table.tableData.managerB_ID),
+                var userData = await WebManager.SendData(new UserProfile(table.tableData.managerB_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.managerB_ID == user.id, 2);
@@ -1693,7 +1724,7 @@ public partial class Languages
 
             if (table.tableData.giverC_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile( table.tableData.giverC_ID),
+                var userData = await WebManager.SendData(new UserProfile(table.tableData.giverC_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverC_ID == user.id, table.tableData.verf_C, 3);
@@ -1707,7 +1738,7 @@ public partial class Languages
 
             if (table.tableData.giverD_ID != null)
             {
-                var userData = await WebManager.SendData(new UserProfile( table.tableData.giverD_ID),
+                var userData = await WebManager.SendData(new UserProfile(table.tableData.giverD_ID),
                     WebManager.RequestType.GetUserData, true);
                 caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
                     table.tableData.giverD_ID == user.id, table.tableData.verf_D, 4);
@@ -1851,8 +1882,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -1877,12 +1912,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -1895,7 +1933,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        }catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -1920,12 +1959,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -2058,6 +2100,7 @@ public partial class Languages
                     caption = $"<b>Table ID: {tableData.tableData.tableID}</b>";
                     break;
             }
+
             Stream stream = TableImage.CreateTableImage(tableData.tableData, userData).Result;
             try
             {
@@ -2065,7 +2108,8 @@ public partial class Languages
                     callbackData.Message.MessageId,
                     media: new InputMediaPhoto(new InputMedia(stream, "media"))
                 ).WaitAsync(TimeSpan.FromSeconds(10));
-            } catch
+            }
+            catch
             {
                 Trace.Write("Handle Remaining Exceptions");
                 try
@@ -2090,7 +2134,10 @@ public partial class Languages
                             ParseMode.Html,
                             replyMarkup: inlineKeyboard
                         );
-                    } catch{}
+                    }
+                    catch
+                    {
+                    }
                 }
                 catch
                 {
@@ -2109,7 +2156,8 @@ public partial class Languages
                     inlineKeyboard
                 );
                 stream.Dispose();
-            }catch
+            }
+            catch
             {
                 Trace.Write("Handle Remaining Exceptions");
                 try
@@ -2134,7 +2182,10 @@ public partial class Languages
                             ParseMode.Html,
                             replyMarkup: inlineKeyboard
                         );
-                    } catch{}
+                    }
+                    catch
+                    {
+                    }
                 }
                 catch
                 {
@@ -2218,8 +2269,12 @@ public partial class Languages
                             callbackData.Message.MessageId,
                             media: new InputMediaPhoto(new InputMedia(stream, "media"))
                         ).WaitAsync(TimeSpan.FromSeconds(10));
-                    } catch{}
-            } catch
+                    }
+                    catch
+                    {
+                    }
+            }
+            catch
             {
                 Trace.Write("Handle Remaining Exceptions");
                 try
@@ -2244,7 +2299,10 @@ public partial class Languages
                             ParseMode.Html,
                             replyMarkup: inlineKeyboard
                         );
-                    } catch{}
+                    }
+                    catch
+                    {
+                    }
                 }
                 catch
                 {
@@ -2262,7 +2320,8 @@ public partial class Languages
                     null,
                     inlineKeyboard
                 );
-            }catch
+            }
+            catch
             {
                 Trace.Write("Handle Remaining Exceptions");
                 try
@@ -2287,7 +2346,10 @@ public partial class Languages
                             ParseMode.Html,
                             replyMarkup: inlineKeyboard
                         );
-                    } catch{}
+                    }
+                    catch
+                    {
+                    }
                 }
                 catch
                 {
@@ -2432,14 +2494,18 @@ public partial class Languages
                                 callbackData.Message.MessageId,
                                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
                             ).WaitAsync(TimeSpan.FromSeconds(10));
-                        } catch{}
-
-                } catch
+                        }
+                        catch
+                        {
+                        }
+                }
+                catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
                     try
                     {
-                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId);
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
@@ -2459,7 +2525,10 @@ public partial class Languages
                                 ParseMode.Html,
                                 replyMarkup: inlineKeyboard
                             );
-                        } catch{}
+                        }
+                        catch
+                        {
+                        }
                     }
                     catch
                     {
@@ -2477,12 +2546,14 @@ public partial class Languages
                         null,
                         inlineKeyboard
                     );
-                }catch
+                }
+                catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
                     try
                     {
-                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId);
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
@@ -2502,7 +2573,10 @@ public partial class Languages
                                 ParseMode.Html,
                                 replyMarkup: inlineKeyboard
                             );
-                        } catch{}
+                        }
+                        catch
+                        {
+                        }
                     }
                     catch
                     {
@@ -2590,7 +2664,10 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
 
                 break;
             case Error.UserWithoutUsername:
@@ -2674,7 +2751,10 @@ public partial class Languages
                             ParseMode.Html,
                             replyMarkup: inlineKeyboard
                         );
-                    } catch{}
+                    }
+                    catch
+                    {
+                    }
                 }
                 else
                 {
@@ -2688,13 +2768,18 @@ public partial class Languages
                                     callbackData.Message.MessageId,
                                     media: new InputMediaPhoto(new InputMedia(stream, "media"))
                                 ).WaitAsync(TimeSpan.FromSeconds(10));
-                            } catch{}
-                    } catch
+                            }
+                            catch
+                            {
+                            }
+                    }
+                    catch
                     {
                         Trace.Write("Handle Remaining Exceptions");
                         try
                         {
-                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                                callbackData.Message.MessageId);
                             inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
@@ -2714,7 +2799,10 @@ public partial class Languages
                                     ParseMode.Html,
                                     replyMarkup: inlineKeyboard
                                 );
-                            } catch{}
+                            }
+                            catch
+                            {
+                            }
                         }
                         catch
                         {
@@ -2732,12 +2820,14 @@ public partial class Languages
                             null,
                             inlineKeyboard
                         );
-                    }catch
+                    }
+                    catch
                     {
                         Trace.Write("Handle Remaining Exceptions");
                         try
                         {
-                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                                callbackData.Message.MessageId);
                             inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
@@ -2757,7 +2847,10 @@ public partial class Languages
                                     ParseMode.Html,
                                     replyMarkup: inlineKeyboard
                                 );
-                            } catch{}
+                            }
+                            catch
+                            {
+                            }
                         }
                         catch
                         {
@@ -2869,8 +2962,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -2895,24 +2992,29 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
-        try{
-        await botClient.EditMessageCaptionAsync(
-            callbackData.Message.Chat.Id,
-            callbackData.Message.MessageId,
-            caption,
-            ParseMode.Markdown,
-            null,
-            inlineKeyboard
-        );
-        } catch
+        try
+        {
+            await botClient.EditMessageCaptionAsync(
+                callbackData.Message.Chat.Id,
+                callbackData.Message.MessageId,
+                caption,
+                ParseMode.Markdown,
+                null,
+                inlineKeyboard
+            );
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -2937,12 +3039,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -3054,8 +3159,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -3080,12 +3189,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -3098,7 +3210,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -3123,12 +3236,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -3276,8 +3392,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -3302,12 +3422,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -3320,7 +3443,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -3345,12 +3469,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -3496,7 +3623,10 @@ public partial class Languages
                 ParseMode.Html,
                 replyMarkup: inlineKeyboard
             );
-        } catch{}
+        }
+        catch
+        {
+        }
     }
 
     public static async void Status(ITelegramBotClient botClient, long chatId, CallbackQuery callbackData,
@@ -3656,6 +3786,7 @@ public partial class Languages
                           "\n";
                 break;
         }
+
         var copper = false;
         var bronze = false;
         var silver = false;
@@ -3667,12 +3798,12 @@ public partial class Languages
         string tableType;
         string tableRole;
         int num = 0;
-        
+
         if (userData.UserTableList.table_ID_copper != null)
         {
             num = 0;
             var tableDataCopper = await WebManager.SendData(
-                new TableProfile( userData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData, true);
+                new TableProfile(userData.UserTableList.table_ID_copper), WebManager.RequestType.GetTableData, true);
 
             copper = true;
             var giverCountCopper = 0;
@@ -3685,6 +3816,7 @@ public partial class Languages
                     num = 1;
                 }
             }
+
             if (tableDataCopper.tableData.managerA_ID != null)
             {
                 if (tableDataCopper.tableData.managerB_ID == userData.id)
@@ -3692,6 +3824,7 @@ public partial class Languages
                     num = 2;
                 }
             }
+
             if (tableDataCopper.tableData.giverA_ID != null)
             {
                 if (tableDataCopper.tableData.giverA_ID == userData.id)
@@ -3703,6 +3836,7 @@ public partial class Languages
 
                 giverCountCopper++;
             }
+
             if (tableDataCopper.tableData.giverB_ID != null)
             {
                 if (tableDataCopper.tableData.giverB_ID == userData.id)
@@ -3714,6 +3848,7 @@ public partial class Languages
 
                 giverCountCopper++;
             }
+
             if (tableDataCopper.tableData.giverC_ID != null)
             {
                 if (tableDataCopper.tableData.giverC_ID == userData.id)
@@ -3725,6 +3860,7 @@ public partial class Languages
 
                 giverCountCopper++;
             }
+
             if (tableDataCopper.tableData.giverD_ID != null)
             {
                 if (tableDataCopper.tableData.giverD_ID == userData.id)
@@ -3736,6 +3872,7 @@ public partial class Languages
 
                 giverCountCopper++;
             }
+
             string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.copper);
             switch (userData.lang)
@@ -3749,6 +3886,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Всего дарителей на столе: {giverCountCopper} из 4";
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
@@ -3758,6 +3896,7 @@ public partial class Languages
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "eng":
                     caption += "\n" +
@@ -3768,6 +3907,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total givers on the table: {giverCountCopper} of 4";
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
@@ -3777,6 +3917,7 @@ public partial class Languages
                         else caption += "\n❌ You are not activated on the table\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "fr":
                     caption += "\n" +
@@ -3787,6 +3928,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountCopper} sur 4";
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
@@ -3796,6 +3938,7 @@ public partial class Languages
                         else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "de":
                     caption += "\n" +
@@ -3806,6 +3949,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountCopper} von 4";
                     if (userData.UserTableList.copperTableRole == Table.TableRole.giver)
@@ -3815,6 +3959,7 @@ public partial class Languages
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
                     else caption += "\n";
+
                     break;
             }
         }
@@ -3823,7 +3968,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataBronze = await WebManager.SendData(
-                new TableProfile( userData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData, true);
+                new TableProfile(userData.UserTableList.table_ID_bronze), WebManager.RequestType.GetTableData, true);
 
             bronze = true;
             var giverCountBronze = 0;
@@ -3835,6 +3980,7 @@ public partial class Languages
                     num = 1;
                 }
             }
+
             if (tableDataBronze.tableData.managerA_ID != null)
             {
                 if (tableDataBronze.tableData.managerB_ID == userData.id)
@@ -3842,6 +3988,7 @@ public partial class Languages
                     num = 2;
                 }
             }
+
             if (tableDataBronze.tableData.giverA_ID != null)
             {
                 if (tableDataBronze.tableData.giverA_ID == userData.id)
@@ -3853,6 +4000,7 @@ public partial class Languages
 
                 giverCountBronze++;
             }
+
             if (tableDataBronze.tableData.giverB_ID != null)
             {
                 if (tableDataBronze.tableData.giverB_ID == userData.id)
@@ -3864,6 +4012,7 @@ public partial class Languages
 
                 giverCountBronze++;
             }
+
             if (tableDataBronze.tableData.giverC_ID != null)
             {
                 if (tableDataBronze.tableData.giverC_ID == userData.id)
@@ -3875,6 +4024,7 @@ public partial class Languages
 
                 giverCountBronze++;
             }
+
             if (tableDataBronze.tableData.giverD_ID != null)
             {
                 if (tableDataBronze.tableData.giverD_ID == userData.id)
@@ -3886,6 +4036,7 @@ public partial class Languages
 
                 giverCountBronze++;
             }
+
             string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.bronze);
             switch (userData.lang)
@@ -3899,6 +4050,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Всего дарителей на столе: {giverCountBronze} из 4";
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
@@ -3908,6 +4060,7 @@ public partial class Languages
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "eng":
                     caption += "\n" +
@@ -3918,6 +4071,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total givers on the table: {giverCountBronze} of 4";
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
@@ -3927,6 +4081,7 @@ public partial class Languages
                         else caption += "\n❌ You are not activated on the table\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "fr":
                     caption += "\n" +
@@ -3937,6 +4092,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountBronze} sur 4";
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
@@ -3946,6 +4102,7 @@ public partial class Languages
                         else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "de":
                     caption += "\n" +
@@ -3956,6 +4113,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountBronze} von 4";
                     if (userData.UserTableList.bronzeTableRole == Table.TableRole.giver)
@@ -3965,6 +4123,7 @@ public partial class Languages
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
                     else caption += "\n";
+
                     break;
             }
         }
@@ -3973,7 +4132,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataSilver = await WebManager.SendData(
-                new TableProfile( userData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData, true);
+                new TableProfile(userData.UserTableList.table_ID_silver), WebManager.RequestType.GetTableData, true);
 
             silver = true;
             var giverCountSilver = 0;
@@ -3986,6 +4145,7 @@ public partial class Languages
                     num = 1;
                 }
             }
+
             if (tableDataSilver.tableData.managerA_ID != null)
             {
                 if (tableDataSilver.tableData.managerB_ID == userData.id)
@@ -3993,6 +4153,7 @@ public partial class Languages
                     num = 2;
                 }
             }
+
             if (tableDataSilver.tableData.giverA_ID != null)
             {
                 if (tableDataSilver.tableData.giverA_ID == userData.id)
@@ -4004,6 +4165,7 @@ public partial class Languages
 
                 giverCountSilver++;
             }
+
             if (tableDataSilver.tableData.giverB_ID != null)
             {
                 if (tableDataSilver.tableData.giverB_ID == userData.id)
@@ -4015,6 +4177,7 @@ public partial class Languages
 
                 giverCountSilver++;
             }
+
             if (tableDataSilver.tableData.giverC_ID != null)
             {
                 if (tableDataSilver.tableData.giverC_ID == userData.id)
@@ -4026,6 +4189,7 @@ public partial class Languages
 
                 giverCountSilver++;
             }
+
             if (tableDataSilver.tableData.giverD_ID != null)
             {
                 if (tableDataSilver.tableData.giverD_ID == userData.id)
@@ -4037,6 +4201,7 @@ public partial class Languages
 
                 giverCountSilver++;
             }
+
             string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.silver);
             switch (userData.lang)
@@ -4050,6 +4215,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Всего дарителей на столе: {giverCountSilver} из 4";
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
@@ -4059,6 +4225,7 @@ public partial class Languages
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "eng":
                     caption += "\n" +
@@ -4069,6 +4236,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total givers on the table: {giverCountSilver} of 4";
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
@@ -4078,6 +4246,7 @@ public partial class Languages
                         else caption += "\n❌ You are not activated on the table\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "fr":
                     caption += "\n" +
@@ -4088,6 +4257,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountSilver} sur 4";
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
@@ -4097,6 +4267,7 @@ public partial class Languages
                         else caption += "\n❌ Vous n'êtes pas activé sur la table\n";
                     }
                     else caption += "\n";
+
                     break;
                 case "de":
                     caption += "\n" +
@@ -4107,6 +4278,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountSilver} von 4";
                     if (userData.UserTableList.silverTableRole == Table.TableRole.giver)
@@ -4116,6 +4288,7 @@ public partial class Languages
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
                     else caption += "\n";
+
                     break;
             }
         }
@@ -4123,7 +4296,7 @@ public partial class Languages
         if (userData.UserTableList.table_ID_gold != null)
         {
             num = 0;
-            var tableDataGold = await WebManager.SendData(new TableProfile( userData.UserTableList.table_ID_gold),
+            var tableDataGold = await WebManager.SendData(new TableProfile(userData.UserTableList.table_ID_gold),
                 WebManager.RequestType.GetTableData, true);
 
             gold = true;
@@ -4137,6 +4310,7 @@ public partial class Languages
                     num = 1;
                 }
             }
+
             if (tableDataGold.tableData.managerA_ID != null)
             {
                 if (tableDataGold.tableData.managerB_ID == userData.id)
@@ -4144,6 +4318,7 @@ public partial class Languages
                     num = 2;
                 }
             }
+
             if (tableDataGold.tableData.giverA_ID != null)
             {
                 if (tableDataGold.tableData.giverA_ID == userData.id)
@@ -4155,6 +4330,7 @@ public partial class Languages
 
                 giverCountGold++;
             }
+
             if (tableDataGold.tableData.giverB_ID != null)
             {
                 if (tableDataGold.tableData.giverB_ID == userData.id)
@@ -4166,6 +4342,7 @@ public partial class Languages
 
                 giverCountGold++;
             }
+
             if (tableDataGold.tableData.giverC_ID != null)
             {
                 if (tableDataGold.tableData.giverC_ID == userData.id)
@@ -4177,6 +4354,7 @@ public partial class Languages
 
                 giverCountGold++;
             }
+
             if (tableDataGold.tableData.giverD_ID != null)
             {
                 if (tableDataGold.tableData.giverD_ID == userData.id)
@@ -4188,6 +4366,7 @@ public partial class Languages
 
                 giverCountGold++;
             }
+
             string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.gold);
             switch (userData.lang)
@@ -4201,6 +4380,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Всего дарителей на столе: {giverCountGold} из 4";
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
@@ -4221,6 +4401,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total givers on the table: {giverCountGold} of 4";
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
@@ -4241,6 +4422,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountGold} sur 4";
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
@@ -4261,6 +4443,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountGold} von 4";
                     if (userData.UserTableList.goldTableRole == Table.TableRole.giver)
@@ -4279,7 +4462,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataPlatinum = await WebManager.SendData(
-                new TableProfile( userData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData, true);
+                new TableProfile(userData.UserTableList.table_ID_platinum), WebManager.RequestType.GetTableData, true);
 
             platinum = true;
             var giverCountPlatinum = 0;
@@ -4292,6 +4475,7 @@ public partial class Languages
                     num = 1;
                 }
             }
+
             if (tableDataPlatinum.tableData.managerA_ID != null)
             {
                 if (tableDataPlatinum.tableData.managerB_ID == userData.id)
@@ -4299,6 +4483,7 @@ public partial class Languages
                     num = 2;
                 }
             }
+
             if (tableDataPlatinum.tableData.giverA_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverA_ID == userData.id)
@@ -4310,6 +4495,7 @@ public partial class Languages
 
                 giverCountPlatinum++;
             }
+
             if (tableDataPlatinum.tableData.giverB_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverB_ID == userData.id)
@@ -4321,6 +4507,7 @@ public partial class Languages
 
                 giverCountPlatinum++;
             }
+
             if (tableDataPlatinum.tableData.giverC_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverC_ID == userData.id)
@@ -4332,6 +4519,7 @@ public partial class Languages
 
                 giverCountPlatinum++;
             }
+
             if (tableDataPlatinum.tableData.giverD_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverD_ID == userData.id)
@@ -4343,6 +4531,7 @@ public partial class Languages
 
                 giverCountPlatinum++;
             }
+
             string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.platinum);
             switch (userData.lang)
@@ -4356,6 +4545,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Всего дарителей на столе: {giverCountPlatinum} из 4";
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
@@ -4364,6 +4554,7 @@ public partial class Languages
                             caption += "\n✅ Вы активированы на столе\n";
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
+
                     break;
                 case "eng":
                     caption += "\n" +
@@ -4374,6 +4565,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total givers on the table: {giverCountPlatinum} of 4";
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
@@ -4393,6 +4585,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountPlatinum} sur 4";
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
@@ -4412,6 +4605,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountPlatinum} von 4";
                     if (userData.UserTableList.platinumTableRole == Table.TableRole.giver)
@@ -4430,7 +4624,7 @@ public partial class Languages
         {
             num = 0;
             var tableDataDiamond = await WebManager.SendData(
-                new TableProfile( userData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData, true);
+                new TableProfile(userData.UserTableList.table_ID_diamond), WebManager.RequestType.GetTableData, true);
 
             diamond = true;
             var giverCountDiamond = 0;
@@ -4443,6 +4637,7 @@ public partial class Languages
                     num = 1;
                 }
             }
+
             if (tableDataDiamond.tableData.managerA_ID != null)
             {
                 if (tableDataDiamond.tableData.managerB_ID == userData.id)
@@ -4450,6 +4645,7 @@ public partial class Languages
                     num = 2;
                 }
             }
+
             if (tableDataDiamond.tableData.giverA_ID != null)
             {
                 if (tableDataDiamond.tableData.giverA_ID == userData.id)
@@ -4461,6 +4657,7 @@ public partial class Languages
 
                 giverCountDiamond++;
             }
+
             if (tableDataDiamond.tableData.giverB_ID != null)
             {
                 if (tableDataDiamond.tableData.giverB_ID == userData.id)
@@ -4472,6 +4669,7 @@ public partial class Languages
 
                 giverCountDiamond++;
             }
+
             if (tableDataDiamond.tableData.giverC_ID != null)
             {
                 if (tableDataDiamond.tableData.giverC_ID == userData.id)
@@ -4483,6 +4681,7 @@ public partial class Languages
 
                 giverCountDiamond++;
             }
+
             if (tableDataDiamond.tableData.giverD_ID != null)
             {
                 if (tableDataDiamond.tableData.giverD_ID == userData.id)
@@ -4494,6 +4693,7 @@ public partial class Languages
 
                 giverCountDiamond++;
             }
+
             string numeration = $"-{num}";
             tableType = TableProfile.GetTableType(userData, Table.TableType.diamond);
             switch (userData.lang)
@@ -4507,6 +4707,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Всего дарителей на столе: {giverCountDiamond} из 4";
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
@@ -4515,6 +4716,7 @@ public partial class Languages
                             caption += "\n✅ Вы активированы на столе\n";
                         else caption += "\n❌ Вы не активированы на столе\n";
                     }
+
                     break;
                 case "eng":
                     caption += "\n" +
@@ -4525,6 +4727,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total givers on the table: {giverCountDiamond} of 4";
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
@@ -4544,6 +4747,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Total des donateurs sur la table: {giverCountDiamond} sur 4";
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
@@ -4563,6 +4767,7 @@ public partial class Languages
                     {
                         caption += $"{numeration}";
                     }
+
                     caption += "\n" +
                                $"Gesamtzahl der Geber auf dem Tisch: {giverCountDiamond} von 4";
                     if (userData.UserTableList.diamondTableRole == Table.TableRole.giver)
@@ -4572,6 +4777,7 @@ public partial class Languages
                         else caption += "\n❌ Du bist am Tisch nicht aktiviert\n";
                     }
                     else caption += "\n";
+
                     break;
             }
         }
@@ -4587,9 +4793,13 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
+                }
+                catch
+                {
+                }
             }
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -4614,12 +4824,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -4658,14 +4871,16 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
-        
     }
 
     public static async void RefLink(ITelegramBotClient botClient, long chatId, UserProfile userData,
@@ -4798,12 +5013,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -4816,7 +5034,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -4841,13 +5060,16 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
-            
+
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -4958,7 +5180,8 @@ public partial class Languages
                     callbackData.Message.MessageId,
                     media: new InputMediaPhoto(new InputMedia(stream, "media"))
                 ).WaitAsync(TimeSpan.FromSeconds(10));
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -4983,12 +5206,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -5001,7 +5227,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -5026,12 +5253,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -5174,8 +5404,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -5200,12 +5434,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -5218,7 +5455,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -5243,12 +5481,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -5457,8 +5698,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -5483,12 +5728,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -5501,7 +5749,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -5526,12 +5775,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -5744,8 +5996,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -5770,12 +6026,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -5788,7 +6047,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -5813,12 +6073,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -6107,8 +6370,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -6133,12 +6400,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -6151,7 +6421,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             ).WaitAsync(TimeSpan.FromSeconds(10));
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -6176,12 +6447,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 
@@ -6287,12 +6561,14 @@ public partial class Languages
                             callbackData.Message.MessageId,
                             media: new InputMediaPhoto(new InputMedia(stream, "media"))
                         ).WaitAsync(TimeSpan.FromSeconds(10));
-                    }catch
+                    }
+                    catch
                     {
                         Trace.Write("Handle Remaining Exceptions");
                         try
                         {
-                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                            await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                                callbackData.Message.MessageId);
                             inlineKeyboard = new InlineKeyboardMarkup(
                                 new[]
                                 {
@@ -6312,7 +6588,10 @@ public partial class Languages
                                     ParseMode.Html,
                                     replyMarkup: inlineKeyboard
                                 );
-                            } catch{}
+                            }
+                            catch
+                            {
+                            }
                         }
                         catch
                         {
@@ -6330,12 +6609,14 @@ public partial class Languages
                         null,
                         inlineKeyboard
                     );
-                } catch
+                }
+                catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
                     try
                     {
-                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId);
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
@@ -6355,7 +6636,10 @@ public partial class Languages
                                 ParseMode.Html,
                                 replyMarkup: inlineKeyboard
                             );
-                        } catch{}
+                        }
+                        catch
+                        {
+                        }
                     }
                     catch
                     {
@@ -6452,13 +6736,18 @@ public partial class Languages
                                 callbackData.Message.MessageId,
                                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
                             ).WaitAsync(TimeSpan.FromSeconds(10));
-                        } catch{}
-                } catch
+                        }
+                        catch
+                        {
+                        }
+                }
+                catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
                     try
                     {
-                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId);
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
@@ -6478,7 +6767,10 @@ public partial class Languages
                                 ParseMode.Html,
                                 replyMarkup: inlineKeyboard
                             );
-                        } catch{}
+                        }
+                        catch
+                        {
+                        }
                     }
                     catch
                     {
@@ -6496,12 +6788,14 @@ public partial class Languages
                         null,
                         inlineKeyboard
                     );
-                } catch
+                }
+                catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
                     try
                     {
-                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId);
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
@@ -6521,7 +6815,10 @@ public partial class Languages
                                 ParseMode.Html,
                                 replyMarkup: inlineKeyboard
                             );
-                        } catch{}
+                        }
+                        catch
+                        {
+                        }
                     }
                     catch
                     {
@@ -6618,13 +6915,18 @@ public partial class Languages
                                 callbackData.Message.MessageId,
                                 media: new InputMediaPhoto(new InputMedia(stream, "media"))
                             ).WaitAsync(TimeSpan.FromSeconds(10));
-                        } catch{}
-                } catch
+                        }
+                        catch
+                        {
+                        }
+                }
+                catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
                     try
                     {
-                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId);
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
@@ -6644,7 +6946,10 @@ public partial class Languages
                                 ParseMode.Html,
                                 replyMarkup: inlineKeyboard
                             );
-                        } catch{}
+                        }
+                        catch
+                        {
+                        }
                     }
                     catch
                     {
@@ -6662,12 +6967,14 @@ public partial class Languages
                         null,
                         inlineKeyboard
                     );
-                } catch
+                }
+                catch
                 {
                     Trace.Write("Handle Remaining Exceptions");
                     try
                     {
-                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id, callbackData.Message.MessageId);
+                        await botClient.DeleteMessageAsync(callbackData.Message.Chat.Id,
+                            callbackData.Message.MessageId);
                         inlineKeyboard = new InlineKeyboardMarkup(
                             new[]
                             {
@@ -6687,7 +6994,10 @@ public partial class Languages
                                 ParseMode.Html,
                                 replyMarkup: inlineKeyboard
                             );
-                        } catch{}
+                        }
+                        catch
+                        {
+                        }
                     }
                     catch
                     {
@@ -6827,8 +7137,12 @@ public partial class Languages
                         callbackData.Message.MessageId,
                         media: new InputMediaPhoto(new InputMedia(stream, "media"))
                     ).WaitAsync(TimeSpan.FromSeconds(10));
-                } catch{}
-        } catch
+                }
+                catch
+                {
+                }
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -6853,12 +7167,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
 
         try
@@ -6871,7 +7188,8 @@ public partial class Languages
                 null,
                 inlineKeyboard
             );
-        } catch
+        }
+        catch
         {
             Trace.Write("Handle Remaining Exceptions");
             try
@@ -6896,12 +7214,15 @@ public partial class Languages
                         ParseMode.Html,
                         replyMarkup: inlineKeyboard
                     );
-                } catch{}
+                }
+                catch
+                {
+                }
             }
             catch (ApiRequestException apiRequestException)
-                                {
-                                    //
-                                }
+            {
+                //
+            }
         }
     }
 }
