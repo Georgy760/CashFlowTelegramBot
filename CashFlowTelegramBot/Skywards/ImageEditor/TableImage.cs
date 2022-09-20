@@ -64,7 +64,7 @@ public static class TableImage
         paintForUser.TextAlign = SKTextAlign.Center;
         if (TableProfile.bankerID != null)
         {
-            var bankerName = await WebManager.SendData(new UserProfile((int) TableProfile.bankerID),
+            var bankerName = await WebManager.SendData(new UserProfile(TableProfile.bankerID),
                 WebManager.RequestType.GetUserData, true);
 
             if (TableProfile.bankerID == userData.id)
@@ -74,7 +74,7 @@ public static class TableImage
 
         if (TableProfile.managerA_ID != null)
         {
-            var managerAUsername = await WebManager.SendData(new UserProfile((int) TableProfile.managerA_ID),
+            var managerAUsername = await WebManager.SendData(new UserProfile(TableProfile.managerA_ID),
                 WebManager.RequestType.GetUserData, true);
             if (TableProfile.managerA_ID == userData.id)
                 canvas.DrawText("@" + managerAUsername.playerData.username.TruncateLongString(8), managerAPoint,
@@ -85,7 +85,7 @@ public static class TableImage
 
         if (TableProfile.managerB_ID != null)
         {
-            var managerBUsername = await WebManager.SendData(new UserProfile((int) TableProfile.managerB_ID),
+            var managerBUsername = await WebManager.SendData(new UserProfile(TableProfile.managerB_ID),
                 WebManager.RequestType.GetUserData, true);
             if (TableProfile.managerB_ID == userData.id)
                 canvas.DrawText("@" + managerBUsername.playerData.username.TruncateLongString(8), managerBPoint,
@@ -96,7 +96,7 @@ public static class TableImage
 
         if (TableProfile.giverA_ID != null)
         {
-            var giverAUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverA_ID),
+            var giverAUsername = await WebManager.SendData(new UserProfile(TableProfile.giverA_ID),
                 WebManager.RequestType.GetUserData, true);
             if (TableProfile.giverA_ID == userData.id)
                 canvas.DrawText("@" + giverAUsername.playerData.username.TruncateLongString(8), giverAPoint,
@@ -106,7 +106,7 @@ public static class TableImage
 
         if (TableProfile.giverB_ID != null)
         {
-            var giverBUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverB_ID),
+            var giverBUsername = await WebManager.SendData(new UserProfile(TableProfile.giverB_ID),
                 WebManager.RequestType.GetUserData, true);
             if (TableProfile.giverB_ID == userData.id)
                 canvas.DrawText("@" + giverBUsername.playerData.username.TruncateLongString(8), giverBPoint,
@@ -116,7 +116,7 @@ public static class TableImage
 
         if (TableProfile.giverC_ID != null)
         {
-            var giverCUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverC_ID),
+            var giverCUsername = await WebManager.SendData(new UserProfile(TableProfile.giverC_ID),
                 WebManager.RequestType.GetUserData, true);
             if (TableProfile.giverC_ID == userData.id)
                 canvas.DrawText("@" + giverCUsername.playerData.username.TruncateLongString(8), giverCPoint,
@@ -126,7 +126,7 @@ public static class TableImage
 
         if (TableProfile.giverD_ID != null)
         {
-            var giverDUsername = await WebManager.SendData(new UserProfile((int) TableProfile.giverD_ID),
+            var giverDUsername = await WebManager.SendData(new UserProfile(TableProfile.giverD_ID),
                 WebManager.RequestType.GetUserData, true);
             if (TableProfile.giverD_ID == userData.id)
                 canvas.DrawText("@" + giverDUsername.playerData.username.TruncateLongString(8), giverDPoint,
