@@ -138,7 +138,8 @@ public class WebManager
     public static UserData UserData = new();
 
     //private static readonly string targetURL = "http://79.174.13.107/logreg.php";
-    private static readonly string targetURL = "http://79.174.13.107/logregV2.php";
+    //private static readonly string targetURL = "http://79.174.13.107/logregV3.php";
+    private static readonly string targetURL = "http://185.200.240.34/logregV2.php";
 
     public static async Task<UserData> SendData(UserProfile data, RequestType requestType, bool debug)
     {

@@ -2220,6 +2220,7 @@ public static class UpdateHandlers
                 UserProfile userToConfirm = new UserProfile(dataToConfirm.tableData.giverA_ID);
                 if (dataToConfirm.tableData.tableID != null && userToConfirm.id != null)
                 {
+                    
                     var userConfirm =
                         await WebManager.SendData(userToConfirm, WebManager.RequestType.GetUserData, false);
                     var refUserData = await WebManager.SendData(new UserProfile(userConfirm.playerData.refId), WebManager.RequestType.GetUserData, false);
