@@ -22,7 +22,8 @@ var receiverOptions = new ReceiverOptions
 };
 
 
-bot.StartReceiving(UpdateHandlers.HandleUpdateAsync,
+bot.StartReceiving(
+    UpdateHandlers.HandleUpdateAsync,
     UpdateHandlers.PollingErrorHandler,
     receiverOptions,
     cts.Token);

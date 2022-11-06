@@ -132,7 +132,7 @@ public class WebManager
         RemoveFromTable,
         Confirm
     }
-
+    
     public static WebManager WM;
 
     public static UserData UserData = new();
