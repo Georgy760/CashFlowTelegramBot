@@ -44,14 +44,6 @@ public class Notifications
                         if (executorID != null)
                             NewGiver(botClient, executorID, notification.bankerID,
                                 notification.tableID);
-                    if (notification.managerA_ID != null)
-                        if (executorID != null)
-                            NewGiver(botClient, executorID, notification.managerA_ID,
-                                notification.tableID);
-                    if (notification.managerB_ID != null)
-                        if (executorID != null)
-                            NewGiver(botClient, executorID, notification.managerB_ID,
-                                notification.tableID);
                     if (notification.giverA_ID != null &&
                         notification.giverA_ID != executorID)
                         if (executorID != null)
@@ -81,10 +73,6 @@ public class Notifications
                     if (notification.bankerID != null)
                         if (executorID != null)
                             TableCompletedBanker(botClient, executorID, notification);
-                    if (notification.managerA_ID != null)
-                        TableCompletedManager(botClient, notification.managerA_ID, notification);
-                    if (notification.managerB_ID != null)
-                        TableCompletedManager(botClient, notification.managerB_ID, notification);
                     if (notification.giverA_ID != null)
                         TableCompletedGiver(botClient, notification.giverA_ID, notification);
                     if (notification.giverB_ID != null)
@@ -414,122 +402,7 @@ public class Notifications
                 replyMarkup: inlineKeyboardExecutor);
         }
     }
-
-    private static async void TableCompletedManager(ITelegramBotClient botClient, long? managerID,
-        Notification notification)
-    {
-        var manager = await WebManager.SendData(new UserProfile(managerID), WebManager.RequestType.GetUserData, true);
-        var tableType = notification.tableType;
-
-        var giftSum = "";
-        switch (tableType)
-        {
-            case Table.TableType.copper:
-                giftSum = "400";
-                break;
-            case Table.TableType.bronze:
-                giftSum = "1 600";
-                break;
-            case Table.TableType.silver:
-                giftSum = "4 000";
-                break;
-            case Table.TableType.gold:
-                giftSum = "10 000";
-                break;
-            case Table.TableType.platinum:
-                giftSum = "20 000";
-                break;
-            case Table.TableType.diamond:
-                giftSum = "40 000";
-                break;
-        }
-
-        InlineKeyboardMarkup? inlineKeyboardManager = null;
-
-
-        string captionManager = "";
-
-        long? chatIdManager = null;
-
-        switch (manager.playerData.lang)
-        {
-            case "ru":
-                inlineKeyboardManager = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Скрыть", "Close")
-                        }
-                    });
-                captionManager = $"<b>👏 Поздравляем!</b>\n" +
-                                 $"<b>Вы перешли на следующий уровень! </b>\n\n" +
-                                 $"<b>Теперь Ваша роль:</b> 🏦 Банкир\n" +
-                                 $"На этом уровне Вы получите 4 подарка на общую сумму {giftSum}$ 💸";
-                break;
-            case "eng":
-                inlineKeyboardManager = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Hide", "Close")
-                        }
-                    });
-                captionManager = $"<b>👏 Congratulations!</b>\n" +
-                                 $"<b>You have reached the next level! </b>\n\n" +
-                                 $"<b>Your role is now:</b> 🏦 Banker\n" +
-                                 $"At this level, you will receive 4 gifts for a total of {giftSum}$ 💸";
-                break;
-            case "fr":
-                inlineKeyboardManager = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Cacher", "Close")
-                        }
-                    });
-                captionManager = $"<b>👏 Félicitations !</b>\n" +
-                                 $"<b>Vous avez atteint le niveau suivant ! </b>\n\n" +
-                                 $"<b>Votre rôle est maintenant:</b> 🏦 Banquier\n" +
-                                 $"A ce niveau, vous recevrez 4 cadeaux pour un total de {giftSum}$ 💸";
-                break;
-            case "de":
-                inlineKeyboardManager = new InlineKeyboardMarkup(
-                    new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData("❌ Ausblenden", "Close")
-                        }
-                    });
-                captionManager = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
-                                 $"<b>Sie haben das nächste Level erreicht! </b>\n\n" +
-                                 $"<b>Ihre Rolle ist jetzt:</b> 🏦 Bankier\n" +
-                                 $"Auf dieser Stufe erhalten Sie 4 Geschenke im Gesamtwert von {giftSum}$ 💸";
-                break;
-        }
-
-        try
-        {
-            chatIdManager = botClient.GetChatAsync(manager.playerData.id).Result.Id;
-        }
-        catch (AggregateException aex)
-        {
-            Trace.WriteLine("Handle Remaining Exceptions");
-            aex.Handle(ex => Exceptions.HandleException(ex));
-        }
-
-        if (chatIdManager != null)
-        {
-            var sentMessageToManager = await botClient.SendTextMessageAsync(
-                chatIdManager,
-                captionManager,
-                ParseMode.Html,
-                replyMarkup: inlineKeyboardManager);
-        }
-    }
+    
 
     private static async void TableCompletedGiver(ITelegramBotClient botClient, long? giverID,
         Notification notification)

@@ -92,9 +92,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Даритель";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Менеджер";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Банкир";
                                 break;
@@ -109,9 +106,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Даритель";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Менеджер";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Банкир";
@@ -128,9 +122,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Даритель";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Менеджер";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Банкир";
                                 break;
@@ -145,9 +136,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Даритель";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Менеджер";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Банкир";
@@ -164,9 +152,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Даритель";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Менеджер";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Банкир";
                                 break;
@@ -181,9 +166,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Даритель";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Менеджер";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Банкир";
@@ -207,9 +189,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Giver";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
                                 break;
@@ -224,9 +203,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Giver";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
@@ -243,9 +219,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Giver";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
                                 break;
@@ -260,9 +233,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Giver";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
@@ -279,9 +249,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Giver";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
                                 break;
@@ -296,9 +263,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Giver";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
@@ -321,9 +285,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Donateur";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Gestionnaire";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banquier";
                                 break;
@@ -338,9 +299,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Donateur";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Gestionnaire";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banquier";
@@ -357,9 +315,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Donateur";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Gestionnaire";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banquier";
                                 break;
@@ -374,9 +329,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Donateur";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Gestionnaire";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banquier";
@@ -393,9 +345,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Donateur";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Gestionnaire";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banquier";
                                 break;
@@ -410,9 +359,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Donateur";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Gestionnaire";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banquier";
@@ -435,9 +381,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Geber";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
                                 break;
@@ -452,9 +395,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Geber";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
@@ -471,9 +411,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Geber";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
                                 break;
@@ -488,9 +425,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Geber";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
@@ -507,9 +441,6 @@ public class UserProfile
                             case Table.TableRole.giver:
                                 result = "🎁 Geber";
                                 break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
-                                break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
                                 break;
@@ -524,9 +455,6 @@ public class UserProfile
                         {
                             case Table.TableRole.giver:
                                 result = "🎁 Geber";
-                                break;
-                            case Table.TableRole.manager:
-                                result = "👤 Manager";
                                 break;
                             case Table.TableRole.banker:
                                 result = "🏦 Banker";
@@ -556,9 +484,6 @@ public class UserProfile
                     case Table.TableRole.giver:
                         result = "🎁 Даритель";
                         break;
-                    case Table.TableRole.manager:
-                        result = "👤 Менеджер";
-                        break;
                     case Table.TableRole.banker:
                         result = "🏦 Банкир";
                         break;
@@ -573,9 +498,6 @@ public class UserProfile
                 {
                     case Table.TableRole.giver:
                         result = "🎁 Giver";
-                        break;
-                    case Table.TableRole.manager:
-                        result = "👤 Manager";
                         break;
                     case Table.TableRole.banker:
                         result = "🏦 Banker";
@@ -592,9 +514,6 @@ public class UserProfile
                     case Table.TableRole.giver:
                         result = "🎁 Donateur";
                         break;
-                    case Table.TableRole.manager:
-                        result = "👤 Gestionnaire";
-                        break;
                     case Table.TableRole.banker:
                         result = "🏦 Banquier";
                         break;
@@ -609,9 +528,6 @@ public class UserProfile
                 {
                     case Table.TableRole.giver:
                         result = "🎁 Geber";
-                        break;
-                    case Table.TableRole.manager:
-                        result = "👤 Manager";
                         break;
                     case Table.TableRole.banker:
                         result = "🏦 Banker";

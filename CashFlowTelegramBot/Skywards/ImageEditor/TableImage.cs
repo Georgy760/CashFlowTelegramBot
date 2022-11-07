@@ -72,28 +72,6 @@ public static class TableImage
             else canvas.DrawText("@" + bankerName.playerData.username.TruncateLongString(8), bankerPoint, paint);
         }
 
-        if (TableProfile.managerA_ID != null)
-        {
-            var managerAUsername = await WebManager.SendData(new UserProfile(TableProfile.managerA_ID),
-                WebManager.RequestType.GetUserData, true);
-            if (TableProfile.managerA_ID == userData.id)
-                canvas.DrawText("@" + managerAUsername.playerData.username.TruncateLongString(8), managerAPoint,
-                    paintForUser);
-            else
-                canvas.DrawText("@" + managerAUsername.playerData.username.TruncateLongString(8), managerAPoint, paint);
-        }
-
-        if (TableProfile.managerB_ID != null)
-        {
-            var managerBUsername = await WebManager.SendData(new UserProfile(TableProfile.managerB_ID),
-                WebManager.RequestType.GetUserData, true);
-            if (TableProfile.managerB_ID == userData.id)
-                canvas.DrawText("@" + managerBUsername.playerData.username.TruncateLongString(8), managerBPoint,
-                    paintForUser);
-            else
-                canvas.DrawText("@" + managerBUsername.playerData.username.TruncateLongString(8), managerBPoint, paint);
-        }
-
         if (TableProfile.giverA_ID != null)
         {
             var giverAUsername = await WebManager.SendData(new UserProfile(TableProfile.giverA_ID),

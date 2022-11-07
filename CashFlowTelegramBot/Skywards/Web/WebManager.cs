@@ -54,8 +54,6 @@ public class Notification
     public string notificationText;
     public int? tableID;
     public long? bankerID;
-    public long? managerA_ID;
-    public long? managerB_ID;
     public long? giverA_ID;
     public long? giverB_ID;
     public long? giverC_ID;
@@ -68,8 +66,6 @@ public class Notification
         notificationText = "";
         tableID = null;
         bankerID = null;
-        managerA_ID = null;
-        managerB_ID = null;
         giverA_ID = null;
         giverB_ID = null;
         giverC_ID = null;
@@ -439,34 +435,35 @@ public class WebManager
                 Enum.Parse<Table.TableType>(
                     tableProfiles[1].ToString().Replace("\"tableType\": \"", "").Replace("\"", ""), true);
             tableProfile.tableType = tableType;
+            
             if (!tableProfiles[2].ToString().Contains("null"))
                 tableProfile.bankerID = (long) tableProfiles[2];
             else tableProfile.bankerID = null;
 
             if (!tableProfiles[3].ToString().Contains("null"))
-                tableProfile.managerA_ID = (long) tableProfiles[3];
-            else tableProfile.managerA_ID = null;
-            if (!tableProfiles[4].ToString().Contains("null"))
-                tableProfile.giverA_ID = (long) tableProfiles[4];
+                tableProfile.giverA_ID = (long) tableProfiles[3];
             else tableProfile.giverA_ID = null;
-            tableProfile.verf_A = tableProfiles[5].ToString().Contains("1");
-            if (!tableProfiles[6].ToString().Contains("null"))
-                tableProfile.giverB_ID = (long) tableProfiles[6];
+            
+            tableProfile.verf_A = tableProfiles[4].ToString().Contains("1");
+            
+            if (!tableProfiles[5].ToString().Contains("null"))
+                tableProfile.giverB_ID = (long) tableProfiles[5];
             else tableProfile.giverB_ID = null;
-            tableProfile.verf_B = tableProfiles[7].ToString().Contains("1");
-
-            if (!tableProfiles[8].ToString().Contains("null"))
-                tableProfile.managerB_ID = (long) tableProfiles[8];
-            else tableProfile.managerB_ID = null;
-
-            if (!tableProfiles[9].ToString().Contains("null"))
-                tableProfile.giverC_ID = (long) tableProfiles[9];
+            
+            tableProfile.verf_B = tableProfiles[6].ToString().Contains("1");
+            
+            if (!tableProfiles[7].ToString().Contains("null"))
+                tableProfile.giverC_ID = (long) tableProfiles[7];
             else tableProfile.giverC_ID = null;
-            tableProfile.verf_C = tableProfiles[10].ToString().Contains("1");
-            if (!tableProfiles[11].ToString().Contains("null"))
-                tableProfile.giverD_ID = (long) tableProfiles[11];
+            
+            tableProfile.verf_C = tableProfiles[8].ToString().Contains("1");
+            
+            if (!tableProfiles[9].ToString().Contains("null"))
+                tableProfile.giverD_ID = (long) tableProfiles[9];
             else tableProfile.giverD_ID = null;
-            tableProfile.verf_D = tableProfiles[12].ToString().Contains("1");
+            
+            tableProfile.verf_D = tableProfiles[10].ToString().Contains("1");
+            
             if (Debug) tableProfile.PrintTableProfile();
         }
 
@@ -510,27 +507,24 @@ public class WebManager
             else notification.bankerID = null;
 
             if (!notifys[3].ToString().Contains("null"))
-                notification.managerA_ID = (long) notifys[3];
-            else notification.managerA_ID = null;
-            if (!notifys[4].ToString().Contains("null"))
-                notification.managerB_ID = (long?) notifys[4];
-            else notification.managerB_ID = null;
-
-            if (!notifys[5].ToString().Contains("null"))
                 notification.giverA_ID = (long) notifys[5];
             else notification.giverA_ID = null;
-            if (!notifys[6].ToString().Contains("null"))
+            
+            if (!notifys[4].ToString().Contains("null"))
                 notification.giverB_ID = (long) notifys[6];
             else notification.giverB_ID = null;
-            if (!notifys[7].ToString().Contains("null"))
+            
+            if (!notifys[5].ToString().Contains("null"))
                 notification.giverC_ID = (long) notifys[7];
             else notification.giverC_ID = null;
-            if (!notifys[8].ToString().Contains("null"))
+            
+            if (!notifys[6].ToString().Contains("null"))
                 notification.giverD_ID = (long) notifys[8];
             else notification.giverD_ID = null;
+            
             notification.isNotify = true;
             notification.tableType = Enum.Parse<Table.TableType>(
-                notifys[10].ToString().Replace("\"tableType\": \"", "").Replace("\"", ""), true);
+                notifys[8].ToString().Replace("\"tableType\": \"", "").Replace("\"", ""), true);
         }
 
         if (!response.Contains("updateData\":null"))

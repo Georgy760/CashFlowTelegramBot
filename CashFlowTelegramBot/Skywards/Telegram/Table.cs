@@ -7,7 +7,6 @@ public class Table
     public enum TableRole
     {
         giver,
-        manager,
         banker
     }
 
@@ -24,12 +23,10 @@ public class Table
     public int tableID { get; set; }
     public TableType tableType { get; set; }
     public long? bankerID { get; set; } = null;
-    public long? managerA_ID { get; set; } = null;
     public long? giverA_ID { get; set; } = null;
     public bool verf_A { get; set; }
     public long? giverB_ID { get; set; } = null;
     public bool verf_B { get; set; }
-    public long? managerB_ID { get; set; } = null;
     public long? giverC_ID { get; set; } = null;
     public bool verf_C { get; set; }
     public long? giverD_ID { get; set; } = null;
@@ -328,7 +325,6 @@ public class TableProfile : Table
                     $"\n--------------------------TableProfile of: {tableID}--------------------------" +
                     "\n-----------------------------------------------------------------------");
         Trace.Write("\ntableID: " + tableID + "\nTableType: " + tableType + "\nBankerID: " + bankerID +
-                    "\nManagerA_ID: " + managerA_ID + "\nManagerB_ID: " + managerB_ID +
                     "\nGiverA_ID: " + giverA_ID + "\nVerfA_ID: " + verf_A +
                     "\nGiverB_ID: " + giverB_ID + "\nVerfB_ID: " + verf_B +
                     "\nGiverC_ID: " + giverC_ID + "\nVerfC_ID: " + verf_C +

@@ -430,10 +430,7 @@ public partial class Languages
                 (tableToBack.tableData.giverB_ID == SearchedUser.id && tableToBack.tableData.verf_B) ||
                 (tableToBack.tableData.giverC_ID == SearchedUser.id && tableToBack.tableData.verf_C) ||
                 (tableToBack.tableData.giverD_ID == SearchedUser.id && tableToBack.tableData.verf_D);
-            if (!(tableToBack.tableData.bankerID == SearchedUser.id || tableToBack.tableData.managerA_ID ==
-                                                                    SearchedUser.id
-                                                                    || tableToBack.tableData.managerB_ID ==
-                                                                    SearchedUser.id))
+            if (tableToBack.tableData.bankerID != SearchedUser.id)
             {
                 if (IsSearchedUserVerf)
                     searchedUserRole = " ✅ ";
@@ -1666,20 +1663,6 @@ public partial class Languages
                 caption += user.UserInfo(Table.TableRole.banker);
             }
 
-            if (table.tableData.managerA_ID != null)
-            {
-                var userData = await WebManager.SendData(new UserProfile(table.tableData.managerA_ID),
-                    WebManager.RequestType.GetUserData, true);
-                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
-                    table.tableData.managerA_ID == user.id, 1);
-                //if (table.tableData.managerA_ID == user.id) tableInfo += "🔘";
-                //tableInfo += $"👤Менеджер-1: @{userData.playerData.username}\n";
-            }
-            else
-            {
-                caption += user.UserInfo(Table.TableRole.manager, 1);
-            }
-
             if (table.tableData.giverA_ID != null)
             {
                 var userData = await WebManager.SendData(new UserProfile(table.tableData.giverA_ID),
@@ -1706,20 +1689,6 @@ public partial class Languages
             else
             {
                 caption += user.UserInfo(Table.TableRole.giver, 2);
-            }
-
-            if (table.tableData.managerB_ID != null)
-            {
-                var userData = await WebManager.SendData(new UserProfile(table.tableData.managerB_ID),
-                    WebManager.RequestType.GetUserData, true);
-                caption += userData.playerData.UserInfo(botClient, user.lang, table.tableData,
-                    table.tableData.managerB_ID == user.id, 2);
-                //if (table.tableData.managerB_ID == user.id) tableInfo += "🔘";
-                //tableInfo += $"👤Менеджер-2: @{userData.playerData.username}\n";
-            }
-            else
-            {
-                caption += user.UserInfo(Table.TableRole.manager, 2);
             }
 
             if (table.tableData.giverC_ID != null)
@@ -3810,22 +3779,7 @@ public partial class Languages
             var giverCountCopper = 0;
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.copper);
             num = 0;
-            if (tableDataCopper.tableData.managerA_ID != null)
-            {
-                if (tableDataCopper.tableData.managerA_ID == userData.id)
-                {
-                    num = 1;
-                }
-            }
-
-            if (tableDataCopper.tableData.managerA_ID != null)
-            {
-                if (tableDataCopper.tableData.managerB_ID == userData.id)
-                {
-                    num = 2;
-                }
-            }
-
+            
             if (tableDataCopper.tableData.giverA_ID != null)
             {
                 if (tableDataCopper.tableData.giverA_ID == userData.id)
@@ -3974,21 +3928,6 @@ public partial class Languages
             bronze = true;
             var giverCountBronze = 0;
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.bronze);
-            if (tableDataBronze.tableData.managerA_ID != null)
-            {
-                if (tableDataBronze.tableData.managerA_ID == userData.id)
-                {
-                    num = 1;
-                }
-            }
-
-            if (tableDataBronze.tableData.managerA_ID != null)
-            {
-                if (tableDataBronze.tableData.managerB_ID == userData.id)
-                {
-                    num = 2;
-                }
-            }
 
             if (tableDataBronze.tableData.giverA_ID != null)
             {
@@ -4139,22 +4078,7 @@ public partial class Languages
             var giverCountSilver = 0;
 
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.silver);
-            if (tableDataSilver.tableData.managerA_ID != null)
-            {
-                if (tableDataSilver.tableData.managerA_ID == userData.id)
-                {
-                    num = 1;
-                }
-            }
-
-            if (tableDataSilver.tableData.managerA_ID != null)
-            {
-                if (tableDataSilver.tableData.managerB_ID == userData.id)
-                {
-                    num = 2;
-                }
-            }
-
+            
             if (tableDataSilver.tableData.giverA_ID != null)
             {
                 if (tableDataSilver.tableData.giverA_ID == userData.id)
@@ -4304,22 +4228,7 @@ public partial class Languages
             var giverCountGold = 0;
 
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.gold);
-            if (tableDataGold.tableData.managerA_ID != null)
-            {
-                if (tableDataGold.tableData.managerA_ID == userData.id)
-                {
-                    num = 1;
-                }
-            }
-
-            if (tableDataGold.tableData.managerA_ID != null)
-            {
-                if (tableDataGold.tableData.managerB_ID == userData.id)
-                {
-                    num = 2;
-                }
-            }
-
+            
             if (tableDataGold.tableData.giverA_ID != null)
             {
                 if (tableDataGold.tableData.giverA_ID == userData.id)
@@ -4469,22 +4378,7 @@ public partial class Languages
             var giverCountPlatinum = 0;
 
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.platinum);
-            if (tableDataPlatinum.tableData.managerA_ID != null)
-            {
-                if (tableDataPlatinum.tableData.managerA_ID == userData.id)
-                {
-                    num = 1;
-                }
-            }
-
-            if (tableDataPlatinum.tableData.managerA_ID != null)
-            {
-                if (tableDataPlatinum.tableData.managerB_ID == userData.id)
-                {
-                    num = 2;
-                }
-            }
-
+            
             if (tableDataPlatinum.tableData.giverA_ID != null)
             {
                 if (tableDataPlatinum.tableData.giverA_ID == userData.id)
@@ -4631,22 +4525,7 @@ public partial class Languages
             var giverCountDiamond = 0;
 
             tableRole = userData.GetTableRole(userData.lang, Table.TableType.diamond);
-            if (tableDataDiamond.tableData.managerA_ID != null)
-            {
-                if (tableDataDiamond.tableData.managerA_ID == userData.id)
-                {
-                    num = 1;
-                }
-            }
-
-            if (tableDataDiamond.tableData.managerA_ID != null)
-            {
-                if (tableDataDiamond.tableData.managerB_ID == userData.id)
-                {
-                    num = 2;
-                }
-            }
-
+            
             if (tableDataDiamond.tableData.giverA_ID != null)
             {
                 if (tableDataDiamond.tableData.giverA_ID == userData.id)

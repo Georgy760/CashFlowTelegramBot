@@ -6,11 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="2f6e78d2-aa43-4927-abc0-70443e90bdb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/ImageEditor/TableImage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/ImageEditor/TableImage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Languages.Tables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Languages.Tables.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Languages.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Languages.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Notifications.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Notifications.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Table.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Table.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Telegram/TelegramToken.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/TelegramToken.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/UserProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/UserProfile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Skywards/Web/WebManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Web/WebManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/logs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/logs.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net6.0/ref/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net6.0/ref/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net6.0/refint/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net6.0/refint/CashFlowTelegramBot.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +39,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="SWEA" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2DYVBtQktVNfA8j8dvM7HRj6wnH" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -151,6 +162,7 @@
       <workItem from="1666013311493" duration="2429000" />
       <workItem from="1667240470152" duration="922000" />
       <workItem from="1667374757727" duration="2313000" />
+      <workItem from="1667726413535" duration="3119000" />
     </task>
     <servers />
   </component>
