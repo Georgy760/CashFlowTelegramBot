@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e9c228d8-f93a-4e33-b87f-2ca9ac3456f4" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2HAZLtShmDBm8BZ2PCSBFVhvWVk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "E:/user/Downloads/tables.sql",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb",
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="RunManager" selected="PHP Script.Unnamed">
+    <configuration name="Unnamed" type="PhpHttpRequestRunConfigurationType" factoryName="PHP HTTP Request" nameIsGenerated="true">
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="PhpLocalRunConfigurationType" factoryName="PHP Console" nameIsGenerated="true" path="$PROJECT_DIR$/logregV3.php">
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug" nameIsGenerated="true" filter_connections="NOT_FILTER">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="PHP HTTP Request.Unnamed" />
+      <item itemvalue="PHP Remote Debug.Unnamed" />
+      <item itemvalue="PHP Script.Unnamed" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e9c228d8-f93a-4e33-b87f-2ca9ac3456f4" name="Changes" comment="" />
+      <created>1667729800544</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1667729800544</updated>
+      <workItem from="1667729802581" duration="596000" />
+      <workItem from="1667730436872" duration="599000" />
+      <workItem from="1667807476948" duration="5465000" />
+    </task>
+    <servers />
+  </component>
+</project>
