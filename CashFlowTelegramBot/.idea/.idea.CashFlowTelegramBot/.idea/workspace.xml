@@ -6,16 +6,29 @@
   <component name="ChangeListManager">
     <list default="true" id="2f6e78d2-aa43-4927-abc0-70443e90bdb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CashFlowTelegramBot/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Languages.Tables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Languages.Tables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Skywards/Web/WebManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Web/WebManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/Notifications.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/Notifications.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Skywards/Telegram/UpdateHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.exe" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/logs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/logs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Release/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Release/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Release/net6.0/logs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net6.0/logs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Release/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Release/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Release/net6.0/ref/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net6.0/ref/CashFlowTelegramBot.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Release/net6.0/refint/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net6.0/refint/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/CashFlowTelegramBot.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CashFlowTelegramBot.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/CashFlowTelegramBot.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CashFlowTelegramBot.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.genruntimeconfig.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/CashFlowTelegramBot.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ref/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ref/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/refint/CashFlowTelegramBot.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/refint/CashFlowTelegramBot.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../logreg/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../logreg/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../logreg/logregV3.php" beforeDir="false" afterPath="$PROJECT_DIR$/../logreg/logregV3.php" afterDir="false" />
     </list>
@@ -25,9 +38,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/52cd844476ec4091838909409447be01a23688/46/55381d41/Monitor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/575c31ecc35a636b6f962cb71d53992552941a18982aae1c8e6c16305cc3761b/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/df11766ef8cb2f5c9f722e0660415cbb4945f41e7c617297bf1017e1a4b8/Chat.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Skywards/Telegram/Languages.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Skywards/Telegram/Notifications.cs" root0="FORCE_HIGHLIGHTING" />
   </component>

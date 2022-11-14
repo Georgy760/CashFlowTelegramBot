@@ -73,14 +73,14 @@ public class Notifications
                     if (notification.bankerID != null)
                         if (executorID != null)
                             TableCompletedBanker(botClient, executorID, notification);
-                    if (notification.giverA_ID != null)
+                    /*if (notification.giverA_ID != null)
                         TableCompletedGiver(botClient, notification.giverA_ID, notification);
                     if (notification.giverB_ID != null)
                         TableCompletedGiver(botClient, notification.giverB_ID, notification);
                     if (notification.giverC_ID != null)
                         TableCompletedGiver(botClient, notification.giverC_ID, notification);
                     if (notification.giverD_ID != null)
-                        TableCompletedGiver(botClient, notification.giverD_ID, notification);
+                        TableCompletedGiver(botClient, notification.giverD_ID, notification);*/
                 }
 
                 break;
@@ -410,11 +410,6 @@ public class Notifications
         InlineKeyboardMarkup? inlineKeyboardGiver = null;
 
         var giver = await WebManager.SendData(new UserProfile(giverID), WebManager.RequestType.GetUserData, true);
-        var managerNum = 0;
-        if (notification.giverA_ID == giverID) managerNum = 1;
-        if (notification.giverB_ID == giverID) managerNum = 2;
-        if (notification.giverC_ID == giverID) managerNum = 1;
-        if (notification.giverD_ID == giverID) managerNum = 2;
         string captionGiver = "";
 
         long? chatIdGiver = null;
@@ -432,7 +427,7 @@ public class Notifications
                     });
                 captionGiver = $"<b>👏 Поздравляем!</b>\n" +
                                $"<b>Вы перешли на следующий уровень! </b>\n\n" +
-                               $"<b>Теперь Ваша роль:</b> 👤 Менеджер-{managerNum}\n" +
+                               $"<b>Теперь Ваша роль:</b> 🏦 Банкир\n" +
                                $"На этом уровне Ваша задача пригласить 2-ух игроков в игру по своей реферальной ссылке. 👥";
                 break;
             case "eng":
@@ -446,7 +441,7 @@ public class Notifications
                     });
                 captionGiver = $"<b>👏 Congratulations!</b>\n" +
                                $"<b>You have reached the next level! </b>\n\n" +
-                               $"<b>Your role is now:</b> 👤 Manager-{managerNum}\n" +
+                               $"<b>Your role is now:</b> 🏦 Banker\n" +
                                $"At this level, your task is to invite 2 players to the game using your referral link. 👥";
                 break;
             case "fr":
@@ -460,7 +455,7 @@ public class Notifications
                     });
                 captionGiver = $"<b>👏 Félicitations !</b>\n" +
                                $"<b>Vous avez atteint le niveau suivant ! </b>\n\n" +
-                               $"<b>Votre rôle est maintenant:</b> 👤 Gestionnaire-{managerNum}\n" +
+                               $"<b>Votre rôle est maintenant:</b> 🏦 Banquier\n" +
                                $"A ce niveau, votre tâche est d'inviter 2 joueurs au jeu en utilisant votre lien de parrainage. 👥";
                 break;
             case "de":
@@ -474,7 +469,7 @@ public class Notifications
                     });
                 captionGiver = $"<b>👏 Herzlichen Glückwunsch!</b>\n" +
                                $"<b>Sie haben das nächste Level erreicht! </b>\n\n" +
-                               $"<b>Ihre Rolle ist jetzt:</b> 👤 Manager-{managerNum}\n" +
+                               $"<b>Ihre Rolle ist jetzt:</b> 🏦 Banker\n" +
                                $"Auf diesem Level besteht Ihre Aufgabe darin, 2 Spieler mit Ihrem Empfehlungslink zum Spiel einzuladen. 👥";
                 break;
         }

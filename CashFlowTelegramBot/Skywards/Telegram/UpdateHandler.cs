@@ -660,7 +660,11 @@ public static class UpdateHandlers
                 try
                 {
                     await botClient.DeleteMessageAsync(callbackQuery.Message.Chat.Id, callbackQuery.Message.MessageId);
-                } catch{}
+                }
+                catch
+                {
+                    Trace.WriteLine("\nCannot close notification");
+                }
 
                 break;
             case "Reg_RUCaptcha":

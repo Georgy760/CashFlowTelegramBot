@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="BotV3@localhost">
-  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.38">
+  <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.41">
     <root id="1">
       <DefaultCasing>exact</DefaultCasing>
       <DefaultEngine>InnoDB</DefaultEngine>
@@ -1286,9 +1286,9 @@ BotV2|schema||moderator_pavel||UPDATE|G</Grants>
       <Type>btree</Type>
     </index>
     <key id="364" parent="335" name="PRIMARY">
-      <ColNames>tableID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>tableID</UnderlyingIndexColNames>
     </key>
     <trigger id="365" parent="335" name="InsertTableNewBanker">
       <Definer>root@localhost</Definer>
@@ -1469,9 +1469,9 @@ BotV2|schema||moderator_pavel||UPDATE|G</Grants>
       <Type>btree</Type>
     </index>
     <key id="400" parent="336" name="PRIMARY">
-      <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="401" parent="337" name="userID">
       <Comment>Telegram userID</Comment>
@@ -1538,9 +1538,9 @@ BotV2|schema||moderator_pavel||UPDATE|G</Grants>
       <Type>btree</Type>
     </index>
     <key id="412" parent="337" name="PRIMARY">
-      <ColNames>userID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>userID</UnderlyingIndexColNames>
     </key>
     <trigger id="413" parent="337" name="CreateUserTableList">
       <Definer>root@localhost</Definer>

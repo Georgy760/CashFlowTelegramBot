@@ -1,16 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "5aHTonX9Y6uHVZFwVTR8ctUK3QGHr9Ifif4A5iFsKF6hQgjZxKKrBD8u6ZsVfEQEZErMbjsoNNk7yCwqrv8Uvg==",
+  "dgSpecHash": "STTsylDg9hUy0f/YLjbcmewyZHpoplXLIX3Xg4A506GpjrrLYonUr70pA8lOE3q+8TTFZohk6aOJeLCdEnYgDw==",
   "success": true,
-  "projectFilePath": "E:\\user\\Documents\\CashFlowTelegramBot\\CashFlowTelegramBot\\CashFlowTelegramBot.csproj",
+  "projectFilePath": "C:\\Users\\zero-pc\\Documents\\GitHub\\CashFlowTelegramBot\\CashFlowTelegramBot\\CashFlowTelegramBot.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\gosha\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
-    "C:\\Users\\gosha\\.nuget\\packages\\skiasharp\\2.88.1\\skiasharp.2.88.1.nupkg.sha512",
-    "C:\\Users\\gosha\\.nuget\\packages\\skiasharp.nativeassets.linux\\2.88.1\\skiasharp.nativeassets.linux.2.88.1.nupkg.sha512",
-    "C:\\Users\\gosha\\.nuget\\packages\\skiasharp.nativeassets.linux.nodependencies\\2.88.1\\skiasharp.nativeassets.linux.nodependencies.2.88.1.nupkg.sha512",
-    "C:\\Users\\gosha\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.1\\skiasharp.nativeassets.macos.2.88.1.nupkg.sha512",
-    "C:\\Users\\gosha\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.1\\skiasharp.nativeassets.win32.2.88.1.nupkg.sha512",
-    "C:\\Users\\gosha\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512"
+    "C:\\Users\\zero-pc\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\skiasharp\\2.88.1\\skiasharp.2.88.1.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\skiasharp.nativeassets.linux\\2.88.1\\skiasharp.nativeassets.linux.2.88.1.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\skiasharp.nativeassets.linux.nodependencies\\2.88.1\\skiasharp.nativeassets.linux.nodependencies.2.88.1.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\skiasharp.nativeassets.macos\\2.88.1\\skiasharp.nativeassets.macos.2.88.1.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\skiasharp.nativeassets.win32\\2.88.1\\skiasharp.nativeassets.win32.2.88.1.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\telegram.bot\\18.0.0\\telegram.bot.18.0.0.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.11\\microsoft.netcore.app.ref.6.0.11.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.11\\microsoft.windowsdesktop.app.ref.6.0.11.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.11\\microsoft.aspnetcore.app.ref.6.0.11.nupkg.sha512",
+    "C:\\Users\\zero-pc\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.11\\microsoft.netcore.app.host.win-x64.6.0.11.nupkg.sha512"
   ],
   "logs": []
 }

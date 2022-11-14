@@ -1457,6 +1457,7 @@ function SetUserTableList($tableList){
     }
     return $userTableList;
 }
+
 function SetTableProfileData($tableID)
 {
     global $db;
@@ -1483,6 +1484,7 @@ function SetTableProfileData($tableID)
         return $tableProfile = null;
     }
 }
+
 function GetTableRole($userID, $tableID){
     global $db;
     $tableRole = '';
@@ -1541,6 +1543,7 @@ function GetTableRole($userID, $tableID){
     }
     return $tableRole;
 }
+
 function GetUserData($userID){
     global $db;
     global $userData;
@@ -1585,6 +1588,7 @@ function GetRefUserTableList($RefID){
     $refUser = $db->query("SELECT * FROM `userTableList` WHERE `userID` = '{$RefID}'")->fetch(PDO::FETCH_ASSOC);
     return $refUser;
 }
+
 function AnyTable($tableType, $userID){
     global $db;
     //print "AnyTable\n";
@@ -3350,6 +3354,7 @@ function EnterTable($tableType, $userID, $refID){
     }
     return null;
 }
+
 function EnterTableReinvest($tableType, $userID, $refId){
     global $db;
     $flag = false;
@@ -3977,6 +3982,7 @@ function EnterTableReinvest($tableType, $userID, $refId){
     $refUserTableList = $db->query("SELECT * FROM `userTableList` WHERE `userID` = '{$refId}'")->fetch(PDO::FETCH_ASSOC);
 
 }
+
 function SetError($text)
 {
     global $userData;
@@ -3984,6 +3990,7 @@ function SetError($text)
     $userData["error"]["isError"] = true;
     $userData["error"]["errorText"] = $text;
 }
+
 function SetNotification($text, $tableID, $banker, $giverA, $giverB, $giverC, $giverD){
     global $userData;
     $userData["notification"]["notificationText"] = $text;
@@ -4001,6 +4008,7 @@ function SetNotification($text, $tableID, $banker, $giverA, $giverB, $giverC, $g
     $userData["notification"]["tableType"] = "copper";
 
 }
+
 function SetNotificationWithTableType($text,$tableType, $tableID, $banker, $giverA, $giverB, $giverC, $giverD){
     global $userData;
     $userData["notification"]["notificationText"] = $text;
