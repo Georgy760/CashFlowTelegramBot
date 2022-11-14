@@ -962,7 +962,54 @@ switch ($dt['Type']) {
                         }
                         if ($table['giverA_ID'] == $dt['User']['id'] && $table['verf_A'] == 0) {
                             $db->query("UPDATE `tables` SET `verf_A` = '1' WHERE `tableID` = '{$dt['Table']['tableID']}'");
-                            SetNotification("GiverIsVerified", $table['tableID'], $table['bankerID'], null, null, $table['giverA_ID'], null, null, null);
+                            $db->query("UPDATE `tables` SET `giverA_ID` = '2' WHERE `tableID` = '{$dt['Table']['tableID']}'");
+                            $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('$TypeOfTable', '{$dt['User']['id']}')");
+                            $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                            switch ($TypeOfTable) {
+                                case "copper":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('copper', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_copper` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "bronze":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('bronze', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_bronze` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "silver":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('silver', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_silver` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "gold":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('gold', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_gold` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "platinum":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('platinum', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_platinum` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "diamond":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('diamond', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_diamond` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                            }
+                            SetNotification("GiverIsVerified", $table['tableID'], $table['bankerID'], $dt['User']['id'], null, null, null);
                             if ($TypeOfTable == "bronze" || $TypeOfTable == "silver" ||
                                 $TypeOfTable == "gold" || $TypeOfTable == "platinum" ||
                                 $TypeOfTable == "diamond") {
@@ -972,7 +1019,54 @@ switch ($dt['Type']) {
                         }
                         if ($table['giverB_ID'] == $dt['User']['id'] && $table['verf_B'] == 0) {
                             $db->query("UPDATE `tables` SET `verf_B` = '1' WHERE `tableID` = '{$dt['Table']['tableID']}'");
-                            SetNotification("GiverIsVerified", $table['tableID'], $table['bankerID'], null, null, null, $table['giverB_ID'], null, null);
+                            $db->query("UPDATE `tables` SET `giverB_ID` = '2' WHERE `tableID` = '{$dt['Table']['tableID']}'");
+                            $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('{$dt['Table']['tableType']}', '{$dt['User']['id']}')");
+                            $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                            switch ($TypeOfTable) {
+                                case "copper":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('copper', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_copper` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "bronze":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('bronze', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_bronze` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "silver":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('silver', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_silver` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "gold":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('gold', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_gold` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "platinum":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('platinum', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_platinum` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "diamond":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('diamond', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_diamond` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                            }
+                            SetNotification("GiverIsVerified", $table['tableID'], $table['bankerID'], $dt['User']['id'], null, null, null);
                             if ($TypeOfTable == "bronze" || $TypeOfTable == "silver" ||
                                 $TypeOfTable == "gold" || $TypeOfTable == "platinum" ||
                                 $TypeOfTable == "diamond") {
@@ -982,7 +1076,54 @@ switch ($dt['Type']) {
                         }
                         if ($table['giverC_ID'] == $dt['User']['id'] && $table['verf_C'] == 0) {
                             $db->query("UPDATE `tables` SET `verf_C` = '1' WHERE `tableID` = '{$dt['Table']['tableID']}'");
-                            SetNotification("GiverIsVerified", $table['tableID'], $table['bankerID'], null, null, null, null, $table['giverC_ID'], null);
+                            $db->query("UPDATE `tables` SET `giverC_ID` = '2' WHERE `tableID` = '{$dt['Table']['tableID']}'");
+                            $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('{$dt['Table']['tableType']}', '{$dt['User']['id']}')");
+                            $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                            switch ($TypeOfTable) {
+                                case "copper":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('copper', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_copper` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "bronze":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('bronze', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_bronze` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "silver":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('silver', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_silver` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "gold":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('gold', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_gold` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "platinum":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('platinum', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_platinum` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "diamond":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('diamond', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_diamond` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                            }
+                            SetNotification("GiverIsVerified", $table['tableID'], $table['bankerID'], $dt['User']['id'], null, null, null);
                             if ($TypeOfTable == "bronze" || $TypeOfTable == "silver" ||
                                 $TypeOfTable == "gold" || $TypeOfTable == "platinum" ||
                                 $TypeOfTable == "diamond") {
@@ -992,7 +1133,54 @@ switch ($dt['Type']) {
                         }
                         if ($table['giverD_ID'] == $dt['User']['id'] && $table['verf_D'] == 0) {
                             $db->query("UPDATE `tables` SET `verf_D` = '1' WHERE `tableID` = '{$dt['Table']['tableID']}'");
-                            SetNotification("GiverIsVerified", $table['tableID'], $table['bankerID'], null, null, null, null, null, $table['giverD_ID']);
+                            $db->query("UPDATE `tables` SET `giverD_ID` = '2' WHERE `tableID` = '{$dt['Table']['tableID']}'");
+                            $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('{$dt['Table']['tableType']}', '{$dt['User']['id']}')");
+                            $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                            switch ($TypeOfTable) {
+                                case "copper":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('copper', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_copper` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "bronze":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('bronze', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_bronze` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "silver":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('silver', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_silver` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "gold":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('gold', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_gold` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "platinum":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('platinum', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_platinum` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                                case "diamond":
+                                {
+                                    $db->query("INSERT INTO `tables`(`tableType`, `bankerID`) VALUES ('diamond', '{$dt['User']['id']}')");
+                                    $NewTableID = $db->query("SELECT * FROM `tables` WHERE `bankerID` = '{$dt['User']['id']}' AND `tableType` = '{$dt['Table']['tableType']}'")->fetch(PDO::FETCH_ASSOC);
+                                    $db->query("UPDATE `userTableList` SET `table_ID_diamond` = '{$NewTableID['tableID']}' WHERE `userID` = '{$dt['User']['id']}'");
+                                    break;
+                                }
+                            }
+                            SetNotification("GiverIsVerified", $table['tableID'], $table['bankerID'], $dt['User']['id'], null, null, null);
                             if ($TypeOfTable == "bronze" || $TypeOfTable == "silver" ||
                                 $TypeOfTable == "gold" || $TypeOfTable == "platinum" ||
                                 $TypeOfTable == "diamond") {
@@ -1003,7 +1191,72 @@ switch ($dt['Type']) {
 
                         $tables = $db->query("SELECT * FROM `tables` WHERE `tableID` = '{$dt['Table']['tableID']}'");
                         $table = $tables->fetch(PDO::FETCH_ASSOC);
-
+                        if ($table['verf_A'] == 1 && $table['verf_B'] == 1 && $table['verf_C'] == 1 && $table['verf_D'] == 1) {
+                            SetNotificationWithTableType("TableCompleted", $table['tableType'], $table['tableID'], $table['bankerID'], null, null, null, null);
+                            $userBanker['userID'] = $table['bankerID'];
+                            $bankerData = $users = $db->query("SELECT * FROM `users` WHERE `userID` = '{$userBanker['userID']}'");
+                            $banker = $bankerData->fetch(PDO::FETCH_ASSOC);
+                            switch ($table['tableType']) {
+                                case "copper":
+                                {
+                                    if ($banker['level_tableType'] == 'copper') {
+                                        $db->query("UPDATE `users` SET `level_tableType` = 'bronze' WHERE `userID` = '{$userBanker['userID']}'");
+                                        $db->query("UPDATE `userTableList` SET `table_ID_copper` = NULL, `CompletedCopper` = `CompletedCopper` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    } else {
+                                        $db->query("UPDATE `userTableList` SET `table_ID_copper` = NULL, `CompletedCopper` = `CompletedCopper` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    }
+                                    break;
+                                }
+                                case "bronze":
+                                {
+                                    if ($banker['level_tableType'] == 'bronze') {
+                                        $db->query("UPDATE `users` SET `level_tableType` = 'silver' WHERE `userID` = '{$userBanker['userID']}'");
+                                        $db->query("UPDATE `userTableList` SET `table_ID_bronze` = NULL, `CompletedBronze` = `CompletedBronze` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    } else {
+                                        $db->query("UPDATE `userTableList` SET `table_ID_bronze` = NULL, `CompletedBronze` = `CompletedBronze` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    }
+                                    break;
+                                }
+                                case "silver":
+                                {
+                                    if ($banker['level_tableType'] == 'silver') {
+                                        $db->query("UPDATE `users` SET `level_tableType` = 'gold' WHERE `userID` = '{$userBanker['userID']}'");
+                                        $db->query("UPDATE `userTableList` SET `table_ID_silver` = NULL, `CompletedSilver` = `CompletedSilver` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    } else {
+                                        $db->query("UPDATE `userTableList` SET `table_ID_silver` = NULL, `CompletedSilver` = `CompletedSilver` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    }
+                                    break;
+                                }
+                                case "gold":
+                                {
+                                    if ($banker['level_tableType'] == 'gold') {
+                                        $db->query("UPDATE `users` SET `level_tableType` = 'platinum' WHERE `userID` = '{$userBanker['userID']}'");
+                                        $db->query("UPDATE `userTableList` SET `table_ID_gold` = NULL, `CompletedGold` = `CompletedGold` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    } else {
+                                        $db->query("UPDATE `userTableList` SET `table_ID_gold` = NULL, `CompletedGold` = `CompletedGold` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    }
+                                    break;
+                                }
+                                case "platinum":
+                                {
+                                    if ($banker['level_tableType'] == 'platinum') {
+                                        $db->query("UPDATE `users` SET `level_tableType` = 'diamond' WHERE `userID` = '{$userBanker['userID']}'");
+                                        $db->query("UPDATE `userTableList` SET `table_ID_platinum` = NULL, `CompletedPlatinum` = `CompletedPlatinum` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    } else {
+                                        $db->query("UPDATE `userTableList` SET `table_ID_platinum` = NULL, `CompletedPlatinum` = `CompletedPlatinum` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    }
+                                    break;
+                                }
+                                case "diamond":
+                                {
+                                    $db->query("UPDATE `userTableList` SET `table_ID_diamond` = NULL, `CompletedDiamond` = `CompletedDiamond` + 1 WHERE `userID` = '{$userBanker['userID']}'");
+                                    break;
+                                }
+                            }
+                            $db->query("DELETE FROM `tables` WHERE `tableID` = '{$table['tableID']}'");
+                            SetNotificationWithTableType("TableCompleted", $table['tableType'], $table['tableID'], $table['bankerID'], $dt['User']['id'], null, null, null);
+                            SetError("TableCompleted");
+                        }
                         /*
                         echo "\n".$userBanker['userID'];
                         echo "\n".$userManagerA['userID'];
@@ -1013,7 +1266,7 @@ switch ($dt['Type']) {
                         echo "\n".$userGiverC['userID'];
                         echo "\n".$userGiverD['userID'];
                         */
-                        if ($table['verf_A'] == 1 && $table['verf_B'] == 1 && $table['verf_C'] == 1 && $table['verf_D'] == 1) {
+                        /*if ($table['verf_A'] == 1 && $table['verf_B'] == 1 && $table['verf_C'] == 1 && $table['verf_D'] == 1) {
                             $userBanker['userID'] = $table['bankerID'];
                             //$userManagerA['userID'] = $table['managerA_ID'];
                             //$userManagerB['userID'] = $table['managerB_ID'];
@@ -1127,7 +1380,7 @@ switch ($dt['Type']) {
                             }
                             //$db->query("DELETE FROM `tables` WHERE `tableID` = '{$userBanker['table_id']}'");
                             SetError("TableCompleted");
-                        }
+                        }*/
                     } else SetError("Cannot find table");
                 } else SetError("Confirm - ERROR");
                 break;

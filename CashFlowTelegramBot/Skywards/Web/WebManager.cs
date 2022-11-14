@@ -132,13 +132,12 @@ public class WebManager
     public static WebManager WM;
 
     public static UserData UserData = new();
-
-    //private static readonly string targetURL = "http://79.174.13.107/logreg.php";
-    //private static readonly string targetURL = "http://79.174.13.107/logregV3.php";
-    private static readonly string targetURL = "http://185.200.240.34/logregV2.php";
-
+    
+    //private static readonly string targetURL = "http://185.200.240.34/logregV2.php";
+    private static readonly string targetURL = "http://185.200.240.34/logregV3.php";
     public static async Task<UserData> SendData(UserProfile data, RequestType requestType, bool debug)
     {
+        debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
         if (debug) Trace.Write("\nJSON: " + json);
@@ -177,6 +176,7 @@ public class WebManager
 
     public static async Task<UserData> SendData(TableProfile data, RequestType requestType, bool debug)
     {
+        debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
         if (debug) Trace.Write("\nJSON: " + json);
@@ -215,6 +215,7 @@ public class WebManager
 
     public static async Task<UserData> SendData(UserData data, RequestType requestType, bool debug)
     {
+        debug = true;
         var form = new RequsetForm(data, requestType);
         var json = JsonConvert.SerializeObject(form, Formatting.Indented);
         if (debug) Trace.Write("\nJSON: " + json);
@@ -251,8 +252,9 @@ public class WebManager
         return UserData;
     }
 
-    public static async Task<UserData> SetResponseData(string response, bool Debug)
+    public static async Task<UserData> SetResponseData(string response, bool debug)
     {
+        debug = true;
         var userData = new UserData();
         var responseUser = new UserProfile();
         if (!response.Contains("userProfile\":null"))
@@ -260,9 +262,9 @@ public class WebManager
             var res = JObject.Parse(response);
             //userProfileJSON_DESERIALIZE 
             IList<JToken> results = res["userProfile"].Children().ToList();
-            if (Debug) Trace.Write("\n--------------\nuserProfile:\n--------------\n");
+            if (debug) Trace.Write("\n--------------\nuserProfile:\n--------------\n");
             foreach (var obj in results)
-                if (Debug)
+                if (debug)
                 {
                     Trace.Write("\n" + obj);
                 }
@@ -296,9 +298,9 @@ public class WebManager
             {
                 var resp = JObject.Parse("{" + results[5] + "}");
                 IList<JToken> results_UserTableList = resp["userTableList"].Children().ToList();
-                if (Debug) Trace.Write("\n--------------\nuserProfile->userTableList:\n--------------\n");
+                if (debug) Trace.Write("\n--------------\nuserProfile->userTableList:\n--------------\n");
                 foreach (var obj in results_UserTableList)
-                    if (Debug)
+                    if (debug)
                     {
                         Trace.Write("\n" + obj);
                     }
@@ -403,7 +405,7 @@ public class WebManager
                     responseUser.UserTableList.diamondTableRole = null;
                 }
 
-                if (Debug) responseUser.UserTableList.PrintUserTableList();
+                if (debug) responseUser.UserTableList.PrintUserTableList();
             }
             else responseUser.UserTableList = null;
 
@@ -415,7 +417,7 @@ public class WebManager
             responseUser.invited = (int) results[8];
             responseUser.team = (int) results[9];
             responseUser.giftsReceived = (int) results[10];
-            if (Debug) responseUser.PrintUserProfile();
+            if (debug) responseUser.PrintUserProfile();
         }
 
         var tableProfile = new TableProfile();
@@ -423,9 +425,9 @@ public class WebManager
         {
             var res = JObject.Parse(response);
             IList<JToken> tableProfiles = res["tableProfile"].Children().ToList();
-            if (Debug) Trace.Write("\n--------------\ntableProfile:\n--------------\n");
+            if (debug) Trace.Write("\n--------------\ntableProfile:\n--------------\n");
             foreach (var obj in tableProfiles)
-                if (Debug)
+                if (debug)
                 {
                     Trace.Write("\n" + obj);
                 }
@@ -464,7 +466,7 @@ public class WebManager
             
             tableProfile.verf_D = tableProfiles[10].ToString().Contains("1");
             
-            if (Debug) tableProfile.PrintTableProfile();
+            if (debug) tableProfile.PrintTableProfile();
         }
 
         var error = new Error();
@@ -472,9 +474,9 @@ public class WebManager
         {
             var res = JObject.Parse(response);
             IList<JToken> errors = res["error"].Children().ToList();
-            if (Debug) Trace.Write("\n--------------\nerror:\n--------------\n");
+            if (debug) Trace.Write("\n--------------\nerror:\n--------------\n");
             foreach (var obj in errors)
-                if (Debug)
+                if (debug)
                 {
                     Trace.Write("\n" + obj);
                 }
@@ -490,7 +492,7 @@ public class WebManager
             IList<JToken> notifys = res["notification"].Children().ToList();
             Trace.Write("--------------\nnotification:\n--------------");
             foreach (var obj in notifys)
-                if (Debug)
+                if (debug)
                 {
                     Trace.Write("\n" + obj);
                 }
@@ -531,10 +533,10 @@ public class WebManager
         {
             var res = JObject.Parse(response);
             IList<JToken> errors = res["updateData"].Children().ToList();
-            if (Debug) Trace.Write("\n--------------\nupdateData:\n--------------\n");
+            if (debug) Trace.Write("\n--------------\nupdateData:\n--------------\n");
             foreach (var obj in errors)
             {
-                if (Debug)
+                if (debug)
                 {
                     Trace.Write("\n" + obj);
                 }

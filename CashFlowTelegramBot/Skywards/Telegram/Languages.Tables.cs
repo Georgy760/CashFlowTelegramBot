@@ -436,13 +436,6 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("👤 Менеджер-1",
-                                        "GetManagerAData|" + tableType),
-                                    InlineKeyboardButton.WithCallbackData("👤 Менеджер-2",
-                                        "GetManagerBData|" + tableType)
-                                },
-                                new[]
-                                {
                                     inlineKeyboardButtonGiverAInfo,
                                     inlineKeyboardButtonGiverCInfo,
                                 },
@@ -491,12 +484,6 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("👤 Manager-1",
-                                        "GetManagerAData|" + tableType),
-                                    InlineKeyboardButton.WithCallbackData("👤Manager-2", "GetManagerBData|" + tableType)
-                                },
-                                new[]
-                                {
                                     inlineKeyboardButtonGiverAInfo,
                                     inlineKeyboardButtonGiverCInfo,
                                 },
@@ -542,13 +529,6 @@ public partial class Languages
                                 },
                                 new[]
                                 {
-                                    InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1",
-                                        "GetManagerAData|" + tableType),
-                                    InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2",
-                                        "GetManagerBData|" + tableType)
-                                },
-                                new[]
-                                {
                                     inlineKeyboardButtonGiverAInfo,
                                     inlineKeyboardButtonGiverCInfo,
                                 },
@@ -591,13 +571,6 @@ public partial class Languages
                                 new[]
                                 {
                                     InlineKeyboardButton.WithCallbackData("🏦 Banker", "GetBankerData|" + tableType)
-                                },
-                                new[]
-                                {
-                                    InlineKeyboardButton.WithCallbackData("👤 Manager-1",
-                                        "GetManagerAData|" + tableType),
-                                    InlineKeyboardButton.WithCallbackData("👤 Manager-2",
-                                        "GetManagerBData|" + tableType)
                                 },
                                 new[]
                                 {
@@ -1226,11 +1199,6 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("👤 Менеджер-1", "GetManagerAData|" + tableType),
-                                InlineKeyboardButton.WithCallbackData("👤 Менеджер-2", "GetManagerBData|" + tableType)
-                            },
-                            new[]
-                            {
                                 inlineKeyboardButtonGiverAInfo,
                                 inlineKeyboardButtonGiverCInfo,
                             },
@@ -1279,11 +1247,6 @@ public partial class Languages
                             },
                             new[]
                             {
-                                InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType),
-                                InlineKeyboardButton.WithCallbackData("👤Manager-2", "GetManagerBData|" + tableType)
-                            },
-                            new[]
-                            {
                                 inlineKeyboardButtonGiverAInfo,
                                 inlineKeyboardButtonGiverCInfo,
                             },
@@ -1325,13 +1288,6 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonBankerInfo
-                            },
-                            new[]
-                            {
-                                InlineKeyboardButton.WithCallbackData("👤 Gestionnaire-1",
-                                    "GetManagerAData|" + tableType),
-                                InlineKeyboardButton.WithCallbackData("👤Gestionnaire-2",
-                                    "GetManagerBData|" + tableType)
                             },
                             new[]
                             {
@@ -1377,11 +1333,6 @@ public partial class Languages
                             new[]
                             {
                                 inlineKeyboardButtonBankerInfo
-                            },
-                            new[]
-                            {
-                                InlineKeyboardButton.WithCallbackData("👤 Manager-1", "GetManagerAData|" + tableType),
-                                InlineKeyboardButton.WithCallbackData("👤 Manager-2", "GetManagerBData|" + tableType)
                             },
                             new[]
                             {
